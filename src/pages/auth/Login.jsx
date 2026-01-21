@@ -1,5 +1,5 @@
-import "../styles/auth.css";
-import { buildAuthUrl } from "../lib/oauth";
+import "../../styles/auth.css";
+import { buildAuthUrl } from "../../lib/oauth";
 
 export default function Login() {
   const onClickSocial = (provider) => {
