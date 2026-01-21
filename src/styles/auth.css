@@ -1,5 +1,5 @@
 .auth-page {
-  min-height: 100vh;
+  min-height: 100%;
   display: grid;
   place-items: center;
   background: #eef3fb;
@@ -7,111 +7,39 @@
 }
 
 .auth-card {
-  width: min(520px, 92vw);
+  width: 380px;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-  padding: 38px 44px;
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
 .auth-title {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .auth-subtitle {
-  margin: 10px 0 0;
+  font-size: 13px;
   color: #6b7280;
-  font-size: 14px;
-}
-
-.divider {
-  height: 1px;
-  background: #e5e7eb;
-  margin: 22px 0;
-}
-
-.btn {
-  width: 100%;
-  height: 54px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  user-select: none;
-}
-
-.btn:active { transform: translateY(1px); }
-
-.btn-kakao {
-  background: #FEE500;
-  color: #111827;
-}
-
-.btn-google {
-  background: #fff;
-  border-color: #e5e7eb;
-  color: #111827;
-  margin-top: 12px;
-}
-
-.btn-naver {
-  background: #03C75A;
-  color: #fff;
-  margin-top: 12px;
+  margin-bottom: 16px;
 }
 
 .or-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .or-row .line {
+  flex: 1;
   height: 1px;
   background: #e5e7eb;
-  flex: 1;
 }
 
 .or-row .or-text {
+  font-size: 12px;
   color: #9ca3af;
-  font-size: 13px;
-}
-
-.btn-email {
-  background: #fff;
-  border-color: #e5e7eb;
-  color: #111827;
-}
-
-.icon {
-  width: 18px;
-  height: 18px;
-  display: inline-grid;
-  place-items: center;
-  font-weight: 900;
-}
-
-.icon.kakao {
-  border-radius: 50%;
-  background: #111;
-}
-
-.icon.google {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  font-weight: 900;
-  color: #ea4335;
-}
-
-.icon.naver {
-  font-weight: 900;
-  color: #fff;
 }
