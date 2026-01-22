@@ -1,4 +1,4 @@
-import SocialLogin from "../../component/auth/SocialLogin/SocialLogin";
+import SocialLogin from "../../components/auth/SocialLogin/SocialLogin";
 import { buildAuthUrl } from "../../lib/oauth";
 import "../../styles/auth.css";
 
