@@ -4,7 +4,7 @@ import Login from "./pages/auth/Login";
 import OAuthCallback from "./pages/auth/OauthCallback";
 import SignupAgreement from "./pages/auth/signup/SignupAgreement";
 import Onboarding from "./pages/auth/signup/Onboarding";
-import Welcome from "./pages/auth/signup/Welecome";
+import Welcome from "./pages/auth/signup/Welcome"
 
 import Home from "./pages/home/Home";
 import HealthCheck from "./pages/HealthCheck";
