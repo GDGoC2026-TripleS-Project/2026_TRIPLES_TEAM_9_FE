@@ -6,7 +6,7 @@ import SignupAgreement from "./pages/auth/signup/SignupAgreement";
 import Onboarding from "./pages/auth/signup/Onboarding";
 import Welcome from "./pages/auth/signup/Welecome";
 
-import Home from "./pages/home/Home";
+import Home from "./pages/home/home";
 import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
