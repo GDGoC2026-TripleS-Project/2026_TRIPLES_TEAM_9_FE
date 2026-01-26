@@ -1,4 +1,4 @@
-.auth-page {
+.login-page {
   min-height: 100%;
   display: grid;
   place-items: center;
@@ -6,7 +6,7 @@
   padding: 24px;
 }
 
-.auth-card {
+.login-card {
   width: 380px;
   background: #fff;
   border-radius: 12px;
@@ -14,13 +14,13 @@
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
-.auth-title {
+.login-title {
   margin: 0 0 6px;
   font-size: 18px;
   font-weight: 700;
 }
 
-.auth-subtitle {
+.login-subtitle {
   font-size: 13px;
   color: #6b7280;
   margin-bottom: 16px;
