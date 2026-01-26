@@ -37,7 +37,7 @@ api.interceptors.response.use(
     // refresh 요청이 401일 때는 무한루프 방지
     if (original?.url?.includes("/api/auth/refresh") && status === 401) {
       clearAccessToken();
-      window.location.href = "/auth";
+      window.location.href = "/login";
       return Promise.reject(err);
     }
 
@@ -46,7 +46,7 @@ api.interceptors.response.use(
 
       if (!getAccessToken()) {
         clearAccessToken();
-        window.location.href = "/auth";
+        window.location.href = "/login";
         return Promise.reject(err);
       }
 
@@ -79,7 +79,7 @@ api.interceptors.response.use(
       } catch (e) {
         flushQueue(e, null);
         clearAccessToken();
-        window.location.href = "/auth";
+        window.location.href = "/login";
         return Promise.reject(e);
       } finally {
         refreshing = false;
