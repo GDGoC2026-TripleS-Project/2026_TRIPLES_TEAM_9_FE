@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthOverlay from "../../../components/auth/AuthOverlay";
 import "../../../styles/SignupAgreement.css";
 
 export default function SignupAgreement() {
   const nav = useNavigate();
   const [all, setAll] = useState(false);
-
   const [terms, setTerms] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const [marketing, setMarketing] = useState(false);
@@ -40,8 +40,8 @@ export default function SignupAgreement() {
   };
 
   return (
-    <div className="signup-wrap">
-      <div className="signup-card">
+    <AuthOverlay closeTo="/login" variant="ag">
+      <div className="auth-page auth-page--wide">
         <div className="signup-head">
           <h2>약관 동의</h2>
           <p>서비스 이용을 위해 약관에 동의해주세요.</p>
@@ -92,15 +92,12 @@ export default function SignupAgreement() {
         </div>
 
         <div className="actions">
-          <button className="btn" onClick={() => nav(-1)}>
-            뒤로
-          </button>
-
+          <button className="btn" onClick={() => nav(-1)}>뒤로</button>
           <button className="btn btn-primary" onClick={next} disabled={!canNext}>
             다음
           </button>
         </div>
       </div>
-    </div>
+    </AuthOverlay>
   );
 }

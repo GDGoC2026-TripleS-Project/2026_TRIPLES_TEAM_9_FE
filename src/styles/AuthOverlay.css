@@ -1,0 +1,137 @@
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 44px);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+  .auth-overlay {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+  }
+}
+
+.auth-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100dvh - (clamp(16px, 3vw, 44px) * 2));
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+
+  --body-pt: 52px;
+  --body-px: 32px;
+  --body-pb: 32px;
+}
+
+.auth-body {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--body-pt) var(--body-px) var(--body-pb);
+}
+
+.auth-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+.auth-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.auth-close:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-close:active {
+    transform: none;
+  }
+}
+
+/* PC: variant가 있어도 중앙/카드 룰은 동일 (영향 없음) */
+@media (min-width: 768px) {
+  .auth-overlay--lg,
+  .auth-overlay--ag,
+  .auth-overlay--ob,
+  .auth-overlay--wc {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-modal--lg,
+  .auth-modal--ag,
+  .auth-modal--ob,
+  .auth-modal--wc {
+    max-width: 440px;
+  }
+}
+
+/* Mobile: 공통(중앙 카드 기본) */
+@media (max-width: 767px) {
+  .auth-overlay {
+    padding: 18px;
+  }
+
+  .auth-modal {
+    border-radius: 20px;
+    --body-pt: 48px;
+    --body-px: 18px;
+    --body-pb: 18px;
+  }
+
+  .auth-close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .auth-modal--lg {
+    max-width: 380px;
+  }
+
+  .auth-modal--wc {
+    max-width: 380px;
+  }
+
+  /* ag/ob: 모바일에서만 bottom-sheet */
+  .auth-overlay--ag,
+  .auth-overlay--ob {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .auth-modal--ag,
+  .auth-modal--ob {
+    width: 100%;
+    max-width: none;
+    border-radius: 18px 18px 0 0;
+    max-height: 92dvh;
+    --body-pt: 46px;
+    --body-px: 18px;
+    --body-pb: calc(22px + env(safe-area-inset-bottom));
+  }
+
+  .auth-modal--ob {
+    max-height: 72dvh;
+  }
+}

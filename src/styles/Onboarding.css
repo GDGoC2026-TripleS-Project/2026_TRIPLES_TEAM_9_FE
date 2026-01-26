@@ -1,17 +1,12 @@
-.onboard-wrap {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
 .onboard-card {
-  width: min(420px, 92vw);
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
-  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .onboard-title {
@@ -33,21 +28,22 @@
 }
 
 .onboard-input {
-  height: 44px;
+  height: 46px;
   padding: 0 14px;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   font-size: 14px;
   outline: none;
+  width: 100%;
 }
 
 .onboard-input:focus {
-  border-color: rgba(47,111,78,0.55);
-  box-shadow: 0 0 0 3px rgba(47,111,78,0.14);
+  border-color: rgba(47, 111, 78, 0.55);
+  box-shadow: 0 0 0 3px rgba(47, 111, 78, 0.14);
 }
 
 .onboard-submit {
-  height: 44px;
+  height: 46px;
   border: none;
   border-radius: 12px;
   background: #2f6f4e;
@@ -64,4 +60,14 @@
   margin-top: 12px;
   font-size: 13px;
   color: #b91c1c;
+}
+
+@media (max-width: 767px) {
+  .onboard-title {
+    font-size: 20px;
+  }
+
+  .onboard-desc {
+    margin-bottom: 16px;
+  }
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
 import "../../styles/OauthCallback.css";
+import { useAuth } from "../../context/AuthContext";
 
 export default function OauthCallback() {
   const nav = useNavigate();
@@ -9,6 +10,7 @@ export default function OauthCallback() {
   const [sp] = useSearchParams();
   const executedRef = useRef(false);
   const [msg, setMsg] = useState("로그인 처리 중...");
+  const { login, logout } = useAuth();
 
   useEffect(() => {
     if (executedRef.current) return;
@@ -33,25 +35,19 @@ export default function OauthCallback() {
       try {
         setMsg("서버 로그인 처리 중...");
 
-        //백엔드에 로그인 요청
         const res = await api.post("/auth/login", { authToken: token });
-
         const payload = res.data?.data ?? res.data;
 
         const accessToken = payload?.tokens?.accessToken ?? payload?.accessToken;
         if (!accessToken) throw new Error("accessToken이 없습니다.");
 
-        localStorage.setItem("accessToken", accessToken);
-
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            userId: payload.userId,
-            email: payload.email,
-            nickname: payload.nickname,
-            role: payload.role,
-          })
-        );
+        // ✅ localStorage 직접 저장 대신 Context login 사용
+        login(accessToken, {
+          userId: payload.userId,
+          email: payload.email,
+          nickname: payload.nickname,
+          role: payload.role,
+        });
 
         if (payload.newUser === true) {
           sessionStorage.setItem("onboardingAuthToken", token);
@@ -65,21 +61,23 @@ export default function OauthCallback() {
       } catch (e) {
         console.error(e);
         setMsg("로그인 처리 실패. 다시 로그인 해주세요.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("user");
+
+        // ✅ 상태/스토리지 정리
+        logout();
         sessionStorage.removeItem("onboardingAuthToken");
+
         nav("/login", { replace: true });
       }
     })();
-  }, [nav, sp, provider]);
+  }, [nav, sp, provider, login, logout]);
 
   return (
     <div className="oauth-callback">
-    <div className="oauth-card">
-      <div className="oauth-spinner" />
-      <h2 className="oauth-title">로그인 처리 중</h2>
-      <p className="oauth-sub">{msg}</p>
+      <div className="oauth-card">
+        <div className="oauth-spinner" />
+        <h2 className="oauth-title">로그인 처리 중</h2>
+        <p className="oauth-sub">{msg}</p>
+      </div>
     </div>
-  </div>
   );
 }
