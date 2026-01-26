@@ -11,7 +11,8 @@ export default function Onboarding() {
   const submit = async (e) => {
     e.preventDefault();
 
-    if (!nickname.trim()) {
+    const trimmed = nickname.trim();
+    if (!trimmed) {
       alert("닉네임을 입력해주세요.");
       return;
     }
@@ -24,18 +25,16 @@ export default function Onboarding() {
     }
 
     try {
-      const fd = new FormData();
-      fd.append(
-        "data",
-        new Blob([JSON.stringify({ authToken, nickname: nickname.trim() })], {
-          type: "application/json",
-        })
-      );
-
       const res = await fetch(`${BACK}/auth/onboarding`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
-        body: fd,
+        body: JSON.stringify({
+          authToken,
+          nickname: trimmed,
+        }),
       });
 
       if (res.status === 409) {
@@ -51,7 +50,9 @@ export default function Onboarding() {
       const json = await res.json();
       const payload = json.data ?? json;
 
-      if (payload?.accessToken) localStorage.setItem("accessToken", payload.accessToken);
+      if (payload?.accessToken) {
+        localStorage.setItem("accessToken", payload.accessToken);
+      }
 
       localStorage.setItem(
         "user",
