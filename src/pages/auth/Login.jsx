@@ -1,6 +1,6 @@
 import SocialLogin from "../../components/auth/SocialLogin/SocialLogin";
 import { buildAuthUrl } from "../../lib/oauth";
-import "../../styles/auth.css";
+import "../../styles/login.css";
 
 export default function Login() {
   const onSocial = (provider) => {
@@ -8,10 +8,10 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <h1 className="auth-title">회원가입하기</h1>
-        <p className="auth-subtitle">소셜로그인 및 이메일로 가입할 수 있습니다.</p>
+    <div className="login-page">
+      <div className="login-card">
+        <h1 className="login-title">회원가입하기</h1>
+        <p className="login-subtitle">소셜로그인 및 이메일로 가입할 수 있습니다.</p>
 
         <div className="divider" />
 
