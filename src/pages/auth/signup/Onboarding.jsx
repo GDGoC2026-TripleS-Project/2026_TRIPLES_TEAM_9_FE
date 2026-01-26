@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthOverlay from "../../../components/auth/AuthOverlay";
 import "../../../styles/Onboarding.css";
+import { useAuth } from "../../../context/AuthContext";
 
 const BACK = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export default function Onboarding() {
   const nav = useNavigate();
+  const { login } = useAuth();
   const [nickname, setNickname] = useState("");
 
   const submit = async (e) => {
@@ -19,7 +22,7 @@ export default function Onboarding() {
 
     const authToken = sessionStorage.getItem("onboardingAuthToken");
     if (!authToken) {
-      alert("온보딩 토큰이 없습니다. 다시 로그인 해주세요.");
+      alert("auth 토큰이 없습니다. 다시 로그인 해주세요.");
       nav("/login", { replace: true });
       return;
     }
@@ -27,20 +30,10 @@ export default function Onboarding() {
     try {
       const res = await fetch(`${BACK}/auth/onboarding`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          authToken,
-          nickname: trimmed,
-        }),
+        body: JSON.stringify({ authToken, nickname: trimmed }),
       });
-
-      if (res.status === 409) {
-        alert("이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.");
-        return;
-      }
 
       if (!res.ok) {
         const t = await res.text();
@@ -50,37 +43,32 @@ export default function Onboarding() {
       const json = await res.json();
       const payload = json.data ?? json;
 
-      if (payload?.accessToken) {
-        localStorage.setItem("accessToken", payload.accessToken);
+      if (!payload?.accessToken) {
+        throw new Error("accessToken이 없습니다.");
       }
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          userId: payload.userId,
-          email: payload.email,
-          nickname: payload.nickname,
-          role: payload.role,
-        })
-      );
+      login(payload.accessToken, {
+        userId: payload.userId,
+        email: payload.email,
+        nickname: payload.nickname,
+        role: payload.role,
+      });
 
       sessionStorage.removeItem("onboardingAuthToken");
       nav("/signup/welcome", { replace: true });
     } catch (e) {
       const m = e?.message || "";
-
       if (m.includes("duplicate") || m.includes("중복") || m.includes("이미")) {
         alert("이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.");
         return;
       }
-
       alert(m || "요청에 실패했습니다.");
     }
   };
 
   return (
-    <div className="onboard-wrap">
-      <div className="onboard-card">
+    <AuthOverlay closeTo="/signup/agreement" variant="ob">
+      <div className="auth-page">
         <h2 className="onboard-title">회원가입</h2>
         <p className="onboard-desc">지식정원에서 사용할 닉네임을 정해주세요.</p>
 
@@ -97,6 +85,6 @@ export default function Onboarding() {
           </button>
         </form>
       </div>
-    </div>
+    </AuthOverlay>
   );
 }

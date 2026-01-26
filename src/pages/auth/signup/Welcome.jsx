@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/Welcome.css/";
+import AuthOverlay from "../../../components/auth/AuthOverlay";
+import "../../../styles/Welcome.css";
 
 export default function Welcome() {
   const nav = useNavigate();
@@ -8,8 +9,7 @@ export default function Welcome() {
   useEffect(() => {
     const t = setTimeout(() => {
       nav("/", { replace: true });
-    }, 1400);
-
+    }, 5000);
     return () => clearTimeout(t);
   }, [nav]);
 
@@ -23,8 +23,8 @@ export default function Welcome() {
   })();
 
   return (
-    <div className="welcome-wrap">
-      <div className="welcome-card">
+    <AuthOverlay closeTo="/" variant="wc">
+      <div className="auth-page">
         <div className="welcome-badge" aria-hidden>🌿</div>
 
         <h2 className="welcome-title">
@@ -41,6 +41,6 @@ export default function Welcome() {
           </button>
         </div>
       </div>
-    </div>
+    </AuthOverlay>
   );
 }

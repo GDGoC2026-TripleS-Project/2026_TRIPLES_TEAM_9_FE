@@ -78,6 +78,16 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+            {/* <section className="cta-section">
+                <h2 className="cta-title">지금 바로 시작하세요</h2>
+                <p className="cta-desc">
+                    작은 기록이 모여서 당신의 성장이 됩니다.
+                </p>
+
+                <button className="cta-btn">
+                    무료로 시작하기
+                </button>
+            </section> */}
         </div>
     );
 }
