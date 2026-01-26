@@ -1,0 +1,30 @@
+.net-wrap{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.net-card{
+  width: min(520px, 92vw);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  text-align: center;
+}
+.net-card h2{
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 900;
+}
+.net-card p{
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.net-actions{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}

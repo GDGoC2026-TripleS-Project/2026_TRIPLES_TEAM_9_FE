@@ -1,0 +1,94 @@
+.signup-wrap{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.signup-card{
+  width: min(560px, 92vw);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+  padding: 28px;
+}
+
+.signup-head{ margin-bottom: 18px; }
+.signup-head h2{
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+.signup-head p{
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.agree-box{
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fbfcfb;
+}
+
+.agree-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+}
+.agree-row:hover{
+  background: rgba(47,111,78,0.05);
+}
+
+.agree-row b{ font-weight: 800; }
+.agree-row .tag{
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+.agree-row .tag.required{
+  border-color: rgba(47,111,78,0.25);
+  color: #2f6f4e;
+  background: rgba(47,111,78,0.06);
+}
+
+.divider{
+  height: 1px;
+  background: #e5e7eb;
+  margin: 12px 0;
+}
+
+.actions{
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.btn{
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.btn:active{ transform: translateY(1px); }
+
+.btn-primary{
+  flex: 1;
+  border: none;
+  background: #2f6f4e;
+  color: #fff;
+}
+.btn-primary:disabled{
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
