@@ -1,4 +1,4 @@
-.container {
+.dashboard-container {
     width: min(800px, 90vw);
     margin: 0 auto;
 }
@@ -9,7 +9,7 @@
     margin-bottom: 11px;
 }
 
-.dashboard > .container > p {
+.dashboard > .dashboard-container > p {
     font-size: 12px;
     font-weight: 500;
     margin-bottom: 25px;
@@ -29,41 +29,73 @@
     color: white;
     font-size: 10px;
     font-weight: 400;
-
     margin-bottom: 23px;
 }
 
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 37px;
     margin-top: 16px;
+    margin-bottom: 25px;
 }
 
 .recent-study-list {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 16px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 37px;
     align-items: start;
-    margin-top: 16px;
+}
+
+.recent-study-list > :first-child {
+    grid-column: 1 / 4;
 }
 
 .dashboard-right {
-    position: sticky;
+    grid-column: 4 / 5;
+    width: 100%;
     display: flex;
     flex-direction: column;
-
-    justify-self: end;
 }
 
 @media (max-width: 900px) {
     .dashboard-cards {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .recent-study-list {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+
+    .recent-study-list > :first-child {
+        grid-column: 1 / 4;
+    }
+
+    .dashboard-right {
+        grid-column: 4 / 5;
+    }
 }
 
 @media (max-width: 600px) {
     .dashboard-cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .recent-study-list {
+        grid-template-columns: 3fr 2fr;
+        align-items: start;
+    }
+
+    .recent-study-list > :first-child {
+        grid-column: 1;
+        min-width: 0;
+    }
+
+    .dashboard-right {
+        grid-column: 2;
+        min-width: 0;
+        align-items: center;
     }
 }

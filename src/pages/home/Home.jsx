@@ -1,11 +1,9 @@
 import Header from "../../components/Header";
 import FeatureCard from "../../components/FeatureCard";
-import "../../styles/home.css";
 import "../../styles/global.css";
+import "../../styles/home.css";
 
-import {
-    BookOpen
-} from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 const FEATURES = [
     {
@@ -46,7 +44,6 @@ const FEATURES = [
     },
 ];
 
-
 export default function Home() {
     return (
         <div className="page">
@@ -56,8 +53,9 @@ export default function Home() {
                 <div className="container hero-inner">
                     <h1 className="hero-title">당신의 지식은 어떻게 연결되고 있나요?</h1>
                     <p className="hero-subtitle">
-                        작은 기록으로 시작하는 성장의 시각화. 강의, 독서, 프로젝트 등 다양한 학습 활동을 기록하면,
-                        키워드와 카테고리를 기반으로 자동으로 연결된 마인드맵을 생성합니다.
+                        작은 기록으로 시작하는 성장의 시각화. 강의, 독서, 프로젝트 등 다양한 학습
+                        활동을 기록하면, 키워드와 카테고리를 기반으로 자동으로 연결된 마인드맵을
+                        생성합니다.
                     </p>
 
                     <div className="hero-actions">
@@ -73,7 +71,13 @@ export default function Home() {
 
                     <div className="features-grid">
                         {FEATURES.map((f) => (
-                            <FeatureCard key={f.title} tone={f.tone} title={f.title} desc={f.desc} icon={f.icon} />
+                            <FeatureCard
+                                key={f.title}
+                                tone={f.tone}
+                                title={f.title}
+                                desc={f.desc}
+                                icon={f.icon}
+                            />
                         ))}
                     </div>
                 </div>

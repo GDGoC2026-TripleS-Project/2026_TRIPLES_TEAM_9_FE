@@ -1,20 +1,40 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
-:root{
-  --bg: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --line: #e5e7eb;
-  --primary: #2563eb;
+:root {
+    --bg: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --primary: #2563eb;
 }
 
-*{ box-sizing: border-box; }
-html, body, #root{ height:100%; }
-body{
-  margin:0;
-  font-family: 'Pretendard', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg);
+* {
+    box-sizing: border-box;
 }
-a{ color: inherit; text-decoration: none; }
-button{ font-family: inherit; }
+html,
+body,
+#root {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family:
+        "Pretendard",
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        Arial,
+        sans-serif;
+    color: var(--text);
+    background: var(--bg);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}

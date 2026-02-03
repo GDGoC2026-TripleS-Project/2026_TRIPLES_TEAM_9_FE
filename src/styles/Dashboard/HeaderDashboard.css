@@ -1,4 +1,4 @@
-.container {
+.dashboard-container {
     width: min(800px, 90vw);
     margin: 0 auto;
 }
@@ -60,4 +60,15 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 12px;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
 }

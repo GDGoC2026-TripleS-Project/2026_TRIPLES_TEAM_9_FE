@@ -1,6 +1,6 @@
 .dashboard-card {
     width: 100%;
-    max-width: 300px;
+    min-width: 0;
     aspect-ratio: 172 / 66;
     padding: 14px 16px;
     border-radius: 4px;
@@ -31,7 +31,7 @@
     font-weight: 500;
 }
 
-.dashborad-card-icon {
+.dashboard-card-icon {
     flex-shrink: 0;
 }
 
