@@ -57,7 +57,7 @@ export default function OauthCallback() {
         }
 
         setMsg("로그인 성공! 이동 중...");
-        nav("/", { replace: true });
+        nav("/dashboard", { replace: true });
       } catch (e) {
         console.error(e);
         setMsg("로그인 처리 실패. 다시 로그인 해주세요.");

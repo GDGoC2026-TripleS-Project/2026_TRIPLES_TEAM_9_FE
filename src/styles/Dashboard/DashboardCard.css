@@ -1,0 +1,49 @@
+.dashboard-card {
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 172 / 66;
+    padding: 14px 16px;
+    border-radius: 4px;
+    border: 1px solid #e4e4e7;
+    background: #fff;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dashboard-card-title {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.dashboard-card-value {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dashboard-card-icon {
+    flex-shrink: 0;
+}
+
+.dashboard-card--record .dashboard-card-icon-svg {
+    color: #dbeafe;
+}
+.dashboard-card--keyword .dashboard-card-icon-svg {
+    color: #dcfce7;
+}
+.dashboard-card--achievement .dashboard-card-icon-svg {
+    color: #fef9c2;
+}
+.dashboard-card--category .dashboard-card-icon-svg {
+    color: #f3e8ff;
+}

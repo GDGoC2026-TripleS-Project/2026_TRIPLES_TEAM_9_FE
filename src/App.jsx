@@ -8,6 +8,8 @@ import OAuthCallback from "./pages/auth/OauthCallback";
 import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
+import Dashboard from "./pages/dashboard/Dashboard";
+
 const AUTH_PATHS = new Set([
   "/login",
   "/signup/agreement",
@@ -21,9 +23,11 @@ function AppRoutes() {
 
   return (
     <>
-      <Home />
+      {/* <Home />   */}
+      {/* 다른 페이지 상단에 Home 페이지가 함께 렌더링되어 주석처리 */}
 
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/oauth/callback/:provider" element={<OAuthCallback />} />
         <Route path="/check" element={<HealthCheck />} />
         <Route path="/network-error" element={<NetworkError />} />
@@ -33,6 +37,8 @@ function AppRoutes() {
         <Route path="/signup/onboarding" element={null} />
         <Route path="/signup/welcome" element={null} />
 
+        {/* // 회원가입 후 dashboard가 보이도록 해야 됨 */}
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 

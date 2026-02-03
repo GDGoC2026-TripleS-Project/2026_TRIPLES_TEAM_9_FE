@@ -1,0 +1,44 @@
+.dashboard-actions {
+    display: flex;
+    flex-direction: column;
+    width: 232px;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.action-btn {
+    width: 232px;
+    height: 24px;
+    padding: 4px 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 6px;
+    font-size: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.action-btn--gradient {
+    border: none;
+    color: #fff;
+    background: linear-gradient(90deg, #4f6df5 0%, #2dd4bf 100%);
+}
+
+.action-btn--outline {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+}
+
+@media (max-width: 600px) {
+    .dashboard-actions {
+        width: 100%;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+}

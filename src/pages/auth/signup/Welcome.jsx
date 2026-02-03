@@ -36,7 +36,7 @@ export default function Welcome() {
         </p>
 
         <div className="welcome-actions">
-          <button className="welcome-btn" onClick={() => nav("/", { replace: true })}>
+          <button className="welcome-btn" onClick={() => nav("/dashboard", { replace: true })}>
             바로 시작하기
           </button>
         </div>
