@@ -28,14 +28,16 @@ const HeaderDashboard = () => {
     return (
         <header className="HeaderDashboard">
             <div className="dashboard-container header-inner">
-                <div className="brand" style={{ cursor: "pointer" }}>
+                <div className="brand" style={{ cursor: "pointer" }} onClick={() => navigate("/dashboard")}>
                     <div className="logo-box" aria-hidden />
                     <span className="brand-name">지식정원</span>
                 </div>
 
                 <nav className="header-actions">
                     <span className="user-name">{user?.nickname ?? "회원"}님</span>
-                    <button className="link-btn">마이페이지</button>
+                    <button className="link-btn" onClick={() => navigate("/my")}>
+                        마이페이지
+                    </button>
                     <button className="logout-btn" onClick={onLogout} aria-label="로그아웃">
                         <LogOut size={24} />
                     </button>

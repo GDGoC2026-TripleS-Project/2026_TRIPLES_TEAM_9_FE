@@ -9,6 +9,7 @@ import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
 import Dashboard from "./pages/dashboard/Dashboard";
+import MyPage from "./pages/my/MyPage";
 
 const AUTH_PATHS = new Set([
   "/login",
@@ -39,6 +40,7 @@ function AppRoutes() {
 
         {/* // 회원가입 후 dashboard가 보이도록 해야 됨 */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
