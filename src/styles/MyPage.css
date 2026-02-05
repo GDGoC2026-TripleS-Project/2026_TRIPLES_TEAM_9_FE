@@ -61,6 +61,11 @@
   background: #22c55e;
 }
 
+.my-nav-item.is-withdraw {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+}
+
 .my-content {
   display: grid;
   gap: 24px;
@@ -381,6 +386,32 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   font-size: 14px;
+}
+
+.my-btn.danger {
+  border-color: #ef4444;
+  background: #ef4444;
+}
+
+.withdraw-card {
+  background: #fff;
+  border: 1px solid #fee2e2;
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.withdraw-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.withdraw-desc {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
 }
 
 @media (max-width: 960px) {

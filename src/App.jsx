@@ -11,6 +11,7 @@ import NetworkError from "./pages/NetworkError";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MyPage from "./pages/mypage/MyPage";
 import RecentActivityPage from "./pages/mypage/RecentActivityPage";
+import WithdrawPage from "./pages/mypage/WithdrawPage";
 
 const AUTH_PATHS = new Set([
   "/login",
@@ -45,6 +46,7 @@ function AppRoutes() {
         {/* 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/recent" element={<RecentActivityPage />} />
+        <Route path="/mypage/withdraw" element={<WithdrawPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 

@@ -20,7 +20,9 @@ export default function MySidebar({
             key={label}
             className={`my-nav-item ${
               label === activeLabel ? "is-active" : ""
-            } ${label === "최근 학습 활동" ? "is-recent" : ""}`}
+            } ${label === "최근 학습 활동" ? "is-recent" : ""} ${
+              label === "회원 탈퇴" ? "is-withdraw" : ""
+            }`}
             type="button"
             onClick={() => onSelect?.(label)}
           >
