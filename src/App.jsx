@@ -9,6 +9,9 @@ import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
 import Dashboard from "./pages/dashboard/Dashboard";
+import MyPage from "./pages/mypage/MyPage";
+import RecentActivityPage from "./pages/mypage/RecentActivityPage";
+import WithdrawPage from "./pages/mypage/WithdrawPage";
 
 const AUTH_PATHS = new Set([
   "/login",
@@ -39,8 +42,15 @@ function AppRoutes() {
 
         {/* // 회원가입 후 dashboard가 보이도록 해야 됨 */}
         <Route path="/dashboard" element={<Dashboard />} />
+        
+        {/* 마이페이지 */}
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/recent" element={<RecentActivityPage />} />
+        <Route path="/mypage/withdraw" element={<WithdrawPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+
+
 
       {isAuthOverlay && (
         <Routes>
