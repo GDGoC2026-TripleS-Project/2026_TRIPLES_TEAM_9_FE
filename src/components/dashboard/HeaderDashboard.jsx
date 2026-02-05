@@ -35,7 +35,7 @@ const HeaderDashboard = () => {
 
                 <nav className="header-actions">
                     <span className="user-name">{user?.nickname ?? "회원"}님</span>
-                    <button className="link-btn" onClick={() => navigate("/my")}>
+                    <button className="link-btn" onClick={() => navigate("/mypage")}>
                         마이페이지
                     </button>
                     <button className="logout-btn" onClick={onLogout} aria-label="로그아웃">

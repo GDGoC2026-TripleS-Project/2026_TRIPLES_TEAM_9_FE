@@ -42,11 +42,23 @@
   font-weight: 600;
   background: #f3f4f6;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .my-nav-item.is-active {
   background: #2563eb;
   color: #fff;
+}
+
+.my-nav-item.is-active.is-recent::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #22c55e;
 }
 
 .my-content {
@@ -287,6 +299,87 @@
 
 .my-empty {
   color: #6b7280;
+  font-size: 14px;
+}
+
+.recent-list {
+  display: grid;
+  gap: 16px;
+}
+
+.recent-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.recent-card:hover {
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+.recent-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.recent-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.recent-badge {
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+}
+
+.recent-date {
+  font-weight: 600;
+}
+
+.recent-preview {
+  margin: 0 0 12px;
+  color: #374151;
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recent-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.recent-tag {
+  background: #f3f4f6;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.recent-loading,
+.recent-error,
+.recent-empty {
+  padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
   font-size: 14px;
 }
 

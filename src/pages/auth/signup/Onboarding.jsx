@@ -11,7 +11,7 @@ const LEARNING_GOAL_LABELS = {
   PROJECT: "프로젝트",
   WORK: "업무",
   SELF_GROWTH: "자기계발",
-  ETC: "기타",
+  OTHER: "기타",
 };
 
 const LEARNING_FIELD_LABELS = {
@@ -27,7 +27,7 @@ const LEARNING_FIELD_LABELS = {
   EDUCATION: "교육",
   ART_CONTENT: "예술/콘텐츠",
   HEALTH: "헬스/건강",
-  ETC: "기타",
+  OTHER: "기타",
 };
 
 export default function Onboarding() {
@@ -49,7 +49,7 @@ export default function Onboarding() {
   }, [nav]);
 
   useEffect(() => {
-    if (learningGoal !== "ETC") {
+    if (learningGoal !== "OTHER") {
       setLearningGoalText("");
     }
   }, [learningGoal]);
@@ -90,7 +90,7 @@ export default function Onboarding() {
           nickname: nicknameTrimmed,
           learningGoal: learningGoal || null,
           learningGoalText:
-            learningGoal === "ETC"
+            learningGoal === "OTHER"
               ? learningGoalText.trim().slice(0, 100) || null
               : null,
           learningFields,
@@ -191,7 +191,7 @@ export default function Onboarding() {
                 );
               })}
             </div>
-            {learningGoal === "ETC" && (
+            {learningGoal === "OTHER" && (
               <div className="onboard-subfield">
                 <input
                   className="onboard-input"

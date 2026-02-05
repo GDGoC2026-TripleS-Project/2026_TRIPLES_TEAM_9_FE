@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeaderDashboard from "../../components/dashboard/HeaderDashboard";
+import MySidebar from "../../components/mypage/MySidebar";
 import "../../styles/MyPage.css";
 import "../../styles/global.css";
-import { getMyProfile, getUserInfo, updateMyProfile } from "../../api/my.api";
+import { getMyProfile, getUserInfo, updateMyProfile } from "../../api/mypage.api";
 import { getDashboardMonthly, getDashboardSummary, } from "../../api/dashboard.api";
 
 const LEARNING_GOAL_LABELS = {
@@ -12,7 +13,7 @@ const LEARNING_GOAL_LABELS = {
   PROJECT: "프로젝트",
   WORK: "업무",
   SELF_GROWTH: "자기계발",
-  ETC: "기타",
+  OTHER: "기타",
 };
 
 const LEARNING_FIELD_LABELS = {
@@ -28,7 +29,7 @@ const LEARNING_FIELD_LABELS = {
   EDUCATION: "교육",
   ART_CONTENT: "예술/콘텐츠",
   HEALTH: "헬스/건강",
-  ETC: "기타",
+  OTHER: "기타",
 };
 
 const EMPTY_FORM = {
@@ -40,8 +41,14 @@ const EMPTY_FORM = {
 };
 
 const BAR_COLORS = ["#ef4444", "#f97316", "#f59e0b", "#eab308", "#84cc16"];
-const SIDE_ITEMS = ["회원 정보", "최근 학습 기록", "마인드맵 요약", "목표관리", "회원 탈퇴"];
 
+const ROUTE_MAP = {
+  "회원 정보": "/mypage",
+  "최근 학습 활동": "/mypage/recent",
+  "마인드맵 요약": "/mypage/mindmap",
+  목표관리: "/mypage/goals",
+  "회원 탈퇴": "/mypage/withdraw",
+};
 const MyPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("-");
@@ -78,6 +85,7 @@ const MyPage = () => {
 
         if (meRes.status === "fulfilled") {
           meData = meRes.value.data?.data ?? meRes.value.data;
+          console.log("[my] profile data loaded", meData);
         } else {
           setLoadingError("프로필 정보를 불러올 수 없습니다.");
         }
@@ -230,22 +238,13 @@ const MyPage = () => {
       <HeaderDashboard />
       <main className="my-page">
         <div className="my-container">
-          <aside className="my-sidebar">
-            <div className="my-sidebar-title">마이페이지</div>
-            <div className="my-nav">
-              {SIDE_ITEMS.map((label) => (
-                <button
-                  key={label}
-                  className={`my-nav-item ${
-                    label === "회원 정보" ? "is-active" : ""
-                  }`}
-                  type="button"
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </aside>
+          <MySidebar
+            activeLabel="회원 정보"
+            onSelect={(label) => {
+              const target = ROUTE_MAP[label];
+              if (target) navigate(target);
+            }}
+          />
 
           <section className="my-content">
             <div className="my-content-header">
