@@ -9,8 +9,14 @@ import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
 import Dashboard from "./pages/dashboard/Dashboard";
+<<<<<<< HEAD
 import StudyRecord from "./pages/studyrecord/StudyRecord";
 import StudyRecordDetail from "./pages/studyrecord/StudyRecordDetail";
+=======
+import MyPage from "./pages/mypage/MyPage";
+import RecentActivityPage from "./pages/mypage/RecentActivityPage";
+import WithdrawPage from "./pages/mypage/WithdrawPage";
+>>>>>>> origin/main
 
 const AUTH_PATHS = new Set([
     "/login",
@@ -39,10 +45,15 @@ function AppRoutes() {
                 <Route path="/signup/onboarding" element={null} />
                 <Route path="/signup/welcome" element={null} />
 
-                {/* // 회원가입 후 dashboard가 보이도록 해야 됨 */}
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/study-record" element={<StudyRecord />} />
                 <Route path="/study-record/detail" element={<StudyRecordDetail />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+
+                        {/* 마이페이지 */}
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/mypage/recent" element={<RecentActivityPage />} />
+                <Route path="/mypage/withdraw" element={<WithdrawPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 
