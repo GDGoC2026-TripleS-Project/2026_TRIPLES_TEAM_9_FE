@@ -5,17 +5,23 @@
 }
 
 .study-record-main {
+    display: flex;
+    flex-direction: column;
     flex: 1;
 }
 
 .record-layout {
     width: min(800px, 90vw);
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .record-content {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .record-tabs {
@@ -41,9 +47,15 @@
     color: #fff;
 }
 
+.record-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 .record-list {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 24px;
 }
 
@@ -120,11 +132,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: auto;
+    padding: 16px 0 6px;
     gap: 10px;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 .page-btn,
@@ -146,10 +156,4 @@
     background: #3182f6;
     color: #fff;
     border: 2.42px solid #f1f1f1;
-}
-
-@media (max-width: 720px) {
-    .record-layout {
-        grid-template-columns: 1fr;
-    }
 }
