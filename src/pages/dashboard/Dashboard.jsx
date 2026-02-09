@@ -1,4 +1,4 @@
-import HeaderDashboard from "../../components/dashboard/HeaderDashboard";
+import Header from "../../components/common/Header";
 import DashboardCard from "../../components/dashboard/DashboardCard";
 import RecentStudyList from "../../components/dashboard/RecentStudyList";
 import CategoryProgress from "../../components/dashboard/CategoryProgress";
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
     return (
         <div>
-            <HeaderDashboard />
+            <Header variant="dashboard" />
             <main className="dashboard">
                 <div className="dashboard-container">
                     <h2>{user?.nickname ?? "회원"}님의 지식정원에 오신 것을 환영합니다!</h2>

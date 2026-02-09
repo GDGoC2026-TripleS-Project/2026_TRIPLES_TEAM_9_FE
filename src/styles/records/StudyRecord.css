@@ -1,16 +1,16 @@
 .study-record-page {
     min-height: 100vh;
-    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.study-record-main {
+    flex: 1;
 }
 
 .record-layout {
     width: min(800px, 90vw);
     margin: 0 auto;
-}
-
-.record-side {
-    display: flex;
-    justify-content: center;
 }
 
 .record-content {
@@ -37,7 +37,7 @@
 
 .record-tab.active {
     background: #3aa052;
-    border: none;
+    border: 1px solid transparent;
     color: #fff;
 }
 
@@ -151,9 +151,5 @@
 @media (max-width: 720px) {
     .record-layout {
         grid-template-columns: 1fr;
-    }
-
-    .record-side {
-        justify-content: flex-start;
     }
 }

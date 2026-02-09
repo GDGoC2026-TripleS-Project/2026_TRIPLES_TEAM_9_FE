@@ -1,0 +1,134 @@
+import "../../styles/common/Header.css";
+import { ArrowLeft, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../api/axios";
+
+const VARIANT_HOME = "home";
+const VARIANT_DASHBOARD = "dashboard";
+const VARIANT_RECORDS = "records";
+const VARIANT_DETAIL = "detail";
+
+export default function Header({
+    variant = VARIANT_HOME,
+    title,
+    showBack = false,
+    onBack,
+    onAdd,
+    addLabel = "+ 새 기록",
+    right,
+    brandTo,
+}) {
+    const navigate = useNavigate();
+    const { user, isAuthed, logout } = useAuth();
+
+    const goMypage = () => navigate("/mypage");
+    const goLogin = () => navigate("/login");
+    const resolvedBrandTo = brandTo ?? (variant === VARIANT_DASHBOARD ? "/dashboard" : "/");
+
+    const onLogout = async () => {
+        try {
+            await api.delete("/auth/logout");
+        } catch (e) {
+            console.warn("서버 로그아웃 실패", e);
+        } finally {
+            logout();
+            sessionStorage.removeItem("onboardingAgreements");
+            navigate("/", { replace: true });
+        }
+    };
+
+    const renderLeft = () => {
+        if (variant === VARIANT_RECORDS || variant === VARIANT_DETAIL) {
+            return (
+                <div className="header-left">
+                    {showBack && (
+                        <button
+                            className={`header-back-btn${variant === VARIANT_DETAIL ? " header-back-btn--detail" : ""}`}
+                            type="button"
+                            onClick={onBack}
+                        >
+                            {variant === VARIANT_RECORDS && <ArrowLeft size={20} />}
+                            {variant === VARIANT_DETAIL && (
+                                <span className="header-back-label">
+                                    <ArrowLeft size={20} />
+                                    돌아가기
+                                </span>
+                            )}
+                        </button>
+                    )}
+                    {title && <h1 className="header-title">{title}</h1>}
+                </div>
+            );
+        }
+
+        return (
+            <div className="header-brand" onClick={() => navigate(resolvedBrandTo)}>
+                <div className="header-logo" aria-hidden />
+                <span className="header-brand-name">지식정원</span>
+            </div>
+        );
+    };
+
+    const renderRight = () => {
+        if (right) return right;
+
+        if (variant === VARIANT_DETAIL) {
+            return null;
+        }
+
+        if (variant === VARIANT_RECORDS) {
+            if (!onAdd) return null;
+            return (
+                <button className="header-add-btn" type="button" onClick={onAdd}>
+                    {addLabel}
+                </button>
+            );
+        }
+
+        if (variant === VARIANT_DASHBOARD) {
+            return (
+                <nav className="header-actions header-actions--compact">
+                    <span className="header-user">{user?.nickname ?? "회원"}님</span>
+                    <button className="header-link-btn--boxed" onClick={goMypage}>
+                        마이페이지
+                    </button>
+                    <button className="header-icon-btn" onClick={onLogout}>
+                        <LogOut size={24} />
+                    </button>
+                </nav>
+            );
+        }
+
+        return (
+            <nav className="header-actions">
+                {!isAuthed ? (
+                    <button className="header-link-btn" onClick={goLogin}>
+                        로그인/회원가입
+                    </button>
+                ) : (
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <span style={{ fontWeight: 600 }}>{user?.nickname}</span>
+
+                        <button className="header-link-btn" onClick={goMypage}>
+                            마이페이지
+                        </button>
+
+                        <button className="header-link-btn" onClick={onLogout}>
+                            로그아웃
+                        </button>
+                    </div>
+                )}
+            </nav>
+        );
+    };
+
+    return (
+        <header className={`header-shell header-shell--${variant}`}>
+            <div className="header-container">
+                {renderLeft()}
+                {renderRight()}
+            </div>
+        </header>
+    );
+}

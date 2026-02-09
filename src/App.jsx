@@ -9,14 +9,13 @@ import HealthCheck from "./pages/HealthCheck";
 import NetworkError from "./pages/NetworkError";
 
 import Dashboard from "./pages/dashboard/Dashboard";
-<<<<<<< HEAD
-import StudyRecord from "./pages/studyrecord/StudyRecord";
-import StudyRecordDetail from "./pages/studyrecord/StudyRecordDetail";
-=======
+
+import StudyRecord from "./pages/records/StudyRecord";
+import StudyRecordDetail from "./pages/records/StudyRecordDetail";
+
 import MyPage from "./pages/mypage/MyPage";
 import RecentActivityPage from "./pages/mypage/RecentActivityPage";
 import WithdrawPage from "./pages/mypage/WithdrawPage";
->>>>>>> origin/main
 
 const AUTH_PATHS = new Set([
     "/login",
@@ -46,11 +45,11 @@ function AppRoutes() {
                 <Route path="/signup/welcome" element={null} />
 
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/study-record" element={<StudyRecord />} />
-                <Route path="/study-record/detail" element={<StudyRecordDetail />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
 
-                        {/* 마이페이지 */}
+                <Route path="/records" element={<StudyRecord />} />
+                <Route path="/records/:id" element={<StudyRecordDetail />} />
+
+                {/* 마이페이지 */}
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/mypage/recent" element={<RecentActivityPage />} />
                 <Route path="/mypage/withdraw" element={<WithdrawPage />} />

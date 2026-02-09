@@ -1,4 +1,4 @@
-import Header from "../../components/Header";
+import Header from "../../components/common/Header";
 import FeatureCard from "../../components/FeatureCard";
 import "../../styles/global.css";
 import "../../styles/home.css";
