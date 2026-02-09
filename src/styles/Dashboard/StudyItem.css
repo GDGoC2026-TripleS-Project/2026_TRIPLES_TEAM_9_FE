@@ -40,3 +40,26 @@
     font-size: 8px;
     font-weight: 500;
 }
+
+.study-keywords {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.study-keyword-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 5px;
+    border-radius: 6px;
+    background: #dbeafe;
+    color: #1447e6;
+    font-size: 8px;
+    font-weight: 500;
+}
+
+.study-keyword-chip--more {
+    background: #f3f4f6;
+    color: #374151;
+}
