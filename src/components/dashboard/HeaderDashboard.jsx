@@ -6,6 +6,7 @@ import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/axios";
+import LogoMark from "../common/LogoMark";
 
 
 const HeaderDashboard = () => {
@@ -29,7 +30,9 @@ const HeaderDashboard = () => {
         <header className="HeaderDashboard">
             <div className="dashboard-container header-inner">
                 <div className="brand" style={{ cursor: "pointer" }} onClick={() => navigate("/dashboard")}>
-                    <div className="logo-box" aria-hidden />
+                    <div className="logo-box" aria-hidden>
+                        <LogoMark size={32} />
+                    </div>
                     <span className="brand-name">지식정원</span>
                 </div>
 

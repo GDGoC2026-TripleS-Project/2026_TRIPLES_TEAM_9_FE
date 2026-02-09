@@ -1,7 +1,8 @@
 import "../styles/home.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import api from "../api/axios"; // 네 axios 인스턴스 경로에 맞춰줘
+import api from "../api/axios";
+import LogoMark from "./common/LogoMark";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -30,7 +31,9 @@ export default function Header() {
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
         >
-          <div className="logo-box" aria-hidden />
+          <div className="logo-box" aria-hidden>
+            <LogoMark size={32} />
+          </div>
           <span className="brand-name">지식정원</span>
         </div>
 
