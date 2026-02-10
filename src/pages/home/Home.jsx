@@ -1,4 +1,4 @@
-import Header from "../../components/Header";
+import Header from "../../components/common/Header";
 import FeatureCard from "../../components/FeatureCard";
 import "../../styles/global.css";
 import "../../styles/home.css";
@@ -48,7 +48,6 @@ export default function Home() {
     return (
         <div className="page">
             <Header />
-
             <section className="hero">
                 <div className="container hero-inner">
                     <h1 className="hero-title">당신의 지식은 어떻게 연결되고 있나요?</h1>
