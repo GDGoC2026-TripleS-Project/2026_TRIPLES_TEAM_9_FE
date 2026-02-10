@@ -3,6 +3,7 @@ import { ArrowLeft, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
+import LogoMark from "./LogoMark";
 
 const VARIANT_HOME = "home";
 const VARIANT_DASHBOARD = "dashboard";
@@ -17,14 +18,12 @@ export default function Header({
     onAdd,
     addLabel = "+ 새 기록",
     right,
-    brandTo,
 }) {
     const navigate = useNavigate();
     const { user, isAuthed, logout } = useAuth();
 
     const goMypage = () => navigate("/mypage");
     const goLogin = () => navigate("/login");
-    const resolvedBrandTo = brandTo ?? (variant === VARIANT_DASHBOARD ? "/dashboard" : "/");
 
     const onLogout = async () => {
         try {
@@ -63,9 +62,11 @@ export default function Header({
         }
 
         return (
-            <div className="header-brand" onClick={() => navigate(resolvedBrandTo)}>
-                <div className="header-logo" aria-hidden />
-                <span className="header-brand-name">지식정원</span>
+            <div className="brand" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+                <div className="logo-box" aria-hidden>
+                    <LogoMark size={32} />
+                </div>
+                <span className="brand-name">지식정원</span>
             </div>
         );
     };
@@ -88,12 +89,12 @@ export default function Header({
 
         if (variant === VARIANT_DASHBOARD) {
             return (
-                <nav className="header-actions header-actions--compact">
+                <nav className="header-actions--dashboard header-actions--compact">
                     <span className="header-user">{user?.nickname ?? "회원"}님</span>
-                    <button className="header-link-btn--boxed" onClick={goMypage}>
+                    <button className="link-btn" onClick={goMypage}>
                         마이페이지
                     </button>
-                    <button className="header-icon-btn" onClick={onLogout}>
+                    <button className="logout-btn" onClick={onLogout}>
                         <LogOut size={24} />
                     </button>
                 </nav>
@@ -103,18 +104,18 @@ export default function Header({
         return (
             <nav className="header-actions">
                 {!isAuthed ? (
-                    <button className="header-link-btn" onClick={goLogin}>
+                    <button className="link-btn" onClick={goLogin}>
                         로그인/회원가입
                     </button>
                 ) : (
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                         <span style={{ fontWeight: 600 }}>{user?.nickname}</span>
 
-                        <button className="header-link-btn" onClick={goMypage}>
+                        <button className="link-btn" onClick={goMypage}>
                             마이페이지
                         </button>
 
-                        <button className="header-link-btn" onClick={onLogout}>
+                        <button className="link-btn" onClick={onLogout}>
                             로그아웃
                         </button>
                     </div>
@@ -124,8 +125,8 @@ export default function Header({
     };
 
     return (
-        <header className={`header-shell header-shell--${variant}`}>
-            <div className="header-container">
+        <header className={`header header--${variant}`}>
+            <div className="header-container header-inner">
                 {renderLeft()}
                 {renderRight()}
             </div>

@@ -1,44 +1,71 @@
 import Header from "../../components/common/Header";
-import DashboardCard from "../../components/dashboard/DashboardCard";
-import RecentStudyList from "../../components/dashboard/RecentStudyList";
-import CategoryProgress from "../../components/dashboard/CategoryProgress";
+import DashboardSummaryCards from "../../components/dashboard/DashboardSummaryCards";
+import RecentActivities from "../../components/dashboard/RecentActivities";
+import CategoryStatsBar from "../../components/dashboard/CategoryStatsBar";
 import DashboardActions from "../../components/dashboard/DashboardActions";
 
 import "../../styles/Dashboard/Dashboard.css";
 import "../../styles/global.css";
 
-import { BookOpen } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { getDashboard } from "../../services/dashboard";
 
-const cards = [
-    {
-        title: "총 학습 기록",
-        value: 0,
-        icon: BookOpen,
-        tone: "record",
+const DEFAULT_DASHBOARD = {
+    summary: {
+        totalRecords: 0,
+        totalKeywords: 0,
+        totalCategories: 0,
     },
-    {
-        title: "보유 키워드",
-        value: 0,
-        icon: BookOpen,
-        tone: "keyword",
-    },
-    {
-        title: "업적",
-        value: 0,
-        icon: BookOpen,
-        tone: "achievement",
-    },
-    {
-        title: "카테고리",
-        value: 0,
-        icon: BookOpen,
-        tone: "category",
-    },
-];
+    recentActivities: [],
+    categoryStats: [],
+};
 
 const Dashboard = () => {
     const { user } = useAuth();
+    const [dashboard, setDashboard] = useState(DEFAULT_DASHBOARD);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const hasFetchedRef = useRef(false);
+    const abortRef = useRef(null);
+
+    const fetchDashboard = useCallback(async () => {
+        abortRef.current?.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
+
+        setLoading(true);
+        setError("");
+
+        try {
+            const data = await getDashboard({ signal: controller.signal });
+
+            setDashboard({
+                summary: data?.summary ?? DEFAULT_DASHBOARD.summary,
+                recentActivities: data?.recentActivities ?? [],
+                categoryStats: data?.categoryStats ?? [],
+            });
+        } catch (e) {
+            if (controller.signal.aborted) return;
+            setError(e?.message || "대시보드 데이터를 불러오지 못했습니다");
+        } finally {
+            if (!controller.signal.aborted) {
+                setLoading(false);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (hasFetchedRef.current) return;
+        hasFetchedRef.current = true;
+        fetchDashboard();
+
+        return () => {
+            abortRef.current?.abort();
+        };
+    }, [fetchDashboard]);
+
+    const isEmptyRecords = (dashboard.summary?.totalRecords ?? 0) === 0;
 
     return (
         <div>
@@ -50,24 +77,35 @@ const Dashboard = () => {
 
                     <button className="add-study-record-btn">+ 새 학습 기록 작성</button>
 
-                    <section className="dashboard-cards">
-                        {cards.map((item) => (
-                            <DashboardCard
-                                key={item.title}
-                                title={item.title}
-                                value={item.value}
-                                icon={item.icon}
-                                tone={item.tone}
-                            />
-                        ))}
-                    </section>
-                    <section className="recent-study-list">
-                        <RecentStudyList />
-                        <aside className="dashboard-right">
-                            <CategoryProgress />
-                            <DashboardActions />
-                        </aside>
-                    </section>
+                    {loading ? (
+                        <p>로딩중...</p>
+                    ) : error ? (
+                        <div className="dashboard-status">
+                            <p>대시보드 데이터를 불러오지 못했습니다</p>
+                            <button
+                                type="button"
+                                className="dashboard-retry-btn"
+                                onClick={fetchDashboard}
+                            >
+                                재시도
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <DashboardSummaryCards summary={dashboard.summary} />
+
+                            <section className="recent-study-list">
+                                <RecentActivities
+                                    items={dashboard.recentActivities}
+                                    isEmpty={isEmptyRecords}
+                                />
+                                <aside className="dashboard-right">
+                                    <CategoryStatsBar items={dashboard.categoryStats} />
+                                    <DashboardActions />
+                                </aside>
+                            </section>
+                        </>
+                    )}
                 </div>
             </main>
         </div>

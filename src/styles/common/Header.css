@@ -1,4 +1,4 @@
-.header-shell {
+.header {
     position: sticky;
     top: 0;
     background: rgba(255, 255, 255, 0.9);
@@ -6,11 +6,11 @@
     z-index: 10;
 }
 
-.header-shell--home {
+.header--home {
     border-bottom: 1px solid var(--line);
 }
 
-.header-shell--detail {
+.header--detail {
     background: #eef4ff;
     backdrop-filter: none;
 }
@@ -20,47 +20,53 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
 
-.header-shell--home .header-container {
-    width: min(1100px, 92vw);
     height: 64px;
 }
 
-.header-shell--dashboard .header-container {
+.header--home .header-container {
+    width: min(1100px, 92vw);
+}
+
+.header--dashboard .header-container {
     width: min(800px, 90vw);
-    height: 80px;
     border-bottom: 1px solid #e4e4e7;
 }
 
-.header-shell--records .header-container {
+.header--records .header-container {
     width: min(800px, 90vw);
-    height: 80px;
     border-bottom: 1px solid #e4e4e7;
 }
 
-.header-shell--detail .header-container {
+.header--detail .header-container {
     width: min(800px, 90vw);
-    height: 80px;
     background: #eef4ff;
     border-bottom: 1px solid #bfc0c4;
 }
 
-.header-brand {
+.brand {
     display: flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
 }
 
-.header-logo {
+.logo-box {
     width: 32px;
     height: 32px;
     border-radius: 6px;
     background: #111;
 }
 
-.header-brand-name {
+.brand .logo-box {
+    background: transparent;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-name {
     font-weight: 800;
     letter-spacing: -0.02em;
 }
@@ -69,6 +75,12 @@
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.header-actions--dashboard {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .header-actions--compact {
@@ -80,15 +92,7 @@
     font-weight: 600;
 }
 
-.header-link-btn {
-    background: transparent;
-    border: none;
-    color: #111;
-    cursor: pointer;
-    font-weight: 700;
-}
-
-.header-link-btn--boxed {
+.link-btn {
     display: flex;
     padding: 8px 15px;
     justify-content: center;
@@ -102,7 +106,7 @@
     font-size: 12px;
 }
 
-.header-icon-btn {
+.logout-btn {
     display: flex;
     align-items: center;
     justify-content: center;
