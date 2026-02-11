@@ -1,5 +1,5 @@
 import "../../styles/common/Header.css";
-import { ArrowLeft, LogOut } from "lucide-react";
+import { ArrowLeft, LogOut, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
@@ -9,10 +9,13 @@ const VARIANT_HOME = "home";
 const VARIANT_DASHBOARD = "dashboard";
 const VARIANT_RECORDS = "records";
 const VARIANT_DETAIL = "detail";
+const VARIANT_GOALS = "goals";
+const VARIANT_MYPAGE = "mypage";
 
 export default function Header({
     variant = VARIANT_HOME,
     title,
+    subtitle,
     showBack = false,
     onBack,
     onAdd,
@@ -61,6 +64,15 @@ export default function Header({
             );
         }
 
+        if (variant === VARIANT_GOALS) {
+            return (
+                <div className="header-left">
+                    <h1 className="header-title">{title}</h1>
+                    <p className="header-subtitle">{subtitle}</p>
+                </div>
+            );
+        }
+
         return (
             <div className="brand" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                 <div className="logo-box" aria-hidden>
@@ -78,15 +90,6 @@ export default function Header({
             return null;
         }
 
-        if (variant === VARIANT_RECORDS) {
-            if (!onAdd) return null;
-            return (
-                <button className="header-add-btn" type="button" onClick={onAdd}>
-                    {addLabel}
-                </button>
-            );
-        }
-
         if (variant === VARIANT_DASHBOARD) {
             return (
                 <nav className="header-actions--dashboard header-actions--compact">
@@ -98,6 +101,25 @@ export default function Header({
                         <LogOut size={24} />
                     </button>
                 </nav>
+            );
+        }
+
+        if (variant === VARIANT_RECORDS) {
+            if (!onAdd) return null;
+            return (
+                <button className="header-add-btn" type="button" onClick={onAdd}>
+                    {addLabel}
+                </button>
+            );
+        }
+
+        if (variant === VARIANT_GOALS) {
+            if (!onAdd) return null;
+            return (
+                <button className="header-add-btn" type="button" onClick={onAdd}>
+                    <Plus size={8} />
+                    {addLabel}
+                </button>
             );
         }
 
