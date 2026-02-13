@@ -17,6 +17,26 @@ const NETWORK_MESSAGE = "네트워크 연결을 확인해주세요.";
 const AUTH_MESSAGE = "로그인이 필요합니다.";
 const FORBIDDEN_MESSAGE = "접근 권한이 없습니다.";
 const INVALID_REQUEST_MESSAGE = "요청 값이 올바르지 않습니다.";
+const FIELD_LABELS = {
+    learningDate: "학습날짜",
+    date: "학습날짜",
+    category: "카테고리",
+    title: "제목",
+    contentMd: "내용",
+    content: "내용",
+    keywords: "키워드",
+    keyword: "키워드",
+};
+const FIELD_PRIORITY = [
+    "learningDate",
+    "date",
+    "category",
+    "title",
+    "contentMd",
+    "content",
+    "keywords",
+    "keyword",
+];
 
 const readWrappedPayload = (payload) => {
     if (!payload || typeof payload !== "object") return null;
@@ -70,7 +90,10 @@ const getFieldErrorMessage = (payload) => {
     const errors = payload?.errors;
     if (!Array.isArray(errors) || errors.length === 0) return "";
 
-    const first = errors[0];
+    const first =
+        FIELD_PRIORITY.map((field) =>
+            errors.find((item) => item && typeof item === "object" && item.field === field),
+        ).find(Boolean) ?? errors[0];
     if (!first || typeof first !== "object") return "";
 
     const field = typeof first.field === "string" ? first.field.trim() : "";
@@ -83,6 +106,33 @@ const getFieldErrorMessage = (payload) => {
 
     if (!message) return "";
     return field ? `${field}: ${message}` : message;
+};
+
+const toFriendlyValidationMessage = (message) => {
+    const safe = toUserMessage(message);
+    if (!safe) return "";
+
+    let field = "";
+    let detail = "";
+
+    const separatorIndex = safe.indexOf(":");
+    if (separatorIndex >= 0) {
+        field = safe.slice(0, separatorIndex).trim();
+        detail = safe.slice(separatorIndex + 1).trim();
+    } else {
+        const matchedField = Object.keys(FIELD_LABELS).find(
+            (key) => safe === key || safe.startsWith(`${key} `),
+        );
+        if (!matchedField) return safe;
+        field = matchedField;
+        detail = safe.slice(matchedField.length).trim();
+    }
+
+    const label = FIELD_LABELS[field] ?? field;
+
+    if (detail.includes("필수")) return `${label}를 입력해주세요.`;
+    if (detail.includes("올바르지 않")) return `${label}이(가) 올바르지 않습니다.`;
+    return `${label}: ${detail}`;
 };
 
 export const normalizeApiError = (error, fallbackMessage = DEFAULT_MESSAGE) => {
@@ -107,7 +157,13 @@ export const normalizeApiError = (error, fallbackMessage = DEFAULT_MESSAGE) => {
     if (!error?.response) message = NETWORK_MESSAGE;
     if (status === 401) message = AUTH_MESSAGE;
     if (status === 403) message = FORBIDDEN_MESSAGE;
-    if ((status === 400 || status === 422) && !messageFromPayload) message = INVALID_REQUEST_MESSAGE;
+    if (status === 400 || status === 422) {
+        if (!messageFromPayload) {
+            message = INVALID_REQUEST_MESSAGE;
+        } else {
+            message = toFriendlyValidationMessage(messageFromPayload);
+        }
+    }
 
     return new ApiRequestError(message, {
         status,

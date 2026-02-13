@@ -23,6 +23,15 @@ const toKeywordArray = (value) => {
     return value.filter((word) => typeof word === "string" && word.trim());
 };
 
+const validateForm = (form) => {
+    if (!form?.date) return "학습 날짜를 입력해주세요.";
+    if (!form?.category) return "카테고리를 선택해주세요.";
+    if (!form?.title?.trim()) return "제목을 입력해주세요.";
+    if (!form?.content?.trim()) return "내용을 입력해주세요.";
+    if (!Array.isArray(form?.keywords) || form.keywords.length === 0) return "키워드를 입력해주세요.";
+    return "";
+};
+
 const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "create" }) => {
     const [form, setForm] = useState(() => ({
         date: initialForm?.date ?? "",
@@ -52,6 +61,13 @@ const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "c
             return { ...prev, keywords: [...prev.keywords, nextKeyword] };
         });
         setKeywordInput("");
+    };
+
+    const onKeywordRemove = (targetKeyword) => {
+        setForm((prev) => ({
+            ...prev,
+            keywords: prev.keywords.filter((keyword) => keyword !== targetKeyword),
+        }));
     };
 
     const onDateInputClick = (event) => {
@@ -180,13 +196,17 @@ const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "c
                         {form.keywords.length > 0 && (
                             <div className="record-keyword-list">
                                 {form.keywords.map((keyword) => (
-                                    <button
-                                        key={keyword}
-                                        type="button"
-                                        className="record-keyword-label"
-                                    >
-                                        {keyword}
-                                    </button>
+                                    <span key={keyword} className="record-keyword-label">
+                                        <span>{keyword}</span>
+                                        <button
+                                            type="button"
+                                            className="record-keyword-remove"
+                                            onClick={() => onKeywordRemove(keyword)}
+                                            aria-label={`${keyword} 삭제`}
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
                                 ))}
                             </div>
                         )}
@@ -201,6 +221,11 @@ const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "c
                         type="button"
                         className="record-footer-btn primary"
                         onClick={() => {
+                            const validationMessage = validateForm(form);
+                            if (validationMessage) {
+                                alert(validationMessage);
+                                return;
+                            }
                             onSave?.(form);
                         }}
                     >

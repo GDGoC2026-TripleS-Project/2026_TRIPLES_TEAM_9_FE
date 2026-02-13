@@ -179,17 +179,28 @@
 
 .record-keyword-label {
     display: inline-flex;
+    gap: 6px;
     justify-content: center;
     align-items: center;
-    height: 16px;
-    padding: 3px 5px;
+    min-height: 20px;
+    padding: 3px 8px;
 
     border-radius: 6px;
     border: none;
     background: #dbeafe;
     color: #1447e6;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 500;
+}
+
+.record-keyword-remove {
+    border: none;
+    background: transparent;
+    color: #1447e6;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0;
 }
 
 .record-keyword-add {
