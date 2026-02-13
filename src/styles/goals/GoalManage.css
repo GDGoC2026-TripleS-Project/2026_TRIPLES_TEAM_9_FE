@@ -1,0 +1,13 @@
+.goal-manage-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.goals-list {
+    width: min(800px, 90vw);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

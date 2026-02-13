@@ -1,8 +1,8 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import StudyRecordCard from "./StudyRecordCard";
 import { useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import usePagination from "../../hooks/usePagination";
+import Pagination from "../common/Pagination";
 
 const PAGE_SIZE = 4;
 
@@ -31,24 +31,15 @@ const StudyRecordList = ({ records = [] }) => {
             </div>
 
             <div className="record-pagination">
-                <button type="button" className="page-btn" onClick={onPrev} disabled={!canPrev}>
-                    <ChevronLeft size={16} />
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <button
-                        key={p}
-                        type="button"
-                        className={`page-number ${p === page ? "active" : ""}`}
-                        onClick={() => goToPage(p)}
-                    >
-                        {p}
-                    </button>
-                ))}
-
-                <button type="button" className="page-btn" onClick={onNext} disabled={!canNext}>
-                    <ChevronRight size={16} />
-                </button>
+                <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    canPrev={canPrev}
+                    canNext={canNext}
+                    onPrev={onPrev}
+                    onNext={onNext}
+                    goToPage={goToPage}
+                />
             </div>
         </div>
     );

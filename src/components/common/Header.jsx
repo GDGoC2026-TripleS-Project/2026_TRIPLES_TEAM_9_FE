@@ -92,7 +92,7 @@ export default function Header({
 
         if (variant === VARIANT_DASHBOARD) {
             return (
-                <nav className="header-actions--dashboard header-actions--compact">
+                <nav className="header-actions--dashboard">
                     <span className="header-user">{user?.nickname ?? "회원"}님</span>
                     <button className="link-btn" onClick={goMypage}>
                         마이페이지
@@ -117,7 +117,7 @@ export default function Header({
             if (!onAdd) return null;
             return (
                 <button className="header-add-btn" type="button" onClick={onAdd}>
-                    <Plus size={8} />
+                    <Plus size={10} />
                     {addLabel}
                 </button>
             );

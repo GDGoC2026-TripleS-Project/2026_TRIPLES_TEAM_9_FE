@@ -122,7 +122,7 @@ const formatDate = (value) => {
 };
 
 const StudyRecord = () => {
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isRecordAddOpen, setIsRecordAddOpen] = useState(false);
     const [records, setRecords] = useState(initialRecords);
 
     const onCreateSave = (payload) => {
@@ -140,7 +140,7 @@ const StudyRecord = () => {
         };
 
         setRecords((prev) => [newRecord, ...prev]);
-        setIsCreateOpen(false);
+        setIsRecordAddOpen(false);
     };
 
     return (
@@ -149,7 +149,7 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onAdd={() => setIsCreateOpen(true)}
+                onAdd={() => setIsRecordAddOpen(true)}
             />
             <main className="study-record-main">
                 <div className="record-layout">
@@ -159,9 +159,9 @@ const StudyRecord = () => {
                     </section>
                 </div>
             </main>
-            {isCreateOpen && (
+            {isRecordAddOpen && (
                 <StudyRecordCreateModal
-                    onClose={() => setIsCreateOpen(false)}
+                    onClose={() => setIsRecordAddOpen(false)}
                     onSave={onCreateSave}
                 />
             )}
