@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getAccessToken, setAccessToken, clearAccessToken } from "../lib/token";
+import { getAccessToken, clearAuthSession } from "../lib/token";
+import { refreshAccessToken } from "../lib/auth/refresh";
 
 const BASE = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -9,19 +10,37 @@ const api = axios.create({
   timeout: 10000,
 });
 
+const isRefreshRequest = (url = "") => url.includes("/refresh");
+let onAuthFail = null;
+
+export const setOnAuthFail = (callback) => {
+  onAuthFail = typeof callback === "function" ? callback : null;
+};
+
+const redirectToLogin = () => {
+  if (typeof window === "undefined") return;
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
+};
+
+const handleAuthFail = (reason) => {
+  clearAuthSession();
+
+  if (onAuthFail) {
+    onAuthFail(reason);
+    return;
+  }
+
+  redirectToLogin();
+};
+
 api.interceptors.request.use((config) => {
+  if (isRefreshRequest(config?.url)) return config;
   const token = getAccessToken();
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
-
-let refreshing = false;
-let queue = [];
-
-const flushQueue = (err, newToken) => {
-  queue.forEach(({ resolve, reject }) => (err ? reject(err) : resolve(newToken)));
-  queue = [];
-};
 
 api.interceptors.response.use(
   (res) => res,
@@ -34,55 +53,28 @@ api.interceptors.response.use(
     const { status } = err.response;
     const original = err.config;
 
-    // refresh 요청이 401일 때는 무한루프 방지
-    if (original?.url?.includes("/api/auth/refresh") && status === 401) {
-      clearAccessToken();
-      window.location.href = "/login";
+    // refresh 요청 자체가 실패하면 인증 상태를 비웁니다.
+    if (isRefreshRequest(original?.url) && status === 401) {
+      handleAuthFail({ type: "refresh_unauthorized", error: err });
       return Promise.reject(err);
     }
 
     if (status === 401 && !original._retry) {
       original._retry = true;
 
-      if (!getAccessToken()) {
-        clearAccessToken();
-        window.location.href = "/login";
-        return Promise.reject(err);
-      }
-
-      if (refreshing) {
-        return new Promise((resolve, reject) => {
-          queue.push({
-            resolve: (newToken) => {
-              original.headers.Authorization = `Bearer ${newToken}`;
-              resolve(api(original));
-            },
-            reject,
-          });
-        });
-      }
-
-      refreshing = true;
       try {
-        const r = await api.post("/api/auth/refresh");
+        const newToken = await refreshAccessToken();
+        if (!newToken) {
+          handleAuthFail({ type: "refresh_failed", error: err });
+          return Promise.reject(err);
+        }
 
-        const payload = r.data?.data ?? r.data;
-        const newToken = payload?.tokens?.accessToken ?? payload?.accessToken;
-
-        if (!newToken) throw new Error("refresh response에 accessToken 없음");
-
-        setAccessToken(newToken);
-        flushQueue(null, newToken);
-
+        original.headers = original.headers ?? {};
         original.headers.Authorization = `Bearer ${newToken}`;
         return api(original);
-      } catch (e) {
-        flushQueue(e, null);
-        clearAccessToken();
-        window.location.href = "/login";
-        return Promise.reject(e);
-      } finally {
-        refreshing = false;
+      } catch (refreshError) {
+        handleAuthFail({ type: "refresh_exception", error: refreshError });
+        return Promise.reject(refreshError);
       }
     }
 

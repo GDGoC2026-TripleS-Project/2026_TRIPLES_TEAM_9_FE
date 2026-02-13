@@ -4,6 +4,7 @@ import AuthOverlay from "../../../components/auth/AuthOverlay";
 import "../../../styles/Onboarding.css";
 import { useAuth } from "../../../context/AuthContext";
 import { submitOnboarding } from "../../../api/onboarding.api";
+import { getApiErrorMessage } from "../../../api/api-response";
 
 const LEARNING_GOAL_LABELS = {
   JOB: "취업",
@@ -125,8 +126,7 @@ export default function Onboarding() {
         alert("이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.");
         return;
       }
-      const m = e?.message || "";
-      alert(m || "요청에 실패했습니다.");
+      alert(getApiErrorMessage(e, "요청에 실패했습니다."));
     } finally {
       setIsSubmitting(false);
     }

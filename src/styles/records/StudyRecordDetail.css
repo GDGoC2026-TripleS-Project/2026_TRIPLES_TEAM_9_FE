@@ -102,18 +102,36 @@
 .detail-content-box {
     width: 100%;
     max-width: 760px;
-    height: 128px;
+    min-height: 128px;
     background: #f9fafb;
     border-radius: 6px;
     margin: 13px 0 27px;
     padding: 16px;
     font-size: 16px;
     font-weight: 500;
+    overflow: auto;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.detail-markdown {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #0f172a;
+}
+
+.detail-markdown p:first-child {
+    margin-top: 0;
+}
+
+.detail-markdown p:last-child {
+    margin-bottom: 0;
+}
+
+.detail-markdown pre {
+    background: #111827;
+    color: #f8fafc;
+    border-radius: 8px;
+    padding: 10px;
+    overflow: auto;
 }
 
 .detail-tag {
