@@ -7,7 +7,6 @@ const REFRESH_PATHS = Array.from(
         import.meta.env.VITE_AUTH_REFRESH_PATH,
         "/refresh",
         "/auth/refresh",
-        "/api/auth/refresh",
     ].filter(Boolean)),
 );
 
@@ -36,6 +35,13 @@ const getErrorSummary = (error) => {
     return status ? `[${status}] ${message}` : message;
 };
 
+const shouldTryNextPath = (error) => {
+    const status = error?.response?.status;
+    // 엔드포인트 미존재(404)일 때만 다음 후보 경로를 시도합니다.
+    // 400/401은 올바른 경로에 도달한 상태의 인증 실패이므로 재시도 경로 탐색을 중단합니다.
+    return status === 404;
+};
+
 export const refreshAccessToken = async () => {
     if (refreshPromise) return refreshPromise;
 
@@ -58,6 +64,7 @@ export const refreshAccessToken = async () => {
                     return accessToken;
                 } catch (error) {
                     lastError = error;
+                    if (!shouldTryNextPath(error)) break;
                 }
             }
 
