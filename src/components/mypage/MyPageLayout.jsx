@@ -10,7 +10,12 @@ const ROUTE_MAP = {
     "회원 탈퇴": "/mypage/withdraw",
 };
 
-export default function MyPageLayout({ activeLabel, children }) {
+export default function MyPageLayout({
+    activeLabel,
+    title = "마이페이지",
+    description = "학습 관련 정보를 확인하고 관리해보세요.",
+    children,
+}) {
     const navigate = useNavigate();
 
     return (
@@ -29,10 +34,8 @@ export default function MyPageLayout({ activeLabel, children }) {
                     <section className="my-content">
                         <div className="my-content-header">
                             <div>
-                                <h2 className="my-title">최근 학습 기록</h2>
-                                <p className="my-desc">
-                                    최근 학습한 내용들을 확인하고 이어서 학습해보세요.
-                                </p>
+                                <h2 className="my-title">{title}</h2>
+                                <p className="my-desc">{description}</p>
                             </div>
                             <button
                                 className="my-link-btn"

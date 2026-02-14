@@ -1,10 +1,5 @@
-const DEFAULT_ITEMS = [
-  "회원 정보",
-  "최근 학습 활동",
-  "마인드맵 요약",
-  "목표관리",
-  "회원 탈퇴",
-];
+const DEFAULT_ITEMS = ["회원 정보", "최근 학습 활동", "마인드맵 요약", "목표관리"];
+const WITHDRAW_LABEL = "회원 탈퇴";
 
 export default function MySidebar({
   activeLabel = "회원 정보",
@@ -20,9 +15,7 @@ export default function MySidebar({
             key={label}
             className={`my-nav-item ${
               label === activeLabel ? "is-active" : ""
-            } ${label === "최근 학습 활동" ? "is-recent" : ""} ${
-              label === "회원 탈퇴" ? "is-withdraw" : ""
-            }`}
+            } ${label === "최근 학습 활동" ? "is-recent" : ""}`}
             type="button"
             onClick={() => onSelect?.(label)}
           >
@@ -30,6 +23,14 @@ export default function MySidebar({
           </button>
         ))}
       </div>
+
+      <button
+        className={`my-nav-item is-withdraw ${activeLabel === WITHDRAW_LABEL ? "is-active" : ""}`}
+        type="button"
+        onClick={() => onSelect?.(WITHDRAW_LABEL)}
+      >
+        {WITHDRAW_LABEL}
+      </button>
     </aside>
   );
 }

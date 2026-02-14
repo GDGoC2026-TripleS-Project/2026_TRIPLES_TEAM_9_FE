@@ -29,7 +29,11 @@ export default function WithdrawPage() {
   };
 
   return (
-    <MyPageLayout activeLabel="회원 탈퇴">
+    <MyPageLayout
+      activeLabel="회원 탈퇴"
+      title="회원 탈퇴"
+      description="탈퇴 전 유의사항을 확인해주세요."
+    >
       <div className="withdraw-card">
         <h3 className="withdraw-title">회원 탈퇴</h3>
         <p className="withdraw-desc">

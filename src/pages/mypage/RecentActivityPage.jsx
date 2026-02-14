@@ -40,7 +40,11 @@ export default function RecentActivityPage() {
   }, []);
 
   return (
-    <MyPageLayout activeLabel="최근 학습 활동">
+    <MyPageLayout
+      activeLabel="최근 학습 활동"
+      title="최근 학습 기록"
+      description="최근 학습한 내용들을 확인하고 이어서 학습해보세요."
+    >
       {loading && <div className="recent-loading">불러오는 중...</div>}
 
       {!loading && error && (
