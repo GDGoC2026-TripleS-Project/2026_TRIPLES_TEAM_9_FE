@@ -7,6 +7,7 @@ import Project from "../../assets/records/Project.svg";
 import Seminar from "../../assets/records/Seminar.svg";
 import Personal from "../../assets/records/Personal.svg";
 import Other from "../../assets/records/Other.svg";
+import MarkdownPreview from "../common/MarkdownPreview";
 
 const categories = [
     { key: "lecture", label: "강의", icon: Lecture },
@@ -17,14 +18,29 @@ const categories = [
     { key: "other", label: "기타", icon: Other },
 ];
 
-const StudyRecordCreateModal = ({ onClose, onSave }) => {
-    const [form, setForm] = useState({
-        date: "",
-        category: "",
-        title: "",
-        content: "",
-        keywords: [],
-    });
+const toKeywordArray = (value) => {
+    if (!Array.isArray(value)) return [];
+    return value.filter((word) => typeof word === "string" && word.trim());
+};
+
+const validateForm = (form) => {
+    if (!form?.date) return "학습 날짜를 입력해주세요.";
+    if (!form?.category) return "카테고리를 선택해주세요.";
+    if (!form?.title?.trim()) return "제목을 입력해주세요.";
+    if (!form?.content?.trim()) return "내용을 입력해주세요.";
+    if (!Array.isArray(form?.keywords) || form.keywords.length === 0) return "키워드를 입력해주세요.";
+    return "";
+};
+
+const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "create" }) => {
+    const [form, setForm] = useState(() => ({
+        date: initialForm?.date ?? "",
+        category: initialForm?.category ?? "",
+        title: initialForm?.title ?? "",
+        content: initialForm?.content ?? "",
+        keywords: toKeywordArray(initialForm?.keywords),
+    }));
+    const [contentTab, setContentTab] = useState("write");
 
     const [keywordInput, setKeywordInput] = useState("");
 
@@ -47,11 +63,28 @@ const StudyRecordCreateModal = ({ onClose, onSave }) => {
         setKeywordInput("");
     };
 
+    const onKeywordRemove = (targetKeyword) => {
+        setForm((prev) => ({
+            ...prev,
+            keywords: prev.keywords.filter((keyword) => keyword !== targetKeyword),
+        }));
+    };
+
+    const onDateInputClick = (event) => {
+        try {
+            event.currentTarget.showPicker?.();
+        } catch {
+            console.warn("날짜 선택 UI를 표시하지 못했습니다.");
+        }
+    };
+
     return (
         <div className="record-modal-overlay">
             <div className="record-modal">
                 <header className="record-modal-header">
-                    <h2 className="record-modal-title">새 학습 기록</h2>
+                    <h2 className="record-modal-title">
+                        {mode === "edit" ? "학습 기록 수정" : "새 학습 기록"}
+                    </h2>
                     <button type="button" className="record-modal-close" onClick={onClose}>
                         <img src={close1} alt="닫기" />
                     </button>
@@ -65,8 +98,7 @@ const StudyRecordCreateModal = ({ onClose, onSave }) => {
                             type="date"
                             value={form.date}
                             onChange={onFieldChange("date")}
-                            onClick={(event) => event.currentTarget.showPicker?.()}
-                            onFocus={(event) => event.currentTarget.showPicker?.()}
+                            onClick={onDateInputClick}
                         />
                     </div>
 
@@ -104,13 +136,41 @@ const StudyRecordCreateModal = ({ onClose, onSave }) => {
 
                     <div className="record-field">
                         <label className="record-label record-label--emphasis">내용</label>
-                        <textarea
-                            className="record-textarea"
-                            rows={5}
-                            placeholder="학습 활동에서 배운 내용을 자유롭게 작성해주세요."
-                            value={form.content}
-                            onChange={onFieldChange("content")}
-                        />
+                        <div className="record-markdown-tabs">
+                            <button
+                                type="button"
+                                className={`record-markdown-tab ${contentTab === "write" ? "active" : ""}`}
+                                onClick={() => setContentTab("write")}
+                            >
+                                작성
+                            </button>
+                            <button
+                                type="button"
+                                className={`record-markdown-tab ${contentTab === "preview" ? "active" : ""}`}
+                                onClick={() => setContentTab("preview")}
+                            >
+                                미리보기
+                            </button>
+                        </div>
+                        {contentTab === "write" ? (
+                            <textarea
+                                className="record-textarea"
+                                rows={7}
+                                placeholder="Markdown으로 내용을 작성해주세요."
+                                value={form.content}
+                                onChange={onFieldChange("content")}
+                            />
+                        ) : (
+                            <div className="record-markdown-preview">
+                                {form.content.trim() ? (
+                                    <MarkdownPreview markdown={form.content} />
+                                ) : (
+                                    <p className="record-markdown-empty">
+                                        작성 탭에서 Markdown을 입력하면 미리보기가 표시됩니다.
+                                    </p>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     <div className="record-field">
@@ -136,13 +196,17 @@ const StudyRecordCreateModal = ({ onClose, onSave }) => {
                         {form.keywords.length > 0 && (
                             <div className="record-keyword-list">
                                 {form.keywords.map((keyword) => (
-                                    <button
-                                        key={keyword}
-                                        type="button"
-                                        className="record-keyword-label"
-                                    >
-                                        {keyword}
-                                    </button>
+                                    <span key={keyword} className="record-keyword-label">
+                                        <span>{keyword}</span>
+                                        <button
+                                            type="button"
+                                            className="record-keyword-remove"
+                                            onClick={() => onKeywordRemove(keyword)}
+                                            aria-label={`${keyword} 삭제`}
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
                                 ))}
                             </div>
                         )}
@@ -157,10 +221,15 @@ const StudyRecordCreateModal = ({ onClose, onSave }) => {
                         type="button"
                         className="record-footer-btn primary"
                         onClick={() => {
+                            const validationMessage = validateForm(form);
+                            if (validationMessage) {
+                                alert(validationMessage);
+                                return;
+                            }
                             onSave?.(form);
                         }}
                     >
-                        저장
+                        {mode === "edit" ? "수정" : "저장"}
                     </button>
                 </footer>
             </div>

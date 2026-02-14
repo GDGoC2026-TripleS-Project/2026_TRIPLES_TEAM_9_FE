@@ -4,143 +4,70 @@ import StudyRecordList from "../../components/records/StudyRecordList";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import "../../styles/records/StudyRecord.css";
 
-import { useState } from "react";
-
-const initialRecords = [
-    {
-        id: 1,
-        title: "드론 비행안전법",
-        categoryLabel: "개인학습",
-        categoryValue: "personal",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Drone",
-        categoryBadge: "badge--green",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 2,
-        title: "트리플에스 프로젝트",
-        categoryLabel: "프로젝트",
-        categoryValue: "project",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Design",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 3,
-        title: "파이썬 기초 공부",
-        categoryLabel: "개인학습",
-        categoryValue: "personal",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Python",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 4,
-        title: "UX/XI 디자인 잘 하는 법",
-        categoryLabel: "강의",
-        categoryValue: "lecture",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Figma",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 5,
-        title: "드론 비행안전법",
-        categoryLabel: "개인학습",
-        categoryValue: "personal",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Drone",
-        categoryBadge: "badge--green",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 6,
-        title: "트리플에스 프로젝트",
-        categoryLabel: "프로젝트",
-        categoryValue: "project",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Design",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 7,
-        title: "파이썬 기초 공부",
-        categoryLabel: "개인학습",
-        categoryValue: "personal",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Python",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-    {
-        id: 8,
-        title: "UX/XI 디자인 잘 하는 법",
-        categoryLabel: "강의",
-        categoryValue: "lecture",
-        date: "2026. 1. 18",
-        description:
-            "마크다운 형식으로 내용을 작성하면 마크다운으로 작성된 내용에서 첫 줄만 미리 보여주고 나머지 내용은 아카이브 클릭하면 상세페이지로 넘어가서 수정 및 삭제 가능하고 기록을 볼 수 있음",
-        tag: "Figma",
-        categoryBadge: "badge--blue",
-        tagBadge: "badge--blue",
-    },
-];
-
-const categoryMeta = {
-    lecture: { label: "강의", badge: "badge--blue" },
-    reading: { label: "독서", badge: "badge--blue" },
-    project: { label: "프로젝트", badge: "badge--blue" },
-    seminar: { label: "세미나", badge: "badge--blue" },
-    personal: { label: "개인 학습", badge: "badge--green" },
-    other: { label: "기타", badge: "badge--blue" },
-};
-
-const formatDate = (value) => {
-    if (!value) return "";
-    const [year, month, day] = value.split("-");
-    if (!year || !month || !day) return value;
-    return `${year}. ${Number(month)}. ${Number(day)}`;
-};
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCreateRecordMutation, useRecordListQuery } from "../../hooks/useRecordApi";
+import { buildRecordCreatePayload, toRecordListItem } from "../../utils/recordView";
+import { getApiErrorMessage } from "../../api/api-response";
 
 const StudyRecord = () => {
-    const [isRecordAddOpen, setIsRecordAddOpen] = useState(false);
-    const [records, setRecords] = useState(initialRecords);
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
 
-    const onCreateSave = (payload) => {
-        const meta = categoryMeta[payload.category] ?? categoryMeta.other;
-        const newRecord = {
-            id: Date.now(),
-            title: payload.title || "제목 없음",
-            categoryLabel: meta.label,
-            categoryValue: payload.category || "other",
-            date: formatDate(payload.date),
-            description: payload.content || "",
-            tag: payload.keywords[0] || "기록",
-            categoryBadge: meta.badge,
-            tagBadge: "badge--blue",
-        };
+    const category = searchParams.get("category") ?? "";
+    const apiCategory = category ? category.toUpperCase() : undefined;
+    const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
+    // UI와 API 요청 page 모두 1-based를 사용합니다.
+    const apiPage = uiPage;
+    const size = Math.max(1, Number(searchParams.get("size") ?? 4) || 4);
 
-        setRecords((prev) => [newRecord, ...prev]);
-        setIsRecordAddOpen(false);
+    const recordListQuery = useRecordListQuery({
+        page: apiPage,
+        size,
+        category: apiCategory,
+    });
+    const {
+        data: recordListData,
+        items: recordItems,
+        loading: isRecordListLoading,
+        error: recordListError,
+        setParams: setRecordListParams,
+        refetch: refetchRecordList,
+    } = recordListQuery;
+
+    useEffect(() => {
+        setRecordListParams((prev) => ({
+            ...prev,
+            page: apiPage,
+            size,
+            category: apiCategory,
+        }));
+    }, [apiCategory, apiPage, setRecordListParams, size]);
+
+    const createRecordMutation = useCreateRecordMutation({
+        onSuccess: async () => {
+            await refetchRecordList();
+            setIsCreateOpen(false);
+        },
+    });
+
+    const records = useMemo(() => recordItems.map((item) => toRecordListItem(item)), [recordItems]);
+
+    const onCreateSave = async (payload) => {
+        try {
+            await createRecordMutation.mutateAsync(buildRecordCreatePayload(payload));
+        } catch (error) {
+            alert(getApiErrorMessage(error, "기록 생성에 실패했습니다."));
+        }
+    };
+
+    const onPageChange = (nextPage) => {
+        const totalPages = Math.max(1, Number(recordListData.totalPages) || 1);
+        const clampedUiPage = Math.min(Math.max(1, nextPage), totalPages);
+        const next = new URLSearchParams(searchParams);
+        next.set("page", String(clampedUiPage));
+        setSearchParams(next);
     };
 
     return (
@@ -149,19 +76,29 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onAdd={() => setIsRecordAddOpen(true)}
+                onBack={() => navigate(-1)}
+                onAdd={() => setIsCreateOpen(true)}
             />
             <main className="study-record-main">
                 <div className="record-layout">
                     <section className="record-content">
                         <CategoryTabs />
-                        <StudyRecordList records={records} />
+                        {recordListError && (
+                            <p>{recordListError.message || "기록 목록을 불러오지 못했습니다."}</p>
+                        )}
+                        <StudyRecordList
+                            records={records}
+                            page={Math.max(1, Number(recordListData.page) || 1)}
+                            totalPages={recordListData.totalPages}
+                            onPageChange={onPageChange}
+                            isLoading={isRecordListLoading}
+                        />
                     </section>
                 </div>
             </main>
-            {isRecordAddOpen && (
+            {isCreateOpen && (
                 <StudyRecordCreateModal
-                    onClose={() => setIsRecordAddOpen(false)}
+                    onClose={() => setIsCreateOpen(false)}
                     onSave={onCreateSave}
                 />
             )}

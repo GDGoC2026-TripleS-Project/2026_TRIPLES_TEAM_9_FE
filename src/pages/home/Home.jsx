@@ -58,7 +58,7 @@ export default function Home() {
                     </p>
 
                     <div className="hero-actions">
-                        <button className="primary-btn large">내 지식 정원 가꾸기</button>
+                        <button className="primary-btn large" onClick={() => window.location.href = "/records"}>내 지식 정원 가꾸기</button>
                         <button className="ghost-btn large">더 알아보기</button>
                     </div>
                 </div>

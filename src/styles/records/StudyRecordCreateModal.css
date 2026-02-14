@@ -87,6 +87,51 @@
     min-height: 88px;
 }
 
+.record-markdown-tabs {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.record-markdown-tab {
+    border: 1px solid #d9e0db;
+    border-radius: 999px;
+    background: #fff;
+    color: #64748b;
+    font-size: 12px;
+    padding: 4px 12px;
+    cursor: pointer;
+}
+
+.record-markdown-tab.active {
+    background: #155dfc;
+    border-color: #155dfc;
+    color: #fff;
+}
+
+.record-markdown-preview {
+    min-height: 120px;
+    max-height: 240px;
+    overflow: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 12px;
+    font-size: 12px;
+}
+
+.record-markdown-preview p:first-child {
+    margin-top: 0;
+}
+
+.record-markdown-preview p:last-child {
+    margin-bottom: 0;
+}
+
+.record-markdown-empty {
+    margin: 0;
+    color: #64748b;
+}
+
 .record-category-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -134,17 +179,28 @@
 
 .record-keyword-label {
     display: inline-flex;
+    gap: 6px;
     justify-content: center;
     align-items: center;
-    height: 16px;
-    padding: 3px 5px;
+    min-height: 20px;
+    padding: 3px 8px;
 
     border-radius: 6px;
     border: none;
     background: #dbeafe;
     color: #1447e6;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 500;
+}
+
+.record-keyword-remove {
+    border: none;
+    background: transparent;
+    color: #1447e6;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0;
 }
 
 .record-keyword-add {

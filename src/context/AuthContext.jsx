@@ -1,36 +1,63 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
+import {
+    AUTH_SESSION_CLEARED_EVENT,
+    clearAuthSession,
+    getAccessToken,
+    getStoredUser,
+    setAccessToken,
+    setStoredUser,
+} from "../lib/token";
+import { refreshAccessToken } from "../lib/auth/refresh";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
-
-    // 새로고침/재접속 시 복구
-    useEffect(() => {
-        try {
-            const token = localStorage.getItem("accessToken");
-            const u = localStorage.getItem("user");
-            if (token && u) setUser(JSON.parse(u));
-            else setUser(null);
-        } catch {
-            setUser(null);
-        }
-    }, []);
+    const [user, setUser] = useState(() => getStoredUser());
+    const [authReady, setAuthReady] = useState(false);
 
     const login = useCallback((accessToken, userObj) => {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("user", JSON.stringify(userObj));
-        setUser(userObj); 
+        setAccessToken(accessToken);
+        setStoredUser(userObj);
+        setUser(userObj);
     }, []);
 
     const logout = useCallback(() => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("user");
+        clearAuthSession();
         setUser(null);
     }, []);
 
+    const refreshAuth = useCallback(async () => {
+        const currentToken = getAccessToken();
+        if (!user && !currentToken) return null;
+
+        const nextToken = await refreshAccessToken();
+        if (!nextToken) return null;
+        return nextToken;
+    }, [user]);
+
+    useEffect(() => {
+        const onSessionCleared = () => setUser(null);
+        window.addEventListener(AUTH_SESSION_CLEARED_EVENT, onSessionCleared);
+        return () => {
+            window.removeEventListener(AUTH_SESSION_CLEARED_EVENT, onSessionCleared);
+        };
+    }, []);
+
+    const value = useMemo(
+        () => ({
+            user,
+            isAuthed: !!user,
+            authReady,
+            setAuthReady,
+            login,
+            logout,
+            refreshAuth,
+        }),
+        [authReady, login, logout, refreshAuth, user],
+    );
+
     return (
-        <AuthContext.Provider value={{ user, isAuthed: !!user, login, logout }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

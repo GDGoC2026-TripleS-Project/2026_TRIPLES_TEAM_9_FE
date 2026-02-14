@@ -59,6 +59,47 @@
     gap: 24px;
 }
 
+.record-empty-state {
+    min-height: 240px;
+    border: 1px solid #d9e0db;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #f9fef9 0%, #f3fbf5 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px 20px;
+}
+
+.record-empty-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #d9e0db;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.record-empty-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.record-empty-desc {
+    margin: 8px 0 0;
+    max-width: 420px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #64748b;
+}
+
 .record-card-link {
     display: block;
     color: inherit;

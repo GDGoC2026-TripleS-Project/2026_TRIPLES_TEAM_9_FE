@@ -75,7 +75,7 @@ const Dashboard = () => {
                     <h2>{user?.nickname ?? "회원"}님의 지식정원에 오신 것을 환영합니다!</h2>
                     <p>새로운 학습을 기록하고 당신의 성장을 시각화해보세요.</p>
 
-                    <button className="add-study-record-btn">+ 새 학습 기록 작성</button>
+                    <button className="add-study-record-btn" onClick={() => window.location.href = "/records"}>+ 새 학습 기록 작성</button>
 
                     {loading ? (
                         <p>로딩중...</p>
