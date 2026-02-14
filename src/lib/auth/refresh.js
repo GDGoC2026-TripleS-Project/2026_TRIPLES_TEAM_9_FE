@@ -1,5 +1,5 @@
 import axios from "axios";
-import { clearAuthSession, setAccessToken } from "../token";
+import { setAccessToken } from "../token";
 
 const BASE = import.meta.env.VITE_BACKEND_BASE_URL;
 const REFRESH_PATH = "/auth/refresh";
@@ -26,8 +26,8 @@ export const refreshAccessToken = async () => {
 
             setAccessToken(accessToken);
             return accessToken;
-        } catch {
-            clearAuthSession();
+        } catch (error) {
+            console.error("액세스 토큰 갱신에 실패했습니다:", error);
             return null;
         } finally {
             refreshPromise = null;
