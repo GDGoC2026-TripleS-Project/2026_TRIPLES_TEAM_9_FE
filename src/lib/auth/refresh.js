@@ -5,7 +5,6 @@ const BASE = String(import.meta.env.VITE_BACKEND_BASE_URL ?? "").replace(/\/+$/,
 const REFRESH_PATHS = Array.from(
     new Set([
         import.meta.env.VITE_AUTH_REFRESH_PATH,
-        "/refresh",
         "/auth/refresh",
     ].filter(Boolean)),
 );
