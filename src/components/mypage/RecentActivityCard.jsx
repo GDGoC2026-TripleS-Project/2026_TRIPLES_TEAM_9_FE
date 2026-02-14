@@ -1,7 +1,11 @@
 const CATEGORY_LABELS = {
+  READING: "독서",
+  SEMINAR: "세미나",
+  OTHER: "기타",
   PERSONAL: "개인학습",
   PROJECT: "프로젝트",
   LECTURE: "강의",
+  STUDY: "개인학습",
 };
 
 const formatDate = (iso) => {
