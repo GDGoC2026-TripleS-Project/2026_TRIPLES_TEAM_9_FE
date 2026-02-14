@@ -31,12 +31,7 @@ export function AuthProvider({ children }) {
         if (!user && !currentToken) return null;
 
         const nextToken = await refreshAccessToken();
-        if (!nextToken) {
-            clearAuthSession();
-            setUser(null);
-            return null;
-        }
-
+        if (!nextToken) return null;
         return nextToken;
     }, [user]);
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import { setAccessToken } from "../token";
 
 const BASE = String(import.meta.env.VITE_BACKEND_BASE_URL ?? "").replace(/\/+$/, "");
+const AUTH_DEBUG = import.meta.env.DEV || import.meta.env.VITE_AUTH_DEBUG === "true";
 const REFRESH_PATHS = Array.from(
     new Set([
         import.meta.env.VITE_AUTH_REFRESH_PATH,
@@ -10,6 +11,11 @@ const REFRESH_PATHS = Array.from(
 );
 
 let refreshPromise = null;
+
+const debugLog = (...args) => {
+    if (!AUTH_DEBUG) return;
+    console.debug("[auth:refresh]", ...args);
+};
 
 const parseAccessToken = (payload) => {
     const body = payload?.data ?? payload;
@@ -40,14 +46,19 @@ const shouldTryNextPath = (error) => {
 };
 
 export const refreshAccessToken = async () => {
-    if (refreshPromise) return refreshPromise;
+    if (refreshPromise) {
+        debugLog("reuse in-flight refresh promise");
+        return refreshPromise;
+    }
 
     refreshPromise = (async () => {
         let lastError = null;
         try {
             for (const path of REFRESH_PATHS) {
+                const url = joinUrl(BASE, path);
                 try {
-                    const response = await axios.post(joinUrl(BASE, path), {}, {
+                    debugLog("request", { method: "POST", url, withCredentials: true });
+                    const response = await axios.post(url, {}, {
                         withCredentials: true,
                         timeout: 10000,
                     });
@@ -57,10 +68,16 @@ export const refreshAccessToken = async () => {
                         throw new Error("refresh 응답에 accessToken이 없습니다.");
                     }
 
+                    debugLog("success", { status: response?.status ?? null });
                     setAccessToken(accessToken);
                     return accessToken;
                 } catch (error) {
                     lastError = error;
+                    debugLog("failed", {
+                        status: error?.response?.status ?? null,
+                        url,
+                        message: getErrorSummary(error),
+                    });
                     if (!shouldTryNextPath(error)) break;
                 }
             }
