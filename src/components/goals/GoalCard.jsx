@@ -1,11 +1,13 @@
 import { Plus, X } from "lucide-react";
 import trash from "../../assets/records/detail/trash.svg";
 import check from "../../assets/goals/check.svg";
+import addCheck from "../../assets/goals/addcheck.svg";
 import { useState, useMemo } from "react";
 import "../../styles/goals/GoalCard.css";
 
 const GoalCard = ({
     goal,
+    showAddedNotice,
     onDeleteGoal,
     onAddTask,
     onDeleteTask,
@@ -51,9 +53,9 @@ const GoalCard = ({
 
             {!goal.collapsed ? (
                 <>
-                    <ul className="goal-tasklist">
-                        {goal.tasks.map((task) => (
-                            <>
+                    {goal.tasks.length > 0 && (
+                        <ul className="goal-tasklist">
+                            {goal.tasks.map((task) => (
                                 <li key={task.id} className="goal-taskitem">
                                     <div className="task-left">
                                         <input
@@ -77,12 +79,17 @@ const GoalCard = ({
                                         className="task-delete-btn"
                                         onClick={() => onDeleteTask(task.id)}
                                     >
-                                        <X size={16} strokeWidth={4} color="red" />
+                                        <X
+                                            className="icon-x"
+                                            size={16}
+                                            strokeWidth={4}
+                                            color="red"
+                                        />
                                     </button>
                                 </li>
-                            </>
-                        ))}
-                    </ul>
+                            ))}
+                        </ul>
+                    )}
 
                     <form className="goal-addtask" onSubmit={handleAddTask}>
                         <input
@@ -103,6 +110,13 @@ const GoalCard = ({
                 <button type="button" className="goal-toggle-btn" onClick={onToggleCollapsed}>
                     세부 과제 보기
                 </button>
+            )}
+
+            {showAddedNotice && (
+                <div className="card-toast">
+                    <img src={addCheck} alt="" className="toast-icon" />
+                    <span>목표가 추가되었습니다.</span>
+                </div>
             )}
         </div>
     );

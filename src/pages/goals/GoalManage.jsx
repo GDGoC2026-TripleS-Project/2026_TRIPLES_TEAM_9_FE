@@ -31,6 +31,7 @@ const GoalManage = () => {
     const [goals, setGoals] = useState(initialGoals);
     const { page, setPage, totalPages, currentItems, canPrev, canNext, onPrev, onNext, goToPage } =
         usePagination(goals, PAGE_SIZE);
+    const [lastAddedGoalId, setLastAddedGoalId] = useState(null);
 
     useEffect(() => {
         if (page > totalPages) {
@@ -46,6 +47,8 @@ const GoalManage = () => {
             collapsed: false,
         };
         setGoals((prev) => [...prev, newGoal]);
+        setLastAddedGoalId(newGoal.id);
+        setTimeout(() => setLastAddedGoalId(null), 1000);
     };
 
     const onDeleteGoal = (goalId) => {
@@ -113,6 +116,7 @@ const GoalManage = () => {
                     <GoalCard
                         key={goal.id}
                         goal={goal}
+                        showAddedNotice={goal.id === lastAddedGoalId}
                         onDeleteGoal={() => onDeleteGoal(goal.id)}
                         onAddTask={(text) => onAddTask(goal.id, text)}
                         onDeleteTask={(taskId) => onDeleteTask(goal.id, taskId)}
