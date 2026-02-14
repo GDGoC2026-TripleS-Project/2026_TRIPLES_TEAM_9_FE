@@ -3,12 +3,18 @@ import { setAccessToken } from "../token";
 
 const BASE = String(import.meta.env.VITE_BACKEND_BASE_URL ?? "").replace(/\/+$/, "");
 const AUTH_DEBUG = import.meta.env.DEV || import.meta.env.VITE_AUTH_DEBUG === "true";
+const REFRESH_BODY_MODE = String(import.meta.env.VITE_AUTH_REFRESH_BODY_MODE ?? "empty").toLowerCase();
 const REFRESH_PATHS = Array.from(
     new Set([
         import.meta.env.VITE_AUTH_REFRESH_PATH,
         "/auth/refresh",
     ].filter(Boolean)),
 );
+const refreshClient = axios.create({
+    baseURL: BASE,
+    withCredentials: true,
+    timeout: 10000,
+});
 
 let refreshPromise = null;
 
@@ -45,6 +51,12 @@ const shouldTryNextPath = (error) => {
     return status === 404;
 };
 
+const getRefreshRequestBody = () => {
+    // 백엔드가 body 없는 refresh를 기대하면 `VITE_AUTH_REFRESH_BODY_MODE=none` 사용
+    if (REFRESH_BODY_MODE === "none") return null;
+    return {};
+};
+
 export const refreshAccessToken = async () => {
     if (refreshPromise) {
         debugLog("reuse in-flight refresh promise");
@@ -57,11 +69,14 @@ export const refreshAccessToken = async () => {
             for (const path of REFRESH_PATHS) {
                 const url = joinUrl(BASE, path);
                 try {
-                    debugLog("request", { method: "POST", url, withCredentials: true });
-                    const response = await axios.post(url, {}, {
+                    const body = getRefreshRequestBody();
+                    debugLog("request", {
+                        method: "POST",
+                        url,
                         withCredentials: true,
-                        timeout: 10000,
+                        bodyMode: body === null ? "none" : "empty",
                     });
+                    const response = await refreshClient.post(url, body);
 
                     const accessToken = parseAccessToken(response?.data);
                     if (!accessToken) {
