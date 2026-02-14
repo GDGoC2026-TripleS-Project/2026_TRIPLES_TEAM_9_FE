@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState, useCallback } 
 import {
     AUTH_SESSION_CLEARED_EVENT,
     clearAuthSession,
+    getAccessToken,
     getStoredUser,
     setAccessToken,
     setStoredUser,
@@ -26,13 +27,10 @@ export function AuthProvider({ children }) {
     }, []);
 
     const refreshAuth = useCallback(async () => {
+        if (!user && !getAccessToken()) return null;
         const nextToken = await refreshAccessToken();
-        if (!nextToken) {
-            setUser(null);
-            return null;
-        }
-        return nextToken;
-    }, []);
+        return nextToken ?? null;
+    }, [user]);
 
     useEffect(() => {
         const onSessionCleared = () => setUser(null);
