@@ -36,8 +36,6 @@ const getErrorSummary = (error) => {
 
 const shouldTryNextPath = (error) => {
     const status = error?.response?.status;
-    // 엔드포인트 미존재(404)일 때만 다음 후보 경로를 시도합니다.
-    // 400/401은 올바른 경로에 도달한 상태의 인증 실패이므로 재시도 경로 탐색을 중단합니다.
     return status === 404;
 };
 
@@ -49,7 +47,7 @@ export const refreshAccessToken = async () => {
         try {
             for (const path of REFRESH_PATHS) {
                 try {
-                    const response = await axios.post(joinUrl(BASE, path), null, {
+                    const response = await axios.post(joinUrl(BASE, path), {}, {
                         withCredentials: true,
                         timeout: 10000,
                     });

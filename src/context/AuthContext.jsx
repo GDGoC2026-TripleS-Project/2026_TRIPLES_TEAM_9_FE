@@ -27,9 +27,17 @@ export function AuthProvider({ children }) {
     }, []);
 
     const refreshAuth = useCallback(async () => {
-        if (!user && !getAccessToken()) return null;
+        const currentToken = getAccessToken();
+        if (!user && !currentToken) return null;
+
         const nextToken = await refreshAccessToken();
-        return nextToken ?? null;
+        if (!nextToken) {
+            clearAuthSession();
+            setUser(null);
+            return null;
+        }
+
+        return nextToken;
     }, [user]);
 
     useEffect(() => {
