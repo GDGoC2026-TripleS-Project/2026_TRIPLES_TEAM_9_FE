@@ -2,6 +2,7 @@ import axios from "axios";
 import { setAccessToken } from "../token";
 
 const BASE = String(import.meta.env.VITE_BACKEND_BASE_URL ?? "").replace(/\/+$/, "");
+const REFRESH_PATH = "/auth/refresh";
 
 let refreshPromise = null;
 
@@ -16,8 +17,6 @@ const joinUrl = (base, path) => {
     const normalizedPath = String(path).startsWith("/") ? path : `/${path}`;
     return `${base}${normalizedPath}`;
 };
-
-console.info(`[auth] refresh token path: ${joinUrl(BASE, REFRESH_PATH)}`);
 
 const getErrorSummary = (error) => {
     const status = error?.response?.status;
@@ -48,7 +47,7 @@ export const refreshAccessToken = async () => {
             setAccessToken(accessToken);
             return accessToken;
         } catch (error) {
-            console.error("refresh 토큰 갱신에 실패했습니다:", getErrorSummary(error));
+            console.error("access 토큰 갱신에 실패했습니다:", getErrorSummary(error));
             return null;
         } finally {
             refreshPromise = null;
