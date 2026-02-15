@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import StudyRecordCard from "./StudyRecordCard";
 
 const StudyRecordList = ({

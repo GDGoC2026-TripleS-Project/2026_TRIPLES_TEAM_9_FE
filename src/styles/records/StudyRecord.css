@@ -168,33 +168,3 @@
     color: #1447e6;
     background: #dbeafe;
 }
-
-.record-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: auto;
-    padding: 16px 0 6px;
-    gap: 10px;
-}
-
-.page-btn,
-.page-number {
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    border: 2.42px solid #f1f1f1;
-    background: #fff;
-    font-size: 20px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.page-number.active {
-    background: #3182f6;
-    color: #fff;
-    border: 2.42px solid #f1f1f1;
-}
