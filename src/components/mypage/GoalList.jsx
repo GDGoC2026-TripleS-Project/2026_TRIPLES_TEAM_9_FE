@@ -3,14 +3,62 @@ import { deleteMyGoal, getMyGoals } from "../../api/mypage.api";
 import GoalCard from "./GoalCard";
 import { MOCK_GOALS } from "./types";
 
-const USE_MOCK_GOALS = String(import.meta.env.VITE_USE_MOCK_GOALS ?? "true") === "true";
+const USE_MOCK_GOALS = String(import.meta.env.VITE_USE_MOCK_GOALS ?? "false") === "true";
+
+const toNumber = (value, fallback = 0) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const normalizeGoal = (goal) => {
+  if (!goal || typeof goal !== "object") return null;
+
+  const id = toNumber(goal.id ?? goal.goalId, NaN);
+  if (!Number.isFinite(id)) return null;
+
+  const title =
+    goal.title ??
+    goal.goalTitle ??
+    goal.name ??
+    `목표 ${id}`;
+
+  const done = toNumber(
+    goal.done ??
+      goal.doneCount ??
+      goal.completedTaskCount ??
+      goal.checkedTaskCount,
+    0,
+  );
+
+  const total = toNumber(
+    goal.total ??
+      goal.totalCount ??
+      goal.totalTaskCount ??
+      goal.taskCount,
+    0,
+  );
+
+  return {
+    id,
+    title: String(title),
+    done: Math.max(0, done),
+    total: Math.max(0, total),
+  };
+};
 
 const parseGoalList = (response) => {
   const payload = response?.data?.data ?? response?.data ?? response;
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload?.items)) return payload.items;
-  if (Array.isArray(payload?.goals)) return payload.goals;
-  return [];
+  const list = Array.isArray(payload)
+    ? payload
+    : Array.isArray(payload?.content)
+      ? payload.content
+      : Array.isArray(payload?.items)
+        ? payload.items
+        : Array.isArray(payload?.goals)
+          ? payload.goals
+          : [];
+
+  return list.map(normalizeGoal).filter(Boolean);
 };
 
 export default function GoalList() {
@@ -30,7 +78,7 @@ export default function GoalList() {
         return;
       }
 
-      const response = await getMyGoals();
+      const response = await getMyGoals(0);
       setGoals(parseGoalList(response));
     } catch {
       setError("목표 목록을 불러오지 못했습니다.");
@@ -84,4 +132,3 @@ export default function GoalList() {
     </section>
   );
 }
-
