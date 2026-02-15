@@ -1,4 +1,6 @@
 import StudyRecordCard from "./StudyRecordCard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+ 
 
 const StudyRecordList = ({
     records = [],

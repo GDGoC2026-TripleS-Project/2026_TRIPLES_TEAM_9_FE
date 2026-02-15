@@ -18,6 +18,7 @@ import GoalManage from "./pages/goals/GoalManage";
 import MyPage from "./pages/mypage/MyPage";
 import RecentActivityPage from "./pages/mypage/RecentActivityPage";
 import WithdrawPage from "./pages/mypage/WithdrawPage";
+import GoalManagePage from "./pages/mypage/GoalManagePage";
 
 const AUTH_PATHS = new Set([
     "/login",
@@ -56,6 +57,7 @@ function AppRoutes() {
                 {/* 마이페이지 */}
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/mypage/recent" element={<RecentActivityPage />} />
+                <Route path="/mypage/goals" element={<GoalManagePage />} />
                 <Route path="/mypage/withdraw" element={<WithdrawPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

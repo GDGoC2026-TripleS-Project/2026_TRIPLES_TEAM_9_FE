@@ -71,7 +71,6 @@ api.interceptors.response.use(
       retried: Boolean(original?._retry),
     });
 
-    // refresh 요청 자체가 실패하면 인증 상태를 비웁니다.
     if (isRefreshRequest(original?.url) && status === 401) {
       handleAuthFail({ type: "refresh_unauthorized", error: err });
       return Promise.reject(err);
