@@ -1,9 +1,9 @@
 import { BookOpen, Calendar, Tag } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/records/StudyRecordDetail.css";
-import presentation1 from "../../assets/detail/presentation1.svg";
-import pencil from "../../assets/detail/pencil.svg";
-import trash from "../../assets/detail/trash.svg";
+import presentation1 from "../../assets/records/detail/presentation1.svg";
+import pencil from "../../assets/records/detail/pencil.svg";
+import trash from "../../assets/records/detail/trash.svg";
 import Header from "../../components/common/Header";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import MarkdownPreview from "../../components/common/MarkdownPreview";

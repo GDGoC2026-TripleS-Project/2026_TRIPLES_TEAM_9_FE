@@ -1,0 +1,36 @@
+.goal-manage-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.goals-list {
+    width: min(800px, 90vw);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+@media (max-width: 480px) {
+    .goal-card {
+        padding: 12px 14px;
+    }
+
+    .goal-addtask {
+        gap: 8px;
+    }
+
+    .goal-addtask input {
+        flex: 1;
+        width: auto;
+    }
+
+    .goal-toggle-btn {
+        width: 100%;
+    }
+
+    .task-left span {
+        font-size: 11px;
+    }
+}

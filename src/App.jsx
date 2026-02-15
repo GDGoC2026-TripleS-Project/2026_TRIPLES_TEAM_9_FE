@@ -13,6 +13,8 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import StudyRecord from "./pages/records/StudyRecord";
 import StudyRecordDetail from "./pages/records/StudyRecordDetail";
 
+import GoalManage from "./pages/goals/GoalManage";
+
 import MyPage from "./pages/mypage/MyPage";
 import RecentActivityPage from "./pages/mypage/RecentActivityPage";
 import WithdrawPage from "./pages/mypage/WithdrawPage";
@@ -48,6 +50,8 @@ function AppRoutes() {
 
                 <Route path="/records" element={<StudyRecord />} />
                 <Route path="/records/:id" element={<StudyRecordDetail />} />
+
+                <Route path="/goals" element={<GoalManage />} />
 
                 {/* 마이페이지 */}
                 <Route path="/mypage" element={<MyPage />} />

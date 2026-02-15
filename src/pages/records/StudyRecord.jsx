@@ -6,10 +6,7 @@ import "../../styles/records/StudyRecord.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-    useCreateRecordMutation,
-    useRecordListQuery,
-} from "../../hooks/useRecordApi";
+import { useCreateRecordMutation, useRecordListQuery } from "../../hooks/useRecordApi";
 import { buildRecordCreatePayload, toRecordListItem } from "../../utils/recordView";
 import { getApiErrorMessage } from "../../api/api-response";
 
@@ -87,10 +84,7 @@ const StudyRecord = () => {
                     <section className="record-content">
                         <CategoryTabs />
                         {recordListError && (
-                            <p>
-                                {recordListError.message ||
-                                    "기록 목록을 불러오지 못했습니다."}
-                            </p>
+                            <p>{recordListError.message || "기록 목록을 불러오지 못했습니다."}</p>
                         )}
                         <StudyRecordList
                             records={records}

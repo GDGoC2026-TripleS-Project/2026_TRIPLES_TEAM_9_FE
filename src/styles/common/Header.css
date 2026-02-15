@@ -21,25 +21,17 @@
     align-items: center;
     justify-content: space-between;
 
-    height: 64px;
+    width: min(800px, 90vw);
+    height: 80px;
+    border-bottom: 1px solid #e4e4e7;
 }
 
 .header--home .header-container {
     width: min(1100px, 92vw);
-}
-
-.header--dashboard .header-container {
-    width: min(800px, 90vw);
-    border-bottom: 1px solid #e4e4e7;
-}
-
-.header--records .header-container {
-    width: min(800px, 90vw);
-    border-bottom: 1px solid #e4e4e7;
+    height: 64px;
 }
 
 .header--detail .header-container {
-    width: min(800px, 90vw);
     background: #eef4ff;
     border-bottom: 1px solid #bfc0c4;
 }
@@ -83,10 +75,6 @@
     gap: 8px;
 }
 
-.header-actions--compact {
-    gap: 8px;
-}
-
 .header-user {
     font-size: 12px;
     font-weight: 600;
@@ -123,6 +111,13 @@
     gap: 24px;
 }
 
+.header--goals .header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
 .header-back-btn {
     display: inline-flex;
     align-items: center;
@@ -148,7 +143,18 @@
     margin: 0;
 }
 
-.header-add-btn {
+.header--goals .header-title {
+    font-weight: 700;
+}
+
+.header-subtitle {
+    color: #71717b;
+    font-size: 8px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.header--records .header-add-btn {
     display: inline-flex;
     width: 56px;
     height: 24px;
@@ -162,5 +168,23 @@
     color: #ffffff;
     font-size: 10px;
     font-weight: 600;
+    cursor: pointer;
+}
+
+.header--goals .header-add-btn {
+    display: inline-flex;
+    width: 68px;
+    height: 20px;
+    padding: 4px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+
+    border-radius: 6px;
+    border: none;
+    background: #00a63e;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
     cursor: pointer;
 }
