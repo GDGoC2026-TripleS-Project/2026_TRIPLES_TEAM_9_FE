@@ -460,8 +460,8 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  border: 1px solid #d9e0db;
-  background: #f0fdf4;
+  border: 1px solid #dbe4ff;
+  background: #eef4ff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -516,33 +516,39 @@
   gap: 8px;
 }
 
+.goal-progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .goal-progress-label {
   color: #4b5563;
   font-size: 14px;
   font-weight: 500;
+  margin: 0;
 }
 
 .goal-progress-track {
   height: 12px;
   border-radius: 9999px;
-  background: #dcfce7;
+  background: #dbe4ff;
   overflow: hidden;
 }
 
 .goal-progress-fill {
   height: 12px;
   border-radius: 9999px;
-  background: #16a34a;
+  background: #1447e6;
   transition: width 0.2s ease;
 }
 
 .goal-percent {
-  position: absolute;
-  right: 24px;
-  bottom: 20px;
-  color: #16a34a;
-  font-size: 22px;
+  color: #1447e6;
+  font-size: 16px;
   font-weight: 700;
+  margin: 0;
 }
 
 .goal-delete-btn {

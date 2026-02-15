@@ -55,7 +55,15 @@
     color: #6b7280;
     font-size: 15px;
     font-weight: 600;
-    margin: 0 0 8px;
+    margin: 0;
+}
+
+.goal-progress-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
 .progress-bar {
@@ -73,11 +81,10 @@
 }
 
 .goal-percent {
-    margin: 8px 0 0;
+    margin: 0;
     color: #1447e6;
-    font-size: 24px;
+    font-size: 17px;
     font-weight: 700;
-    text-align: right;
 }
 
 .goal-tasklist {
