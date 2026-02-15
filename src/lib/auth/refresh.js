@@ -2,7 +2,6 @@ import axios from "axios";
 import { setAccessToken } from "../token";
 
 const BASE = String(import.meta.env.VITE_BACKEND_BASE_URL ?? "").replace(/\/+$/, "");
-const REFRESH_PATH = "/auth/refresh";
 
 let refreshPromise = null;
 
