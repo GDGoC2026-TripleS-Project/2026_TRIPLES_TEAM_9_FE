@@ -11,7 +11,7 @@
 }
 
 .record-layout {
-    width: min(800px, 90vw);
+    width: min(1100px, 92vw);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -27,22 +27,22 @@
 .record-tabs {
     display: flex;
     flex-wrap: wrap;
-    padding: 28px 0 21px 13px;
+    padding: 28px 0 21px;
     gap: 12px;
 }
 
 .record-tab {
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
     border: 1px solid #d9e0db;
     background: #fff;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
 }
 
 .record-tab.active {
-    background: #3aa052;
+    background: #1447e6;
     border: 1px solid transparent;
     color: #fff;
 }
@@ -72,7 +72,7 @@
     min-height: 240px;
     border: 1px solid #d9e0db;
     border-radius: 16px;
-    background: linear-gradient(180deg, #f9fef9 0%, #f3fbf5 100%);
+    background: linear-gradient(180deg, #f8faff 0%, #f0f5ff 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -117,14 +117,14 @@
 
 .record-card {
     border: 1px solid #d9e0db;
-    border-radius: 8px;
-    padding: 10px 15px;
+    border-radius: 10px;
+    padding: 16px 20px;
     background: #fff;
 }
 
 .record-title {
-    margin: 0 0 8px 0;
-    font-size: 14px;
+    margin: 0 0 10px 0;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -139,14 +139,14 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 500;
     color: #71717b;
 }
 
 .record-desc {
-    margin: 0 0 8px;
-    font-size: 10px;
+    margin: 0 0 10px;
+    font-size: 14px;
     font-weight: 500;
 }
 
@@ -158,10 +158,10 @@
 .badge {
     display: inline-flex;
     align-items: center;
-    padding: 3px 5px;
-    border-radius: 6px;
-    font-size: 8px;
-    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .badge--tag {
@@ -169,8 +169,8 @@
 }
 
 .badge--green {
-    color: #3aa052;
-    background: #c6f5d1;
+    color: #1447e6;
+    background: #dbeafe;
 }
 
 .badge--blue {

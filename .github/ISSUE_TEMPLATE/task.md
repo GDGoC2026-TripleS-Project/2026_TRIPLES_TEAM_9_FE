@@ -1,8 +1,8 @@
 ---
-name: ✅ Task
+name: ✅ Feat
 about: 개발 작업 단위 이슈
-title: "[TASK] "
-labels: task
+title: "[Feat] "
+labels: Feat
 assignees: ""
 ---
 

@@ -8,9 +8,8 @@
   display: grid;
   grid-template-columns: minmax(220px, 3fr) minmax(0, 9fr);
   gap: 24px;
-  max-width: 1120px;
+  width: min(1100px, 92vw);
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 .my-sidebar {
