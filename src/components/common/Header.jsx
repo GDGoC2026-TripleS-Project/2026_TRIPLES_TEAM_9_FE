@@ -67,7 +67,14 @@ export default function Header({
         if (variant === VARIANT_GOALS) {
             return (
                 <div className="header-left">
-                    <h1 className="header-title">{title}</h1>
+                    <div className="header-goals-mainline">
+                        {showBack && (
+                            <button className="header-back-btn" type="button" onClick={onBack}>
+                                <ArrowLeft size={20} />
+                            </button>
+                        )}
+                        <h1 className="header-title">{title}</h1>
+                    </div>
                     <p className="header-subtitle">{subtitle}</p>
                 </div>
             );
@@ -117,7 +124,6 @@ export default function Header({
             if (!onAdd) return null;
             return (
                 <button className="header-add-btn" type="button" onClick={onAdd}>
-                    <Plus size={10} />
                     {addLabel}
                 </button>
             );

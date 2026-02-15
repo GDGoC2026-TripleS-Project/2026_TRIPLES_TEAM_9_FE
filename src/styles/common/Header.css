@@ -118,6 +118,12 @@
     gap: 8px;
 }
 
+.header-goals-mainline {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .header-back-btn {
     display: inline-flex;
     align-items: center;

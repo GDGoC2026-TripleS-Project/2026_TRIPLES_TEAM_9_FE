@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteMyGoal, getMyGoals } from "../../api/mypage.api";
 import GoalCard from "./GoalCard";
 import { MOCK_GOALS } from "./types";
@@ -62,6 +63,7 @@ const parseGoalList = (response) => {
 };
 
 export default function GoalList() {
+  const navigate = useNavigate();
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -116,7 +118,20 @@ export default function GoalList() {
       {error && <p className="my-error">{error}</p>}
 
       {goals.length === 0 ? (
-        <div className="goal-state">등록된 목표가 없습니다.</div>
+        <div className="goal-empty-card">
+          <div className="goal-empty-icon" aria-hidden="true">🎯</div>
+          <h3 className="goal-empty-title">등록된 목표가 없습니다</h3>
+          <p className="goal-empty-desc">
+            목표를 설정하면 진행률과 달성 현황을 한눈에 확인할 수 있어요.
+          </p>
+          <button
+            type="button"
+            className="my-btn goal-empty-btn"
+            onClick={() => navigate("/goals")}
+          >
+            목표 설정하기
+          </button>
+        </div>
       ) : (
         <div className="goal-list">
           {goals.map((goal) => (

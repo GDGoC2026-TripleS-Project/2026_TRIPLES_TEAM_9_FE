@@ -59,6 +59,15 @@
     gap: 24px;
 }
 
+.record-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    padding: 16px 0 6px;
+    gap: 10px;
+}
+
 .record-empty-state {
     min-height: 240px;
     border: 1px solid #d9e0db;

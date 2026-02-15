@@ -2,35 +2,136 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: #f8fafc;
 }
 
 .goals-list {
-    width: min(800px, 90vw);
+    width: min(900px, 92vw);
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    padding: 18px 0 28px;
+    display: grid;
+    gap: 14px;
     flex: 1;
+    border-top: 1px solid #e5e7eb;
+}
+
+.goal-empty {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    color: #6b7280;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.goal-empty-card {
+    border: 1px solid #d7dbe2;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    padding: 22px 24px;
+    display: grid;
+    gap: 12px;
+}
+
+.goals-pagination {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.goals-pagination button {
+    border: 1px solid #d6dae2;
+    border-radius: 10px;
+    background: #fff;
+    min-width: 46px;
+    height: 40px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.goals-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.goals-pagination span {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.goals-error-bar {
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+    border-radius: 10px;
+    font-size: 13px;
+    padding: 10px 12px;
+}
+
+.goal-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 90;
+}
+
+.goal-modal {
+    width: min(440px, 92vw);
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+    padding: 18px;
+}
+
+.goal-modal-title {
+    margin: 0 0 10px;
+}
+
+.goal-modal-form input {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    height: 38px;
+    padding: 0 12px;
+}
+
+.goal-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.goal-modal-btn {
+    border: 1px solid #16a34a;
+    border-radius: 8px;
+    background: #16a34a;
+    color: #fff;
+    height: 34px;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+.goal-modal-btn.ghost {
+    border-color: #d1d5db;
+    background: #fff;
+    color: #374151;
 }
 
 @media (max-width: 480px) {
-    .goal-card {
-        padding: 12px 14px;
-    }
-
-    .goal-addtask {
-        gap: 8px;
-    }
-
-    .goal-addtask input {
-        flex: 1;
-        width: auto;
-    }
-
-    .goal-toggle-btn {
-        width: 100%;
-    }
-
-    .task-left span {
-        font-size: 11px;
+    .goals-list {
+        width: min(92vw, 800px);
+        padding-top: 14px;
     }
 }

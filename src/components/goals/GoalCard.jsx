@@ -1,47 +1,55 @@
-import { Plus, X } from "lucide-react";
-import trash from "../../assets/records/detail/trash.svg";
-import check from "../../assets/goals/check.svg";
-import addCheck from "../../assets/goals/addcheck.svg";
-import { useState, useMemo } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import TaskRow from "./TaskRow";
 import "../../styles/goals/GoalCard.css";
 
 const GoalCard = ({
     goal,
-    showAddedNotice,
+    tasks = [],
+    isOpen = false,
+    loadingTasks = false,
+    pendingTaskIds,
     onDeleteGoal,
+    onOpenTasks,
+    onCloseTasks,
     onAddTask,
     onDeleteTask,
     onToggleTask,
-    onToggleCollapsed,
 }) => {
-    const { totalTaskCount, doneTaskCount, percent } = useMemo(() => {
-        const total = goal.tasks.length;
-        const done = goal.tasks.filter((task) => task.done).length;
-        const pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
-        return { totalTaskCount: total, doneTaskCount: done, percent: pct };
-    }, [goal.tasks]);
+    const percent = useMemo(() => {
+        if (!goal.totalTaskCount) return 0;
+        return Math.round((goal.completedTaskCount / goal.totalTaskCount) * 100);
+    }, [goal.completedTaskCount, goal.totalTaskCount]);
 
     const [newTask, setNewTask] = useState("");
 
-    const handleAddTask = (e) => {
-        e.preventDefault();
-        if (!newTask.trim()) return;
-
-        onAddTask(newTask);
+    const handleAddTask = async (event) => {
+        event.preventDefault();
+        const content = newTask.trim();
+        if (!content) return;
+        await onAddTask(goal.goalId, content);
         setNewTask("");
     };
 
     return (
-        <div className="goal-card">
+        <article className="goal-card">
             <div className="goal-header">
                 <div className="goal-header-text">
                     <h3 className="goal-title">{goal.title}</h3>
                     <p className="goal-progress-text">
-                        {doneTaskCount} / {totalTaskCount} 완료
+                        {goal.completedTaskCount} / {goal.totalTaskCount} 완료
                     </p>
                 </div>
-                <button type="button" className="goal-delete-btn" onClick={onDeleteGoal}>
-                    <img src={trash} width={12} height={15} alt="삭제" />
+                <button
+                    type="button"
+                    className="goal-delete-btn"
+                    onClick={() => {
+                        if (!window.confirm("목표를 삭제할까요?")) return;
+                        onDeleteGoal(goal.goalId);
+                    }}
+                    aria-label="목표 삭제"
+                >
+                    <Trash2 size={18} />
                 </button>
             </div>
             <div className="goal-progress">
@@ -49,76 +57,50 @@ const GoalCard = ({
                 <div className="progress-bar">
                     <div className="progress-bar__fill" style={{ width: `${percent}%` }} />
                 </div>
+                <p className="goal-percent">{percent}%</p>
             </div>
 
-            {!goal.collapsed ? (
+            {!isOpen ? (
+                <button type="button" className="goal-toggle-btn" onClick={() => onOpenTasks(goal.goalId)}>
+                    세부 과제 보기
+                </button>
+            ) : (
                 <>
-                    {goal.tasks.length > 0 && (
+                    {loadingTasks ? (
+                        <p className="goal-subtle">과제를 불러오는 중...</p>
+                    ) : tasks.length > 0 ? (
                         <ul className="goal-tasklist">
-                            {goal.tasks.map((task) => (
-                                <li key={task.id} className="goal-taskitem">
-                                    <div className="task-left">
-                                        <input
-                                            id={`task-${task.id}`}
-                                            type="checkbox"
-                                            checked={task.done}
-                                            onChange={() => onToggleTask(task.id)}
-                                        />
-                                        <label htmlFor={`task-${task.id}`} className="checkbox">
-                                            {task.done && (
-                                                <img src={check} alt="checked" size={10} />
-                                            )}
-                                        </label>
-                                        <span className={task.done ? "is-done" : ""}>
-                                            {task.text}
-                                        </span>
-                                    </div>
-
-                                    <button
-                                        type="button"
-                                        className="task-delete-btn"
-                                        onClick={() => onDeleteTask(task.id)}
-                                    >
-                                        <X
-                                            className="icon-x"
-                                            size={16}
-                                            strokeWidth={4}
-                                            color="red"
-                                        />
-                                    </button>
-                                </li>
+                            {tasks.map((task) => (
+                                <TaskRow
+                                    key={task.taskId}
+                                    task={task}
+                                    pendingTaskIds={pendingTaskIds}
+                                    onToggle={(taskId) => onToggleTask(goal.goalId, taskId)}
+                                    onDelete={(taskId) => onDeleteTask(goal.goalId, taskId)}
+                                />
                             ))}
                         </ul>
+                    ) : (
+                        <p className="goal-subtle">등록된 과제가 없습니다.</p>
                     )}
 
                     <form className="goal-addtask" onSubmit={handleAddTask}>
                         <input
                             type="text"
                             value={newTask}
-                            onChange={(e) => setNewTask(e.target.value)}
+                            onChange={(event) => setNewTask(event.target.value)}
                             placeholder="새 과제 추가"
                         />
-                        <button type="submit">
-                            <Plus size={20} strokeWidth={2} color="white" />
+                        <button type="submit" aria-label="과제 추가">
+                            <Plus size={20} strokeWidth={2.4} color="white" />
                         </button>
                     </form>
-                    <button type="button" className="goal-toggle-btn" onClick={onToggleCollapsed}>
+                    <button type="button" className="goal-toggle-btn" onClick={() => onCloseTasks(goal.goalId)}>
                         세부 과제 닫기
                     </button>
                 </>
-            ) : (
-                <button type="button" className="goal-toggle-btn" onClick={onToggleCollapsed}>
-                    세부 과제 보기
-                </button>
             )}
-
-            {showAddedNotice && (
-                <div className="card-toast">
-                    <img src={addCheck} alt="" className="toast-icon" />
-                    <span>목표가 추가되었습니다.</span>
-                </div>
-            )}
-        </div>
+        </article>
     );
 };
 
