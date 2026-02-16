@@ -194,3 +194,62 @@
     font-weight: 700;
     cursor: pointer;
 }
+
+@media (max-width: 900px) {
+    .header-container {
+        height: 74px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .header-user {
+        font-size: 14px;
+    }
+
+    .link-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-container {
+        height: 64px;
+    }
+
+    .header-actions--dashboard {
+        gap: 6px;
+    }
+
+    .header-user {
+        display: none;
+    }
+
+    .header-left {
+        gap: 10px;
+    }
+
+    .header-title {
+        font-size: 22px;
+    }
+
+    .header-back-label {
+        font-size: 18px;
+        gap: 6px;
+    }
+
+    .header-subtitle {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .header--goals .header-add-btn,
+    .header--records .header-add-btn {
+        height: 34px;
+        padding: 6px 10px;
+        font-size: 12px;
+        min-width: 92px;
+    }
+}

@@ -110,3 +110,37 @@
         gap: 12px;
     }
 }
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        width: min(100%, 94vw);
+        padding: 16px 0 22px;
+    }
+
+    .dashboard h2 {
+        font-size: 21px;
+        line-height: 1.35;
+    }
+
+    .dashboard > .dashboard-container > p {
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    .add-study-record-btn {
+        width: 100%;
+        min-width: 0;
+        height: 38px;
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .recent-study-list {
+        gap: 10px;
+    }
+}
