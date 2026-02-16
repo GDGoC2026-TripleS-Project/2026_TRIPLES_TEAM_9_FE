@@ -1,4 +1,4 @@
-const DEFAULT_ITEMS = ["회원 정보", "최근 학습 활동", "마인드맵 요약", "목표관리"];
+const DEFAULT_ITEMS = ["회원 정보", "최근 학습 활동", "업적 관리", "목표관리"];
 const WITHDRAW_LABEL = "회원 탈퇴";
 
 export default function MySidebar({

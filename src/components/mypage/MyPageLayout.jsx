@@ -5,7 +5,7 @@ import MySidebar from "./MySidebar";
 const ROUTE_MAP = {
     "회원 정보": "/mypage",
     "최근 학습 활동": "/mypage/recent",
-    "마인드맵 요약": "/mypage/mindmap",
+    "업적 관리": "/mypage/achievements",
     "목표관리": "/mypage/goals",
     "회원 탈퇴": "/mypage/withdraw",
 };

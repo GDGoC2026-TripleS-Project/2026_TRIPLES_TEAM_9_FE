@@ -1,7 +1,7 @@
 .goal-card {
     display: grid;
-    padding: 22px 24px;
-    gap: 12px;
+    padding: 26px 28px;
+    gap: 14px;
     border-radius: 10px;
     border: 1px solid #d7dbe2;
     background: #fff;
@@ -18,7 +18,7 @@
 
 .goal-title {
     color: #111827;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 800;
     margin: 0;
 }
@@ -26,7 +26,7 @@
 .goal-progress-text {
     margin: 6px 0 0;
     color: #6b7280;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .goal-delete-btn {
@@ -53,9 +53,17 @@
 
 .goal-progress-label {
     color: #6b7280;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
-    margin: 0 0 8px;
+    margin: 0;
+}
+
+.goal-progress-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
 }
 
 .progress-bar {
@@ -68,16 +76,15 @@
 .progress-bar__fill {
     height: 10px;
     border-radius: 9999px;
-    background: #2958e6;
+    background: #1447e6;
     transition: width 0.2s ease;
 }
 
 .goal-percent {
-    margin: 8px 0 0;
-    color: #2958e6;
-    font-size: 20px;
+    margin: 0;
+    color: #1447e6;
+    font-size: 17px;
     font-weight: 700;
-    text-align: right;
 }
 
 .goal-tasklist {
@@ -100,11 +107,11 @@
     align-items: center;
     gap: 8px;
     color: #374151;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .task-left span {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -133,22 +140,23 @@
 
 .goal-addtask input {
     flex: 1;
-    height: 34px;
-    padding: 0 10px;
+    height: 40px;
+    padding: 0 12px;
     border-radius: 8px;
     border: 1px solid #d1d5db;
     background: #fff;
+    font-size: 15px;
 }
 
 .goal-addtask button {
     display: flex;
-    width: 44px;
-    height: 34px;
+    width: 48px;
+    height: 40px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    background: #2958e6;
+    background: #1447e6;
     border: none;
     cursor: pointer;
 }
@@ -157,12 +165,12 @@
     display: inline-flex;
     width: 100%;
     min-width: 120px;
-    height: 40px;
+    height: 44px;
     padding: 0 12px;
     justify-content: center;
     align-items: center;
     color: #374151;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     border-radius: 8px;
     border: 1px solid #d6dae2;

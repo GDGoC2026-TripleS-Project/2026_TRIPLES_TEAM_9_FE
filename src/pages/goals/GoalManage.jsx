@@ -48,26 +48,8 @@ const GoalManage = () => {
                     <div className="goal-empty">목표를 불러오는 중...</div>
                 ) : goals.length === 0 ? (
                     <section className="goal-empty-card">
-                        <div className="goal-header">
-                            <div className="goal-header-text">
-                                <h3 className="goal-title">아직 목표가 없습니다</h3>
-                                <p className="goal-progress-text">0 / 0 완료</p>
-                            </div>
-                            <button
-                                type="button"
-                                className="goal-delete-btn"
-                                disabled
-                                aria-label="목표 삭제 비활성"
-                            >
-                                -
-                            </button>
-                        </div>
-                        <div className="goal-progress">
-                            <p className="goal-progress-label">진행률</p>
-                            <div className="progress-bar">
-                                <div className="progress-bar__fill" style={{ width: "0%" }} />
-                            </div>
-                        </div>
+                        <h3 className="goal-title">아직 목표가 없습니다</h3>
+                        <p className="goal-progress-text">등록된 목표가 없습니다.</p>
                         <button
                             type="button"
                             className="goal-toggle-btn"

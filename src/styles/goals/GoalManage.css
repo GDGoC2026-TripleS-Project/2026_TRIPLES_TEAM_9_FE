@@ -6,12 +6,12 @@
 }
 
 .goals-list {
-    width: min(900px, 92vw);
+    width: min(1100px, 92vw);
     margin: 0 auto;
-    padding: 18px 0 28px;
-    display: grid;
-    gap: 14px;
-    flex: 1;
+    padding: 22px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     border-top: 1px solid #e5e7eb;
 }
 
@@ -32,17 +32,35 @@
     border-radius: 10px;
     background: #fff;
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-    padding: 22px 24px;
+    min-height: 240px;
+    padding: 24px;
     display: grid;
-    gap: 12px;
+    gap: 10px;
+    justify-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.goal-empty-desc {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.goal-empty-card .goal-toggle-btn {
+    margin-top: 10px;
+    width: auto;
+    min-width: 168px;
 }
 
 .goals-pagination {
-    margin-top: 6px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    align-self: center;
 }
 
 .goals-pagination button {
@@ -114,9 +132,9 @@
 }
 
 .goal-modal-btn {
-    border: 1px solid #16a34a;
+    border: 1px solid #1447e6;
     border-radius: 8px;
-    background: #16a34a;
+    background: #1447e6;
     color: #fff;
     height: 34px;
     padding: 0 12px;

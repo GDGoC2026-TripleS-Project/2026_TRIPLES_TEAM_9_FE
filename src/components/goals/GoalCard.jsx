@@ -53,11 +53,13 @@ const GoalCard = ({
                 </button>
             </div>
             <div className="goal-progress">
-                <p className="goal-progress-label">진행률</p>
+                <div className="goal-progress-head">
+                    <p className="goal-progress-label">진행률</p>
+                    <p className="goal-percent">{percent}%</p>
+                </div>
                 <div className="progress-bar">
                     <div className="progress-bar__fill" style={{ width: `${percent}%` }} />
                 </div>
-                <p className="goal-percent">{percent}%</p>
             </div>
 
             {!isOpen ? (

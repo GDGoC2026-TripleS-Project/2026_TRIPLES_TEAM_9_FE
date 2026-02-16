@@ -26,14 +26,14 @@ export default function GoalCard({ goal, onDelete, deleting = false }) {
       </p>
 
       <div className="goal-progress-area">
-        <span className="goal-progress-label">진행률</span>
+        <div className="goal-progress-head">
+          <span className="goal-progress-label">진행률</span>
+          <span className="goal-percent">{percent}%</span>
+        </div>
         <div className="goal-progress-track">
           <div className="goal-progress-fill" style={{ width: `${percent}%` }} />
         </div>
       </div>
-
-      <span className="goal-percent">{percent}%</span>
     </article>
   );
 }
-

@@ -21,14 +21,13 @@
     align-items: center;
     justify-content: space-between;
 
-    width: min(800px, 90vw);
-    height: 80px;
+    width: min(1100px, 92vw);
+    height: 92px;
     border-bottom: 1px solid #e4e4e7;
 }
 
 .header--home .header-container {
-    width: min(1100px, 92vw);
-    height: 64px;
+    height: 76px;
 }
 
 .header--detail .header-container {
@@ -60,6 +59,7 @@
 
 .brand-name {
     font-weight: 800;
+    font-size: 22px;
     letter-spacing: -0.02em;
 }
 
@@ -76,13 +76,13 @@
 }
 
 .header-user {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .link-btn {
     display: flex;
-    padding: 8px 15px;
+    padding: 10px 16px;
     justify-content: center;
     align-items: center;
     background: #fff;
@@ -91,7 +91,7 @@
     color: #111;
     cursor: pointer;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .logout-btn {
@@ -139,12 +139,12 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 500;
 }
 
 .header-title {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 600;
     margin: 0;
 }
@@ -155,42 +155,42 @@
 
 .header-subtitle {
     color: #71717b;
-    font-size: 8px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
     margin: 0;
 }
 
 .header--records .header-add-btn {
     display: inline-flex;
-    width: 56px;
-    height: 24px;
-    padding: 8px;
+    width: 92px;
+    height: 36px;
+    padding: 8px 12px;
     justify-content: center;
     align-items: center;
     gap: 10px;
     border-radius: 6px;
     border: none;
-    background: #3aa052;
+    background: #1447e6;
     color: #ffffff;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
 }
 
 .header--goals .header-add-btn {
     display: inline-flex;
-    width: 68px;
-    height: 20px;
-    padding: 4px 8px;
+    min-width: 112px;
+    height: 36px;
+    padding: 8px 12px;
     justify-content: center;
     align-items: center;
     gap: 2px;
 
     border-radius: 6px;
     border: none;
-    background: #00a63e;
+    background: #1447e6;
     color: #fff;
-    font-size: 8px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
 }
