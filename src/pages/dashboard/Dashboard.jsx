@@ -10,12 +10,14 @@ import "../../styles/global.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { getDashboard } from "../../services/dashboard";
+import { getAchievements } from "../../api/achievement.api";
 
 const DEFAULT_DASHBOARD = {
     summary: {
         totalRecords: 0,
         totalKeywords: 0,
         totalCategories: 0,
+        unlocked: 0,
     },
     recentActivities: [],
     categoryStats: [],
@@ -38,12 +40,18 @@ const Dashboard = () => {
         setError("");
 
         try {
-            const data = await getDashboard({ signal: controller.signal });
+            const [dashboardData, achievementsData] = await Promise.all([
+                getDashboard({ signal: controller.signal }),
+                getAchievements({ signal: controller.signal }),
+            ]);
 
             setDashboard({
-                summary: data?.summary ?? DEFAULT_DASHBOARD.summary,
-                recentActivities: data?.recentActivities ?? [],
-                categoryStats: data?.categoryStats ?? [],
+                summary: {
+                    ...(dashboardData?.summary ?? DEFAULT_DASHBOARD.summary),
+                    unlocked: achievementsData?.summary?.unlocked ?? 0,
+                },
+                recentActivities: dashboardData?.recentActivities ?? [],
+                categoryStats: dashboardData?.categoryStats ?? [],
             });
         } catch (e) {
             if (controller.signal.aborted) return;

@@ -17,7 +17,7 @@ const DashboardSummaryCards = ({ summary }) => {
     },
     {
       title: "업적",
-      value: 0,
+      value: summary?.unlocked ?? 0,
       icon: BookOpen,
       tone: "achievement",
     },

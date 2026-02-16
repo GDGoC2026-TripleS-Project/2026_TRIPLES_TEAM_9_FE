@@ -239,7 +239,7 @@
   border-radius: 16px;
   padding: 14px 10px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   text-align: center;
 }
 
@@ -261,6 +261,77 @@
 .my-summary-item span {
   font-size: 12px;
   color: #6b7280;
+}
+
+.my-badges {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.my-badges-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.my-badges-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.my-badges-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.my-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.my-badge-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.my-badge-card strong {
+  font-size: 14px;
+  color: inherit;
+}
+
+.my-badge-card span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.my-badge-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.my-badge-card.is-unlocked {
+  border-color: #22c55e;
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.my-badge-card.is-locked {
+  opacity: 0.6;
+  filter: grayscale(1);
 }
 
 .my-chart {
@@ -497,6 +568,21 @@
   gap: 10px;
 }
 
+.goal-card--clickable {
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.goal-card--clickable:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 4px 12px rgba(20, 71, 230, 0.12);
+}
+
+.goal-card--clickable:focus-visible {
+  outline: 2px solid #1447e6;
+  outline-offset: 2px;
+}
+
 .goal-title {
   margin: 0;
   color: #111827;
@@ -590,7 +676,17 @@
     grid-template-columns: 1fr;
   }
 
+  .my-badge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .my-bars {
     flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .my-badge-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -14,8 +14,7 @@ const unwrap = (res) => {
   return body;
 };
 
-export const getAchievements = async () => {
-  const res = await api.get("/achievements");
+export const getAchievements = async (config = {}) => {
+  const res = await api.get("/achievements", config);
   return unwrap(res);
 };
-

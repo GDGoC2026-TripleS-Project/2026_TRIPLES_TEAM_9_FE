@@ -23,7 +23,6 @@ export default function AuthBootstrapper({ children }) {
     useEffect(() => {
         const triggerRefresh = () => {
             const now = Date.now();
-            // 탭 복귀/온라인 이벤트가 연속으로 들어올 때 refresh 폭주를 방지합니다.
             if (now - lastRefreshAtRef.current < 5000) return;
             lastRefreshAtRef.current = now;
             refreshAuth();

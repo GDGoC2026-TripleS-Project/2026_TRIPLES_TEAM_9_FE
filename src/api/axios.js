@@ -13,6 +13,7 @@ const api = axios.create({
 
 const isRefreshRequest = (url = "") => url.includes("/refresh");
 let onAuthFail = null;
+let isRedirectingToLogin = false;
 
 const debugLog = (...args) => {
   if (!AUTH_DEBUG) return;
@@ -25,9 +26,11 @@ export const setOnAuthFail = (callback) => {
 
 const redirectToLogin = () => {
   if (typeof window === "undefined") return;
-  if (window.location.pathname !== "/login") {
-    window.location.href = "/login";
-  }
+  if (window.location.pathname === "/login" || isRedirectingToLogin) return;
+
+  isRedirectingToLogin = true;
+  window.alert("로그인이 필요합니다.");
+  window.location.href = "/login";
 };
 
 const handleAuthFail = (reason) => {

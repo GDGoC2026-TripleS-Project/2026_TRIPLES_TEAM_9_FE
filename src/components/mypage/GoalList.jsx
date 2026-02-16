@@ -140,6 +140,7 @@ export default function GoalList() {
               goal={goal}
               deleting={isDeleting.has(goal.id)}
               onDelete={handleDelete}
+              onOpen={() => navigate("/goals")}
             />
           ))}
         </div>

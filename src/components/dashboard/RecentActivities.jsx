@@ -1,5 +1,6 @@
 import "../../styles/Dashboard/RecentStudyList.css";
 import "../../styles/Dashboard/StudyItem.css";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (value) => {
   if (!value) return "";
@@ -16,6 +17,7 @@ const formatDate = (value) => {
 };
 
 const RecentActivities = ({ items = [], isEmpty = false }) => {
+  const navigate = useNavigate();
   const sortedItems = [...items].sort((a, b) => {
     const left = new Date(a.learningDate).getTime();
     const right = new Date(b.learningDate).getTime();
@@ -38,7 +40,12 @@ const RecentActivities = ({ items = [], isEmpty = false }) => {
             const remainCount = Math.max(0, keywords.length - 3);
 
             return (
-              <div className="study-item" key={item.recordId}>
+              <button
+                type="button"
+                className="study-item study-item--clickable"
+                key={item.recordId}
+                onClick={() => navigate(`/records/${item.recordId}`)}
+              >
                 <div className="study-item-content">
                   <h4>{item.title}</h4>
                   <div className="study-keywords">
@@ -58,7 +65,7 @@ const RecentActivities = ({ items = [], isEmpty = false }) => {
                   </div>
                 </div>
                 <span className="study-date">{formatDate(item.learningDate)}</span>
-              </div>
+              </button>
             );
           })}
         </div>
