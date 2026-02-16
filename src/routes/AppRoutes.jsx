@@ -13,6 +13,7 @@ import StudyRecordDetail from "../pages/records/StudyRecordDetail";
 import GoalManage from "../pages/goals/GoalManage";
 import MyPage from "../pages/mypage/MyPage";
 import RecentActivityPage from "../pages/mypage/RecentActivityPage";
+import AchievementsPage from "../pages/mypage/AchievementsPage";
 import WithdrawPage from "../pages/mypage/WithdrawPage";
 import GoalManagePage from "../pages/mypage/GoalManagePage";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -33,6 +34,7 @@ const ROUTE_ELEMENTS = {
     goals: <GoalManage />,
     mypage: <MyPage />,
     mypageRecent: <RecentActivityPage />,
+    mypageAchievements: <AchievementsPage />,
     mypageGoals: <GoalManagePage />,
     mypageWithdraw: <WithdrawPage />,
     authPlaceholder: null,
