@@ -22,7 +22,7 @@
     position: relative;
     width: 100%;
     width: 616px;
-    height: 600px;
+    height: 580px;
 
     border-radius: 6px;
     border: 1px solid #dddfdc;
@@ -116,7 +116,7 @@
 }
 
 .mindmap-search input {
-    width: 100%;
+    width: 122px;
     height: 30px;
     border-radius: 4px;
     border: 1px solid #b9c4f8;
@@ -142,7 +142,7 @@
     background: #1447e6;
 }
 
-.mindmap-new {
+.mindmap-add-btn {
     white-space: nowrap;
     height: 40px;
     padding: 8px 133px;

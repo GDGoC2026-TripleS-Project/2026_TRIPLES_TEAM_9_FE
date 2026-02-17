@@ -2,16 +2,21 @@ import Header from "../../components/common/Header";
 import CategoryTabs from "../../components/common/CategoryTabs";
 import MindMapView from "../../components/mindmap/MindMapView";
 import MindMapCard from "../../components/mindmap/MindMapCard";
-
-import { useEffect, useMemo } from "react";
+import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRecordListQuery } from "../../hooks/useRecordApi";
 import { toRecordListItem, getCategoryMeta } from "../../utils/recordView";
+import { useCreateRecordMutation } from "../../hooks/useRecordApi";
+import { buildRecordCreatePayload } from "../../utils/recordView";
+import { getApiErrorMessage } from "../../api/api-response";
+
 import "../../styles/mindmap/MindMap.css";
 import search from "../../assets/mindmap/search.svg";
 
 const MindMap = () => {
     const navigate = useNavigate();
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const category = searchParams.get("category") ?? "";
@@ -32,6 +37,21 @@ const MindMap = () => {
         error: recordListError,
         setParams: setRecordListParams,
     } = recordListQuery;
+
+    const createRecordMutation = useCreateRecordMutation({
+        onSuccess: async () => {
+            await recordListQuery.refetch();
+            setIsCreateOpen(false);
+        },
+    });
+
+    const onCreateSave = async (payload) => {
+        try {
+            await createRecordMutation.mutateAsync(buildRecordCreatePayload(payload));
+        } catch (error) {
+            alert(getApiErrorMessage(error, "기록 생성에 실패했습니다."));
+        }
+    };
 
     useEffect(() => {
         if (!searchParams.get("category")) {
@@ -92,7 +112,11 @@ const MindMap = () => {
                                 </form>
                             </header>
 
-                            <button type="button" className="mindmap-new">
+                            <button
+                                type="button"
+                                className="mindmap-add-btn"
+                                onClick={() => setIsCreateOpen(true)}
+                            >
                                 + 기록 추가
                             </button>
 
@@ -117,7 +141,7 @@ const MindMap = () => {
                                     </div>
                                 )}
 
-                            {!isRecordListLoading && !recordListError && (
+                            {!isRecordListLoading && !recordListError && items.length > 0 && (
                                 <ul className="mindmap-detail-list">
                                     {items.map((item) => (
                                         <li key={item.id} className="mindmap-detail-item">
@@ -130,6 +154,12 @@ const MindMap = () => {
                     </div>
                 </div>
             </main>
+            {isCreateOpen && (
+                <StudyRecordCreateModal
+                    onClose={() => setIsCreateOpen(false)}
+                    onSave={onCreateSave}
+                />
+            )}
         </div>
     );
 };
