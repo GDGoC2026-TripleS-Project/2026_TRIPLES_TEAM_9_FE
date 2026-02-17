@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
 const CATEGORIES = [
-    { label: "모두", value: "all" },
     { label: "강의", value: "lecture" },
     { label: "독서", value: "reading" },
     { label: "프로젝트", value: "project" },
@@ -10,14 +9,19 @@ const CATEGORIES = [
     { label: "기타", value: "other" },
 ];
 
-const CategoryTabs = () => {
+const ALL_CATEGORY = { label: "모두", value: "all" };
+
+const CategoryTabs = ({ showAll = true }) => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const activeTab = searchParams.get("category") ?? "all";
+    const tabs = showAll ? [ALL_CATEGORY, ...CATEGORIES] : CATEGORIES;
+
+    const fallback = tabs[0]?.value ?? "";
+    const activeTab = searchParams.get("category") ?? fallback;
 
     const onSelect = (value) => {
         const next = new URLSearchParams(searchParams);
 
-        if (value === "all") {
+        if (showAll && value === "all") {
             next.delete("category");
         } else {
             next.set("category", value);
@@ -28,7 +32,7 @@ const CategoryTabs = () => {
 
     return (
         <div className="record-tabs">
-            {CATEGORIES.map(({ label, value }) => (
+            {tabs.map(({ label, value }) => (
                 <button
                     key={value}
                     type="button"

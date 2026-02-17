@@ -11,6 +11,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import StudyRecord from "../pages/records/StudyRecord";
 import StudyRecordDetail from "../pages/records/StudyRecordDetail";
 import GoalManage from "../pages/goals/GoalManage";
+import MindMap from "../pages/mindmap/MindMap";
 import MyPage from "../pages/mypage/MyPage";
 import RecentActivityPage from "../pages/mypage/RecentActivityPage";
 import AchievementsPage from "../pages/mypage/AchievementsPage";
@@ -32,6 +33,7 @@ const ROUTE_ELEMENTS = {
     records: <StudyRecord />,
     recordDetail: <StudyRecordDetail />,
     goals: <GoalManage />,
+    mindmap: <MindMap />,
     mypage: <MyPage />,
     mypageRecent: <RecentActivityPage />,
     mypageAchievements: <AchievementsPage />,
