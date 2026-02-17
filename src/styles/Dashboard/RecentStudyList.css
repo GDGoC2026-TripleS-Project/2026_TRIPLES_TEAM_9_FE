@@ -1,9 +1,9 @@
 .recent-study-section {
     width: 100%;
-    max-width: 484px;
+    max-width: none;
     height: auto;
-    padding: 14px;
-    border-radius: 6px;
+    padding: 16px;
+    border-radius: 12px;
     border: 1px solid #e4e4e7;
     background: #fff;
 }
@@ -12,29 +12,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 .section-header h3 {
     margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.section-header p {
-    margin: 0;
-    font-size: 8px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 .recent-empty {
     margin: 0;
-    font-size: 11px;
+    font-size: 14px;
     color: #697282;
 }
 
 .study-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }

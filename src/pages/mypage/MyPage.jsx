@@ -6,6 +6,7 @@ import "../../styles/MyPage.css";
 import "../../styles/global.css";
 import { getMyProfile, getUserInfo, updateMyProfile } from "../../api/mypage.api";
 import { getDashboardMonthly, getDashboardSummary } from "../../api/dashboard.api";
+import { getAchievements } from "../../api/achievement.api";
 
 const LEARNING_GOAL_LABELS = {
     JOB: "취업",
@@ -59,6 +60,10 @@ const MyPage = () => {
         totalKeywords: 0,
         totalCategories: 0,
     });
+    const [achievementSummary, setAchievementSummary] = useState({
+        total: 0,
+        unlocked: 0,
+    });
     const [monthly, setMonthly] = useState([]);
     const [loadingError, setLoadingError] = useState("");
     const [monthlyError, setMonthlyError] = useState("");
@@ -76,11 +81,12 @@ const MyPage = () => {
             setLoadingError("");
             setMonthlyError("");
             try {
-                const [meRes, infoRes, summaryRes, monthlyRes] = await Promise.allSettled([
+                const [meRes, infoRes, summaryRes, monthlyRes, achievementsRes] = await Promise.allSettled([
                     getMyProfile(),
                     getUserInfo(),
                     getDashboardSummary(),
                     getDashboardMonthly(),
+                    getAchievements(),
                 ]);
 
                 let meData = null;
@@ -88,7 +94,6 @@ const MyPage = () => {
 
                 if (meRes.status === "fulfilled") {
                     meData = meRes.value.data?.data ?? meRes.value.data;
-                    console.log("[my] profile data loaded", meData);
                 } else {
                     setLoadingError("프로필 정보를 불러올 수 없습니다.");
                 }
@@ -132,6 +137,16 @@ const MyPage = () => {
                     setSummary({ totalRecords: 0, totalKeywords: 0, totalCategories: 0 });
                 }
 
+                if (achievementsRes.status === "fulfilled") {
+                    const a = achievementsRes.value;
+                    setAchievementSummary({
+                        total: a?.summary?.total ?? 0,
+                        unlocked: a?.summary?.unlocked ?? 0,
+                    });
+                } else {
+                    setAchievementSummary({ total: 0, unlocked: 0 });
+                }
+
                 if (monthlyRes.status === "fulfilled") {
                     const m = monthlyRes.value.data?.data ?? monthlyRes.value.data;
                     setMonthly(Array.isArray(m) ? m : []);
@@ -139,7 +154,7 @@ const MyPage = () => {
                     setMonthly([]);
                     setMonthlyError("데이터 로딩 실패");
                 }
-            } catch (e) {
+            } catch {
                 if (!alive) return;
                 setLoadingError("프로필 정보를 불러올 수 없습니다.");
             }
@@ -220,10 +235,10 @@ const MyPage = () => {
                 const infoRes = await getUserInfo();
                 const infoData = infoRes.data?.data ?? infoRes.data;
                 setEmail(infoData?.email ?? "-");
-            } catch (e) {
+            } catch {
                 setEmail("-");
             }
-        } catch (e) {
+        } catch {
             alert("저장에 실패했습니다.");
         } finally {
             setSaving(false);
@@ -328,17 +343,12 @@ const MyPage = () => {
                                                     key={value}
                                                     type="button"
                                                     className={`my-chip ${selected ? "is-selected" : ""}`}
-                                                    onClick={() => {
-                                                        console.log("[my] learningGoal click", {
-                                                            value,
-                                                            selected,
-                                                            isEditing,
-                                                        });
+                                                    onClick={() =>
                                                         setFieldValue(
                                                             "learningGoal",
                                                             selected ? "" : value,
-                                                        );
-                                                    }}
+                                                        )
+                                                    }
                                                     disabled={disabled}
                                                 >
                                                     {label}
@@ -406,6 +416,10 @@ const MyPage = () => {
                             <div className="my-summary-item">
                                 <strong>{summary.totalKeywords}</strong>
                                 <span>키워드</span>
+                            </div>
+                            <div className="my-summary-item">
+                                <strong>{achievementSummary.unlocked}</strong>
+                                <span>달성 업적</span>
                             </div>
                             <div className="my-summary-item">
                                 <strong>{summary.totalCategories}</strong>

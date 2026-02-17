@@ -1,14 +1,28 @@
 import { getGoalPercent } from "./types";
 
-export default function GoalCard({ goal, onDelete, deleting = false }) {
+export default function GoalCard({ goal, onDelete, onOpen, deleting = false }) {
   const percent = getGoalPercent(goal);
 
   return (
-    <article className="goal-card">
+    <article
+      className="goal-card goal-card--clickable"
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen?.(goal)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onOpen?.(goal);
+        }
+      }}
+    >
       <button
         className="goal-delete-btn"
         type="button"
-        onClick={() => onDelete?.(goal.id)}
+        onClick={(event) => {
+          event.stopPropagation();
+          onDelete?.(goal.id);
+        }}
         disabled={deleting}
         aria-label={`${goal.title} 삭제`}
       >

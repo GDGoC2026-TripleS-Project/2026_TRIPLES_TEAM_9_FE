@@ -5,16 +5,6 @@ import RecentActivityCard from "../../components/mypage/RecentActivityCard";
 import { getMyPageRecent } from "../../api/mypage.api";
 import "../../styles/MyPage.css";
 
-const CATEGORY_TO_QUERY = {
-  LECTURE: "lecture",
-  READING: "reading",
-  PROJECT: "project",
-  SEMINAR: "seminar",
-  PERSONAL: "personal",
-  STUDY: "personal",
-  OTHER: "other",
-};
-
 export default function RecentActivityPage() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -26,7 +16,6 @@ export default function RecentActivityPage() {
     setError("");
     try {
       const data = await getMyPageRecent(5);
-      console.log("data.data:", data?.data);
       setItems(Array.isArray(data?.data?.data) ? data.data.data : []);
     } catch {
       setError("최근 학습 활동을 불러오지 못했습니다.");
@@ -69,12 +58,11 @@ export default function RecentActivityPage() {
               key={item.recordId}
               item={item}
               onClick={() => {
-                const category = CATEGORY_TO_QUERY[item.category] ?? "";
-                if (!category) {
+                if (!item.recordId) {
                   navigate("/records");
                   return;
                 }
-                navigate(`/records?category=${category}`);
+                navigate(`/records/${item.recordId}?edit=1`);
               }}
             />
           ))}

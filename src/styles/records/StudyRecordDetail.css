@@ -166,6 +166,9 @@
         padding: 10px 0 8px;
         gap: 10px;
         font-size: 14px;
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .detail-actions {
@@ -202,11 +205,46 @@
         min-height: 96px;
         margin: 10px 0 16px;
         font-size: 13px;
+        padding: 12px;
     }
 
     .detail-tag {
         margin-top: 12px;
         padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .detail-main {
+        width: min(100%, 95vw);
+    }
+
+    .detail-card {
+        margin-top: 12px;
+        padding: 12px;
+    }
+
+    .detail-meta {
+        font-size: 13px;
+        gap: 8px;
+    }
+
+    .detail-actions {
+        gap: 6px;
+    }
+
+    .detail-action {
+        height: 30px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+
+    .detail-title {
+        font-size: 18px;
+    }
+
+    .detail-content-box {
         font-size: 12px;
     }
 }

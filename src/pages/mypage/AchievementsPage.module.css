@@ -1,0 +1,187 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.summary {
+  border: 1px solid #dbe4ff;
+  background: #eef4ff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.summaryLabel {
+  font-size: 14px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.summaryValue {
+  font-size: 20px;
+  color: #1447e6;
+  font-weight: 900;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.tabActive {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #1447e6;
+  background: #1447e6;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.stateText {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #6b7280;
+}
+
+.errorText {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.sectionList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sectionCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  padding: 18px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .badgeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .badgeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.badge {
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.badgeIcon {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.badgeName {
+  font-weight: 900;
+  color: inherit;
+}
+
+.badgeDescription {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.unlocked {
+  border-color: #22c55e;
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.locked {
+  opacity: 0.6;
+  filter: grayscale(1);
+}
+
+.badgeMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.unlockLabel {
+  font-size: 12px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #fff;
+}
+
+.lockLabel {
+  font-size: 12px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+}
+
+.progressText {
+  font-size: 12px;
+  font-weight: 800;
+  color: #6b7280;
+}
+

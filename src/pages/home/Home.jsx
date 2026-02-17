@@ -4,6 +4,8 @@ import "../../styles/global.css";
 import "../../styles/home.css";
 
 import { BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { getAccessToken } from "../../lib/token";
 
 const FEATURES = [
     {
@@ -45,6 +47,18 @@ const FEATURES = [
 ];
 
 export default function Home() {
+    const navigate = useNavigate();
+
+    const onStartGarden = () => {
+        const token = getAccessToken();
+        if (!token) {
+            window.alert("로그인이 필요합니다.");
+            navigate("/login");
+            return;
+        }
+        navigate("/dashboard");
+    };
+
     return (
         <div className="page">
             <Header />
@@ -58,7 +72,7 @@ export default function Home() {
                     </p>
 
                     <div className="hero-actions">
-                        <button className="primary-btn large" onClick={() => window.location.href = "/records"}>내 지식 정원 가꾸기</button>
+                        <button className="primary-btn large" onClick={onStartGarden}>내 지식 정원 가꾸기</button>
                         <button className="ghost-btn large">더 알아보기</button>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ export const APP_ROUTES = [
     { path: "/goals", key: "goals" },
     { path: "/mypage", key: "mypage" },
     { path: "/mypage/recent", key: "mypageRecent" },
+    { path: "/mypage/achievements", key: "mypageAchievements" },
     { path: "/mypage/goals", key: "mypageGoals" },
     { path: "/mypage/withdraw", key: "mypageWithdraw" },
 ];

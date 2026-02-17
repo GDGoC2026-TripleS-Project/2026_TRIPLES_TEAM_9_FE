@@ -1,117 +1,146 @@
 .dashboard-container {
-    width: min(800px, 90vw);
+    width: min(1040px, 92vw);
     margin: 0 auto;
+    padding: 20px 0 28px;
 }
 
 .dashboard h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 11px;
+    font-size: 30px;
+    font-weight: 800;
+    margin: 0 0 10px;
+    line-height: 1.25;
 }
 
 .dashboard > .dashboard-container > p {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500;
-    margin-bottom: 25px;
+    margin: 0 0 18px;
+    color: #475569;
 }
 
 .add-study-record-btn {
-    display: flex;
-    padding: 4px;
-    width: 88px;
-    height: 22px;
+    display: inline-flex;
+    padding: 0 16px;
+    min-width: 164px;
+    height: 40px;
     justify-content: center;
     align-items: center;
     background: #165dfb;
-    border-radius: 6px;
+    border-radius: 10px;
     border: none;
-
     color: white;
-    font-size: 10px;
-    font-weight: 400;
-    margin-bottom: 23px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    cursor: pointer;
 }
 
 .dashboard-cards {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 37px;
-    margin-top: 16px;
-    margin-bottom: 25px;
+    gap: 16px;
+    margin-top: 10px;
+    margin-bottom: 16px;
 }
 
 .recent-study-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 37px;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 14px;
     align-items: start;
 }
 
 .recent-study-list > :first-child {
-    grid-column: 1 / 4;
+    grid-column: auto;
 }
 
 .dashboard-right {
-    grid-column: 4 / 5;
+    grid-column: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 14px;
 }
 
 .dashboard-status {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
+    font-size: 16px;
 }
 
 .dashboard-retry-btn {
     border: 1px solid #d1d5db;
     background: #fff;
-    border-radius: 6px;
-    font-size: 12px;
-    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 14px;
     cursor: pointer;
 }
 
 @media (max-width: 900px) {
     .dashboard-cards {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .recent-study-list {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-    }
-
-    .recent-study-list > :first-child {
-        grid-column: 1 / 4;
-    }
-
-    .dashboard-right {
-        grid-column: 4 / 5;
-    }
-}
-
-@media (max-width: 600px) {
-    .dashboard-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
     .recent-study-list {
-        grid-template-columns: 3fr 2fr;
-        align-items: start;
-    }
-
-    .recent-study-list > :first-child {
-        grid-column: 1;
-        min-width: 0;
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .dashboard-right {
-        grid-column: 2;
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard h2 {
+        font-size: 24px;
+    }
+
+    .dashboard > .dashboard-container > p {
+        font-size: 14px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        width: min(100%, 94vw);
+        padding: 16px 0 22px;
+    }
+
+    .dashboard h2 {
+        font-size: 21px;
+        line-height: 1.35;
+    }
+
+    .dashboard > .dashboard-container > p {
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    .add-study-record-btn {
+        width: 100%;
         min-width: 0;
-        align-items: center;
+        height: 38px;
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .recent-study-list {
+        gap: 10px;
     }
 }
