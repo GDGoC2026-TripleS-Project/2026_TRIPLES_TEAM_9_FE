@@ -2,10 +2,10 @@ import tree from "../../assets/mindmap/tree.svg";
 import AppleNode from "./AppleNode";
 
 const MOCK_ITEMS = [
-    { id: 1, category: "lecture", text: "React", x: 375, y: 306 },
+    { id: 1, category: "lecture", text: "React", x: 375, y: 300 },
     { id: 2, category: "reading", text: "알고리즘", x: 351, y: 184 },
-    { id: 3, category: "project", text: "javascript", x: 551, y: 454 },
-    { id: 4, category: "reading", text: "javascriptstudy", x: 201, y: 284 },
+    { id: 3, category: "project", text: "javascript", x: 375, y: 300 },
+    { id: 4, category: "reading", text: "javascriptstudy", x: 190, y: 284 },
 ];
 
 export default function MindMapView({ isLoading, error, category }) {
