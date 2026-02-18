@@ -20,9 +20,10 @@
 .mindmap-view {
     display: flex;
     position: relative;
-    width: 100%;
     width: 616px;
+    max-width: 100%;
     height: 580px;
+    overflow: hidden;
 
     border-radius: 6px;
     border: 1px solid #dddfdc;
@@ -43,6 +44,7 @@
     display: flex;
     flex-direction: column;
     width: 404px;
+    max-width: 100%;
     height: 522px;
     padding: 16.5px 20px;
 
@@ -213,6 +215,7 @@
 
 .mindmap-card {
     width: 364px;
+    max-width: 100%;
     padding: 8px 12px;
     display: flex;
     flex-direction: column;
@@ -233,4 +236,107 @@
     color: #4a5565;
     font-size: 14px;
     font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .mindmap-content {
+        width: min(920px, 94vw);
+    }
+
+    .mindmap-panels {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .mindmap-view {
+        width: 100%;
+        max-width: 680px;
+        height: auto;
+        min-height: 420px;
+    }
+
+    .mindmap-detail {
+        width: 100%;
+        max-width: 680px;
+        height: auto;
+    }
+
+    .mindmap-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .mindmap-content {
+        width: min(680px, 94vw);
+    }
+
+    .mindmap-panels {
+        gap: 14px;
+    }
+
+    .mindmap-view {
+        min-height: 320px;
+    }
+
+    .mindmap-detail {
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .mindmap-detail-header {
+        gap: 12px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .mindmap-search {
+        margin-top: 0;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .mindmap-search input {
+        flex: 1;
+        min-width: 0;
+        font-size: 16px;
+    }
+
+    .mindmap-search button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mindmap-add-btn {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mindmap-content {
+        width: min(460px, 94vw);
+    }
+
+    .mindmap-view {
+        min-height: 260px;
+    }
+
+    .mindmap-detail-title {
+        font-size: 18px;
+    }
+
+    .mindmap-category-count {
+        font-size: 14px;
+    }
+
+    .mindmap-card-title {
+        font-size: 15px;
+    }
+
+    .mindmap-card-date {
+        font-size: 13px;
+    }
 }

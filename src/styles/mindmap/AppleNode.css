@@ -4,9 +4,9 @@
 }
 
 .apple-img {
-    display: flex;
+    display: block;
+    width: 92px;
     height: auto;
-    width: auto;
 }
 
 .apple-text {
@@ -22,4 +22,26 @@
     color: #fff;
     font-size: 14px;
     font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .apple-img {
+        width: 76px;
+    }
+
+    .apple-text {
+        transform: translate(-50%, -50%) translateY(8px);
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .apple-img {
+        width: 64px;
+    }
+
+    .apple-text {
+        transform: translate(-50%, -50%) translateY(7px);
+        font-size: 11px;
+    }
 }

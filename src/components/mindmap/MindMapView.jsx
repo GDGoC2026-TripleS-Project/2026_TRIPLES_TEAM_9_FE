@@ -2,10 +2,10 @@ import tree from "../../assets/mindmap/tree.svg";
 import AppleNode from "./AppleNode";
 
 const MOCK_ITEMS = [
-    { id: 1, category: "lecture", text: "React", x: 375, y: 300 },
-    { id: 2, category: "reading", text: "알고리즘", x: 351, y: 184 },
-    { id: 3, category: "project", text: "javascript", x: 375, y: 300 },
-    { id: 4, category: "reading", text: "javascriptstudy", x: 190, y: 284 },
+    { id: 1, category: "lecture", text: "React", x: 51, y: 50 },
+    { id: 2, category: "reading", text: "알고리즘", x: 31, y: 45 },
+    { id: 3, category: "project", text: "javascript", x: 51, y: 50 },
+    { id: 4, category: "reading", text: "javascriptstudy", x: 60, y: 40 },
 ];
 
 export default function MindMapView({ isLoading, error, category }) {
@@ -21,7 +21,7 @@ export default function MindMapView({ isLoading, error, category }) {
                 <div
                     key={item.id}
                     className="mindmap-node"
-                    style={{ left: `${item.x}px`, top: `${item.y}px` }}
+                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
                 >
                     <AppleNode text={item.text} />
                 </div>
