@@ -3,7 +3,6 @@ import DashboardSummaryCards from "../../components/dashboard/DashboardSummaryCa
 import RecentActivities from "../../components/dashboard/RecentActivities";
 import CategoryStatsBar from "../../components/dashboard/CategoryStatsBar";
 import DashboardActions from "../../components/dashboard/DashboardActions";
-import ReviewModal from "../../components/review/ReviewModal";
 
 import "../../styles/Dashboard/Dashboard.css";
 import "../../styles/global.css";
@@ -145,6 +144,41 @@ const Dashboard = () => {
             <Header variant="dashboard" />
             <main className="dashboard">
                 <div className="dashboard-container">
+                    {isReviewOpen && (
+                        <section className="review-inline" aria-label="오늘의 복습">
+                            <button
+                                type="button"
+                                className="review-inline-close"
+                                aria-label="복습 알림 닫기"
+                                onClick={() => handleReviewClose(reviewItems)}
+                            >
+                                ✕
+                            </button>
+                            <div className="review-inline-head">
+                                <div className="review-inline-title">복습시간입니다!</div>
+                                <p>이전에 학습한 내용을 다시 확인해보세요.</p>
+                            </div>
+                            <div className="review-inline-grid">
+                                {reviewItems.slice(0, 3).map((item) => (
+                                    <article key={item.recordId} className="review-inline-card">
+                                        <h3>{item.title}</h3>
+                                        <div className="review-inline-meta">
+                                            <span className="review-inline-pill">{item.categoryLabel ?? "-"}</span>
+                                            <span>{item.learningDate ?? "-"}</span>
+                                        </div>
+                                        <p>{item.preview ?? "미리보기가 없습니다."}</p>
+                                        <button
+                                            type="button"
+                                            className="review-inline-btn"
+                                            onClick={() => handleReviewOpenRecord(item.recordId)}
+                                        >
+                                            상세보기
+                                        </button>
+                                    </article>
+                                ))}
+                            </div>
+                        </section>
+                    )}
                     <h2>{user?.nickname ?? "회원"}님의 지식정원에 오신 것을 환영합니다!</h2>
                     <p>새로운 학습을 기록하고 당신의 성장을 시각화해보세요.</p>
 
@@ -181,12 +215,6 @@ const Dashboard = () => {
                     )}
                 </div>
             </main>
-            <ReviewModal
-                open={isReviewOpen}
-                items={reviewItems}
-                onClose={handleReviewClose}
-                onOpenRecord={handleReviewOpenRecord}
-            />
         </div>
     );
 };
