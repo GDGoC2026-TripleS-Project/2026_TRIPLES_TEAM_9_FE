@@ -5,10 +5,10 @@ import MindMapCard from "../../components/mindmap/MindMapCard";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useRecordListQuery } from "../../hooks/useRecordApi";
-import { toRecordListItem, getCategoryMeta } from "../../utils/recordView";
+import { CATEGORY_MAP } from "../../api/mindmap.api";
+import { useMindMapQuery } from "../../hooks/useMindMapApi";
+import { getCategoryMeta, buildRecordCreatePayload } from "../../utils/recordView";
 import { useCreateRecordMutation } from "../../hooks/useRecordApi";
-import { buildRecordCreatePayload } from "../../utils/recordView";
 import { getApiErrorMessage } from "../../api/api-response";
 
 import "../../styles/mindmap/MindMap.css";
@@ -18,34 +18,32 @@ const MindMap = () => {
     const navigate = useNavigate();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [keyword, setKeyword] = useState("");
-    const [searchKeyword, setSearchKeyword] = useState("");
+    const [debouncedKeyword, setDebouncedKeyword] = useState("");
 
     const [searchParams, setSearchParams] = useSearchParams();
     const category = searchParams.get("category") ?? "";
-    const apiCategory = category ? category.toUpperCase() : undefined;
-    const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
-    const apiPage = uiPage;
-    const size = Math.max(1, Number(searchParams.get("size") ?? 4) || 4);
-    const categoryLabel = getCategoryMeta(category).label;
+    const resolvedCategory = category || "lecture";
+    const apiCategory = CATEGORY_MAP[resolvedCategory] ?? undefined;
+    const categoryLabel = getCategoryMeta(resolvedCategory).label;
 
-    const recordListQuery = useRecordListQuery({
-        page: apiPage,
-        size,
+    const mindMapQuery = useMindMapQuery({
         category: apiCategory,
+        topKeywords: 30,
+        minEdgeWeight: 2,
     });
 
     const {
-        items: recordItems = [],
-        loading: isRecordListLoading,
-        error: recordListError,
-        setParams: setRecordListParams,
-    } = recordListQuery;
-
-    const items = useMemo(() => recordItems.map((item) => toRecordListItem(item)), [recordItems]);
+        nodes = [],
+        edges = [],
+        loading: isMindMapLoading,
+        error: mindMapError,
+        setParams: setMindMapParams,
+        refetch: refetchMindMap,
+    } = mindMapQuery;
 
     const createRecordMutation = useCreateRecordMutation({
         onSuccess: async () => {
-            await recordListQuery.refetch();
+            await refetchMindMap();
             setIsCreateOpen(false);
         },
     });
@@ -58,32 +56,73 @@ const MindMap = () => {
         }
     };
 
-    const onSearch = (e) => {
-        e.preventDefault();
-        setSearchKeyword(keyword);
+    const onSearch = (event) => {
+        event.preventDefault();
     };
 
-    const filteredItems = useMemo(() => {
-        const q = searchKeyword.trim().toLowerCase();
-        if (!q) return items;
+    const onKeywordSelect = (value) => {
+        const keywordText = String(value ?? "").trim();
+        if (!keywordText) return;
+        const params = new URLSearchParams();
+        params.set("keyword", keywordText);
+        if (resolvedCategory) {
+            params.set("category", resolvedCategory);
+        }
+        navigate(`/records?${params.toString()}`);
+    };
 
-        return items.filter((item) =>
-            String(item.title ?? "")
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            setDebouncedKeyword(keyword.trim().toLowerCase());
+        }, 300);
+
+        return () => window.clearTimeout(timer);
+    }, [keyword]);
+
+    const filteredNodes = useMemo(() => {
+        if (!debouncedKeyword) return nodes;
+
+        return nodes.filter((node) =>
+            String(node.label ?? "")
                 .toLowerCase()
-                .includes(q),
+                .includes(debouncedKeyword),
         );
-    }, [items, searchKeyword]);
+    }, [nodes, debouncedKeyword]);
 
-    const hasNoData = !isRecordListLoading && !recordListError && recordItems.length === 0;
+    const filteredNodeIds = useMemo(
+        () => new Set(filteredNodes.map((node) => String(node.id))),
+        [filteredNodes],
+    );
+
+    const filteredEdges = useMemo(
+        () =>
+            edges.filter(
+                (edge) =>
+                    filteredNodeIds.has(String(edge.source)) && filteredNodeIds.has(String(edge.target)),
+            ),
+        [edges, filteredNodeIds],
+    );
+
+    const detailItems = useMemo(
+        () =>
+            filteredNodes.map((node) => ({
+                id: node.id,
+                title: node.label,
+                date: `연결 ${node.weight}회`,
+            })),
+        [filteredNodes],
+    );
+
+    const hasNoData = !isMindMapLoading && !mindMapError && nodes.length === 0;
 
     const hasNoSearchResult =
-        !isRecordListLoading &&
-        !recordListError &&
-        recordItems.length > 0 &&
-        searchKeyword.trim() &&
-        filteredItems.length === 0;
+        !isMindMapLoading &&
+        !mindMapError &&
+        nodes.length > 0 &&
+        debouncedKeyword &&
+        filteredNodes.length === 0;
 
-    const hasList = !isRecordListLoading && !recordListError && filteredItems.length > 0;
+    const hasList = !isMindMapLoading && !mindMapError && detailItems.length > 0;
 
     useEffect(() => {
         if (!searchParams.get("category")) {
@@ -94,19 +133,13 @@ const MindMap = () => {
     }, [searchParams, setSearchParams]);
 
     useEffect(() => {
-        setRecordListParams((prev) => ({
+        setMindMapParams((prev) => ({
             ...prev,
-            page: apiPage,
-            size,
             category: apiCategory,
+            topKeywords: 30,
+            minEdgeWeight: 2,
         }));
-    }, [apiCategory, apiPage, setRecordListParams, size]);
-
-    useEffect(() => {
-        setKeyword("");
-        setSearchKeyword("");
-    }, [category]);
-
+    }, [apiCategory, setMindMapParams]);
     return (
         <div className="mindmap-page">
             <Header variant="mindmap" title="마인드맵" showBack onBack={() => navigate(-1)} />
@@ -118,23 +151,21 @@ const MindMap = () => {
                     <div className="mindmap-panels">
                         <section className="mindmap-view">
                             <MindMapView
-                                items={items}
-                                isLoading={isRecordListLoading}
-                                error={recordListError}
-                                category={category}
+                                nodes={filteredNodes}
+                                isLoading={isMindMapLoading}
+                                error={mindMapError}
+                                onNodeClick={(node) => onKeywordSelect(node?.label)}
                             />
                         </section>
                         <section className="mindmap-detail">
                             <header className="mindmap-detail-header">
                                 <div className="mindmap-category-group">
                                     <div
-                                        className={`mindmap-category-circle mindmap-category-circle--${category}`}
+                                        className={`mindmap-category-circle mindmap-category-circle--${resolvedCategory}`}
                                     ></div>
-                                    <h1 className="mindmap-detail-title">
-                                        카테고리 - {categoryLabel}
-                                    </h1>
+                                    <h1 className="mindmap-detail-title">카테고리 - {categoryLabel}</h1>
                                     <h2 className={"mindmap-category-count"}>
-                                        {filteredItems.length}개의 학습 기록
+                                        키워드 {filteredNodes.length}개 · 연결선 {filteredEdges.length}개
                                     </h2>
                                 </div>
 
@@ -142,7 +173,7 @@ const MindMap = () => {
                                     <input
                                         type="text"
                                         value={keyword}
-                                        onChange={(e) => setKeyword(e.target.value)}
+                                        onChange={(event) => setKeyword(event.target.value)}
                                         placeholder="키워드 검색"
                                     />
                                     <button type="submit">
@@ -159,42 +190,37 @@ const MindMap = () => {
                                 + 기록 추가
                             </button>
 
-                            {recordListError && (
-                                <p>
-                                    {recordListError.message || "기록 목록을 불러오지 못했습니다."}
-                                </p>
+                            {mindMapError && (
+                                <p>{mindMapError.message || "마인드맵을 불러오지 못했습니다."}</p>
                             )}
 
-                            {/* 학습 기록이 없는 경우 */}
                             {hasNoData && (
                                 <div className="mindmap-empty-state">
                                     <div className="mindmap-empty-icon">🌱</div>
-                                    <h3 className="mindmap-empty-title">
-                                        등록된 학습 기록이 없습니다
-                                    </h3>
+                                    <h3 className="mindmap-empty-title">등록된 학습 기록이 없습니다</h3>
                                     <p className="mindmap-empty-desc">
-                                        첫 기록을 남기면 학습 이력이 쌓이고, 키워드를 통해 복습이
-                                        쉬워집니다.
+                                        첫 기록을 남기면 카테고리별 키워드 마인드맵이 생성됩니다.
                                     </p>
                                 </div>
                             )}
 
-                            {/* 검색 결과가 없는 경우 */}
                             {hasNoSearchResult && (
                                 <div className="mindmap-empty-state">
                                     <div className="mindmap-empty-icon">🌱</div>
                                     <h3 className="mindmap-empty-title">검색 결과가 없습니다</h3>
-                                    <p className="mindmap-empty-desc">
-                                        다른 키워드로 검색해 보세요.
-                                    </p>
+                                    <p className="mindmap-empty-desc">다른 키워드로 검색해 보세요.</p>
                                 </div>
                             )}
 
                             {hasList && (
                                 <ul className="mindmap-detail-list">
-                                    {filteredItems.map((item) => (
+                                    {detailItems.map((item) => (
                                         <li key={item.id} className="mindmap-detail-item">
-                                            <MindMapCard title={item.title} date={item.date} />
+                                            <MindMapCard
+                                                title={item.title}
+                                                date={item.date}
+                                                onClick={() => onKeywordSelect(item.title)}
+                                            />
                                         </li>
                                     ))}
                                 </ul>
@@ -207,7 +233,7 @@ const MindMap = () => {
                 <StudyRecordCreateModal
                     onClose={() => setIsCreateOpen(false)}
                     onSave={onCreateSave}
-                    initialForm={{ category }}
+                    initialForm={{ category: resolvedCategory }}
                 />
             )}
         </div>

@@ -75,6 +75,16 @@ const StudyRecordDetail = () => {
         }
     };
 
+    const onKeywordClick = (keyword) => {
+        if (!keyword) return;
+        const params = new URLSearchParams();
+        params.set("keyword", keyword);
+        if (record?.categoryValue) {
+            params.set("category", String(record.categoryValue).toLowerCase());
+        }
+        navigate(`/records?${params.toString()}`);
+    };
+
     if (loading) {
         return (
             <div className="study-record-detail-page">
@@ -171,9 +181,15 @@ const StudyRecordDetail = () => {
                         {record.keywords?.length ? (
                             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                                 {record.keywords.map((keyword) => (
-                                    <span className="detail-tag" key={keyword}>
+                                    <button
+                                        type="button"
+                                        className="detail-tag detail-tag-btn"
+                                        key={keyword}
+                                        onClick={() => onKeywordClick(keyword)}
+                                        title={`${keyword} 조회`}
+                                    >
                                         {keyword}
-                                    </span>
+                                    </button>
                                 ))}
                             </div>
                         ) : (

@@ -6,7 +6,11 @@ const DashboardActions = () => {
 
     return (
         <section className="dashboard-actions">
-            <button className="action-btn action-btn--gradient">마인드맵 보기</button>
+            <button 
+            className="action-btn action-btn--gradient"
+            type="button"
+            onClick={() => navigate("/mindmap")}
+            >마인드맵 보기</button>
 
             <button
                 className="action-btn action-btn--outline"

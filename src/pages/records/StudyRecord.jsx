@@ -16,6 +16,8 @@ const StudyRecord = () => {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
 
     const category = searchParams.get("category") ?? "";
+    const keyword = searchParams.get("keyword") ?? "";
+    const normalizedKeyword = keyword.trim().toLowerCase();
     const apiCategory = category ? category.toUpperCase() : undefined;
     const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
     // UI와 API 요청 page 모두 1-based를 사용합니다.
@@ -26,6 +28,7 @@ const StudyRecord = () => {
         page: apiPage,
         size,
         category: apiCategory,
+        keyword,
     });
     const {
         data: recordListData,
@@ -42,8 +45,9 @@ const StudyRecord = () => {
             page: apiPage,
             size,
             category: apiCategory,
+            keyword,
         }));
-    }, [apiCategory, apiPage, setRecordListParams, size]);
+    }, [apiCategory, apiPage, keyword, setRecordListParams, size]);
 
     const createRecordMutation = useCreateRecordMutation({
         onSuccess: async () => {
@@ -52,7 +56,24 @@ const StudyRecord = () => {
         },
     });
 
-    const records = useMemo(() => recordItems.map((item) => toRecordListItem(item)), [recordItems]);
+    const records = useMemo(() => {
+        const mapped = recordItems.map((item) => toRecordListItem(item));
+        if (!normalizedKeyword) return mapped;
+
+        return mapped.filter((item) => {
+            const titleText = String(item?.title ?? "").toLowerCase();
+            const contentText = String(item?.preview ?? item?.content ?? "").toLowerCase();
+            const keywords = Array.isArray(item?.keywords)
+                ? item.keywords.map((value) => String(value).toLowerCase())
+                : [];
+
+            return (
+                titleText.includes(normalizedKeyword) ||
+                contentText.includes(normalizedKeyword) ||
+                keywords.some((value) => value.includes(normalizedKeyword))
+            );
+        });
+    }, [recordItems, normalizedKeyword]);
 
     const onCreateSave = async (payload) => {
         try {

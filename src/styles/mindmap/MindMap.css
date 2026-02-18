@@ -38,6 +38,7 @@
 .mindmap-node {
     position: absolute;
     z-index: 2;
+    cursor: pointer;
 }
 
 .mindmap-detail {
@@ -224,6 +225,21 @@
     border-radius: 6px;
     border: 1px solid #b9c8f8;
     background: #eeeffc;
+}
+
+.mindmap-card--clickable {
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mindmap-card--clickable:hover {
+    border-color: #8ea6f7;
+    box-shadow: 0 2px 8px rgba(20, 71, 230, 0.14);
+}
+
+.mindmap-card--clickable:focus-visible {
+    outline: 2px solid #1447e6;
+    outline-offset: 2px;
 }
 
 .mindmap-card-title {
