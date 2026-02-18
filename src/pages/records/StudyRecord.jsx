@@ -1,5 +1,5 @@
 import Header from "../../components/common/Header";
-import CategoryTabs from "../../components/records/CategoryTabs";
+import CategoryTabs from "../../components/common/CategoryTabs";
 import StudyRecordList from "../../components/records/StudyRecordList";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import "../../styles/records/StudyRecord.css";
@@ -82,7 +82,7 @@ const StudyRecord = () => {
             <main className="study-record-main">
                 <div className="record-layout">
                     <section className="record-content">
-                        <CategoryTabs />
+                        <CategoryTabs showAll />
                         {recordListError && (
                             <p>{recordListError.message || "기록 목록을 불러오지 못했습니다."}</p>
                         )}

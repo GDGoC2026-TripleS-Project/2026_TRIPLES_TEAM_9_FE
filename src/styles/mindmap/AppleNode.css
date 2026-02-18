@@ -1,0 +1,47 @@
+.apple-node {
+    position: relative;
+    display: inline-block;
+}
+
+.apple-img {
+    display: block;
+    width: 92px;
+    height: auto;
+}
+
+.apple-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(10px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .apple-img {
+        width: 76px;
+    }
+
+    .apple-text {
+        transform: translate(-50%, -50%) translateY(8px);
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .apple-img {
+        width: 64px;
+    }
+
+    .apple-text {
+        transform: translate(-50%, -50%) translateY(7px);
+        font-size: 11px;
+    }
+}

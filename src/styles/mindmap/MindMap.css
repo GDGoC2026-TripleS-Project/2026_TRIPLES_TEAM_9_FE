@@ -1,0 +1,342 @@
+.mindmap-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mindmap-content {
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.mindmap-panels {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.mindmap-view {
+    display: flex;
+    position: relative;
+    width: 616px;
+    max-width: 100%;
+    height: 580px;
+    overflow: hidden;
+
+    border-radius: 6px;
+    border: 1px solid #dddfdc;
+    background: #fffefc;
+}
+
+.mindmap-tree {
+    width: 100%;
+    display: block;
+}
+
+.mindmap-node {
+    position: absolute;
+    z-index: 2;
+}
+
+.mindmap-detail {
+    display: flex;
+    flex-direction: column;
+    width: 404px;
+    max-width: 100%;
+    height: 522px;
+    padding: 16.5px 20px;
+
+    border-radius: 6px;
+    border: 1px solid #dddfdc;
+    background: #fdfdfb;
+
+    gap: 19.5px;
+}
+
+.mindmap-detail-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mindmap-category-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.mindmap-category-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #7cb342;
+}
+
+.mindmap-category-circle--lecture {
+    background-color: #7cb342;
+}
+
+.mindmap-category-circle--reading {
+    background-color: #2eb872;
+}
+
+.mindmap-category-circle--project {
+    background-color: #f5a623;
+}
+
+.mindmap-category-circle--seminar {
+    background-color: #ff5252;
+}
+
+.mindmap-category-circle--personal {
+    background-color: #4c9aff;
+}
+
+.mindmap-category-circle--other {
+    background-color: #9b6bff;
+}
+
+.mindmap-detail-title {
+    white-space: nowrap;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.mindmap-category-count {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.mindmap-search {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mindmap-search input {
+    width: 122px;
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid #b9c4f8;
+    background: #eef0fc;
+}
+
+.mindmap-search input::placeholder {
+    text-align: center;
+    color: #b2b2b2;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mindmap-search button {
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 4px;
+    border: none;
+    background: #1447e6;
+}
+
+.mindmap-add-btn {
+    white-space: nowrap;
+    height: 40px;
+    padding: 8px 133px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 6px;
+    border: none;
+    background: #1447e6;
+
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.mindmap-empty-state {
+    min-height: 240px;
+    border: 1px solid #d9e0db;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #f8faff 0%, #f0f5ff 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px 20px;
+}
+
+.mindmap-empty-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid #d9e0db;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.mindmap-empty-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.mindmap-empty-desc {
+    margin: 8px 0 0;
+    max-width: 420px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #64748b;
+}
+
+.mindmap-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mindmap-detail-item {
+    margin-bottom: 12px;
+}
+
+.mindmap-card {
+    width: 364px;
+    max-width: 100%;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    border-radius: 6px;
+    border: 1px solid #b9c8f8;
+    background: #eeeffc;
+}
+
+.mindmap-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.mindmap-card-date {
+    color: #4a5565;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .mindmap-content {
+        width: min(920px, 94vw);
+    }
+
+    .mindmap-panels {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .mindmap-view {
+        width: 100%;
+        max-width: 680px;
+        height: auto;
+        min-height: 420px;
+    }
+
+    .mindmap-detail {
+        width: 100%;
+        max-width: 680px;
+        height: auto;
+    }
+
+    .mindmap-card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .mindmap-content {
+        width: min(680px, 94vw);
+    }
+
+    .mindmap-panels {
+        gap: 14px;
+    }
+
+    .mindmap-view {
+        min-height: 320px;
+    }
+
+    .mindmap-detail {
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .mindmap-detail-header {
+        gap: 12px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .mindmap-search {
+        margin-top: 0;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .mindmap-search input {
+        flex: 1;
+        min-width: 0;
+        font-size: 16px;
+    }
+
+    .mindmap-search button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mindmap-add-btn {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mindmap-content {
+        width: min(460px, 94vw);
+    }
+
+    .mindmap-view {
+        min-height: 260px;
+    }
+
+    .mindmap-detail-title {
+        font-size: 18px;
+    }
+
+    .mindmap-category-count {
+        font-size: 14px;
+    }
+
+    .mindmap-card-title {
+        font-size: 15px;
+    }
+
+    .mindmap-card-date {
+        font-size: 13px;
+    }
+}

@@ -14,6 +14,7 @@ export const APP_ROUTES = [
     { path: "/records", key: "records" },
     { path: "/records/:id", key: "recordDetail" },
     { path: "/goals", key: "goals" },
+    { path: "/mindmap", key: "mindmap" },
     { path: "/mypage", key: "mypage" },
     { path: "/mypage/recent", key: "mypageRecent" },
     { path: "/mypage/achievements", key: "mypageAchievements" },

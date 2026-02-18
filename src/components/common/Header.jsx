@@ -10,6 +10,7 @@ const VARIANT_DASHBOARD = "dashboard";
 const VARIANT_RECORDS = "records";
 const VARIANT_DETAIL = "detail";
 const VARIANT_GOALS = "goals";
+const VARIANT_MINDMAP = "mindmap";
 const VARIANT_MYPAGE = "mypage";
 
 export default function Header({
@@ -41,7 +42,11 @@ export default function Header({
     };
 
     const renderLeft = () => {
-        if (variant === VARIANT_RECORDS || variant === VARIANT_DETAIL) {
+        if (
+            variant === VARIANT_RECORDS ||
+            variant === VARIANT_DETAIL ||
+            variant === VARIANT_MINDMAP
+        ) {
             return (
                 <div className="header-left">
                     {showBack && (
@@ -50,7 +55,9 @@ export default function Header({
                             type="button"
                             onClick={onBack}
                         >
-                            {variant === VARIANT_RECORDS && <ArrowLeft size={20} />}
+                            {(variant === VARIANT_RECORDS || variant === VARIANT_MINDMAP) && (
+                                <ArrowLeft size={20} />
+                            )}
                             {variant === VARIANT_DETAIL && (
                                 <span className="header-back-label">
                                     <ArrowLeft size={20} />
@@ -93,7 +100,7 @@ export default function Header({
     const renderRight = () => {
         if (right) return right;
 
-        if (variant === VARIANT_DETAIL) {
+        if (variant === VARIANT_DETAIL || variant === VARIANT_MINDMAP) {
             return null;
         }
 
