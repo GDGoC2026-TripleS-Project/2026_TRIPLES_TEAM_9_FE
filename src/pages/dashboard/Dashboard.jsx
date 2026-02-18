@@ -3,14 +3,17 @@ import DashboardSummaryCards from "../../components/dashboard/DashboardSummaryCa
 import RecentActivities from "../../components/dashboard/RecentActivities";
 import CategoryStatsBar from "../../components/dashboard/CategoryStatsBar";
 import DashboardActions from "../../components/dashboard/DashboardActions";
+import ReviewModal from "../../components/review/ReviewModal";
 
 import "../../styles/Dashboard/Dashboard.css";
 import "../../styles/global.css";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getDashboard } from "../../services/dashboard";
 import { getAchievements } from "../../api/achievement.api";
+import { getTodayReview, postViewedBatch } from "../../api/review.api";
 
 const DEFAULT_DASHBOARD = {
     summary: {
@@ -24,11 +27,15 @@ const DEFAULT_DASHBOARD = {
 };
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [dashboard, setDashboard] = useState(DEFAULT_DASHBOARD);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isReviewOpen, setIsReviewOpen] = useState(false);
+    const [reviewItems, setReviewItems] = useState([]);
     const hasFetchedRef = useRef(false);
+    const hasFetchedReviewRef = useRef(false);
     const abortRef = useRef(null);
 
     const fetchDashboard = useCallback(async () => {
@@ -73,6 +80,64 @@ const Dashboard = () => {
         };
     }, [fetchDashboard]);
 
+    useEffect(() => {
+        if (hasFetchedReviewRef.current) return;
+        hasFetchedReviewRef.current = true;
+        let alive = true;
+
+        const loadTodayReview = async () => {
+            try {
+                const response = await getTodayReview();
+                if (!alive) return;
+
+                const data = response?.data ?? response;
+                const items = Array.isArray(data?.items) ? data.items : [];
+                const shouldShow = Boolean(data?.shouldShow);
+
+                if (shouldShow && items.length > 0) {
+                    setReviewItems(items.slice(0, 3));
+                    setIsReviewOpen(true);
+                }
+            } catch {
+                if (!alive) return;
+                setReviewItems([]);
+                setIsReviewOpen(false);
+            }
+        };
+
+        loadTodayReview();
+        return () => {
+            alive = false;
+        };
+    }, []);
+
+    const handleReviewClose = async (list = []) => {
+        const recordIds = (list || [])
+            .map((item) => item?.recordId)
+            .filter((recordId) => recordId !== undefined && recordId !== null);
+
+        try {
+            if (recordIds.length > 0) {
+                await postViewedBatch(recordIds);
+            }
+        } finally {
+            setIsReviewOpen(false);
+        }
+    };
+
+    const handleReviewOpenRecord = async (recordId) => {
+        try {
+            if (recordId !== undefined && recordId !== null) {
+                await postViewedBatch([recordId]);
+            }
+        } finally {
+            setIsReviewOpen(false);
+            if (recordId !== undefined && recordId !== null) {
+                navigate(`/records/${recordId}`);
+            }
+        }
+    };
+
     const isEmptyRecords = (dashboard.summary?.totalRecords ?? 0) === 0;
 
     return (
@@ -116,6 +181,12 @@ const Dashboard = () => {
                     )}
                 </div>
             </main>
+            <ReviewModal
+                open={isReviewOpen}
+                items={reviewItems}
+                onClose={handleReviewClose}
+                onOpenRecord={handleReviewOpenRecord}
+            />
         </div>
     );
 };
