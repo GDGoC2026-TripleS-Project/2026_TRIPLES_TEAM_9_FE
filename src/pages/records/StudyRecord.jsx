@@ -5,20 +5,25 @@ import StudyRecordCreateModal from "../../components/records/StudyRecordCreateMo
 import "../../styles/records/StudyRecord.css";
 import "../../styles/common/Pagination.css";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Search } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCreateRecordMutation, useRecordListQuery } from "../../hooks/useRecordApi";
 import { buildRecordCreatePayload, toRecordListItem } from "../../utils/recordView";
 import { getApiErrorMessage } from "../../api/api-response";
+import { getRecordList } from "../../api/record.api";
 
 const StudyRecord = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const autoLocateKeyRef = useRef("");
 
     const category = searchParams.get("category") ?? "";
-    const keyword = searchParams.get("keyword") ?? "";
-    const normalizedKeyword = keyword.trim().toLowerCase();
+    const searchKeyword = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const normalizedKeyword = searchKeyword.toLowerCase();
+    const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchKeyword));
+    const [searchInput, setSearchInput] = useState(searchKeyword);
     const apiCategory = category ? category.toUpperCase() : undefined;
     const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
     // UI와 API 요청 page 모두 1-based를 사용합니다.
@@ -29,7 +34,7 @@ const StudyRecord = () => {
         page: apiPage,
         size,
         category: apiCategory,
-        keyword,
+        keyword: searchKeyword,
     });
     const {
         data: recordListData,
@@ -46,9 +51,9 @@ const StudyRecord = () => {
             page: apiPage,
             size,
             category: apiCategory,
-            keyword,
+            keyword: searchKeyword,
         }));
-    }, [apiCategory, apiPage, keyword, setRecordListParams, size]);
+    }, [apiCategory, apiPage, searchKeyword, setRecordListParams, size]);
 
     const createRecordMutation = useCreateRecordMutation({
         onSuccess: async () => {
@@ -57,24 +62,82 @@ const StudyRecord = () => {
         },
     });
 
+    const matchesKeyword = (item) => {
+        if (!normalizedKeyword) return true;
+        const titleText = String(item?.title ?? "").toLowerCase();
+        return titleText.includes(normalizedKeyword);
+    };
+
     const records = useMemo(() => {
         const mapped = recordItems.map((item) => toRecordListItem(item));
         if (!normalizedKeyword) return mapped;
-
-        return mapped.filter((item) => {
-            const titleText = String(item?.title ?? "").toLowerCase();
-            const contentText = String(item?.preview ?? item?.content ?? "").toLowerCase();
-            const keywords = Array.isArray(item?.keywords)
-                ? item.keywords.map((value) => String(value).toLowerCase())
-                : [];
-
-            return (
-                titleText.includes(normalizedKeyword) ||
-                contentText.includes(normalizedKeyword) ||
-                keywords.some((value) => value.includes(normalizedKeyword))
-            );
-        });
+        return mapped.filter(matchesKeyword);
     }, [recordItems, normalizedKeyword]);
+
+    useEffect(() => {
+        const autoLocateKey = `${apiCategory ?? "all"}|${normalizedKeyword}`;
+        if (!normalizedKeyword || searchParams.has("page")) {
+            autoLocateKeyRef.current = "";
+            return;
+        }
+        if (isRecordListLoading || recordListError) return;
+        if (records.length > 0) {
+            autoLocateKeyRef.current = autoLocateKey;
+            return;
+        }
+        if (autoLocateKeyRef.current === autoLocateKey) return;
+
+        autoLocateKeyRef.current = autoLocateKey;
+        const totalPages = Math.max(1, Number(recordListData.totalPages) || 1);
+        if (totalPages <= 1) return;
+
+        let cancelled = false;
+        const locate = async () => {
+            for (let nextPage = 2; nextPage <= totalPages; nextPage += 1) {
+                try {
+                    const pageData = await getRecordList({
+                        page: nextPage,
+                        size,
+                        category: apiCategory,
+                        keyword: searchKeyword,
+                    });
+                    const pageItems = (pageData?.items ?? []).map((item) => toRecordListItem(item));
+                    if (pageItems.some(matchesKeyword)) {
+                        if (cancelled) return;
+                        const next = new URLSearchParams(searchParams);
+                        next.set("page", String(nextPage));
+                        setSearchParams(next, { replace: true });
+                        return;
+                    }
+                } catch {
+                    return;
+                }
+            }
+        };
+
+        locate();
+        return () => {
+            cancelled = true;
+        };
+    }, [
+        apiCategory,
+        isRecordListLoading,
+        searchKeyword,
+        normalizedKeyword,
+        recordListData.totalPages,
+        recordListError,
+        records,
+        searchParams,
+        setSearchParams,
+        size,
+    ]);
+
+    useEffect(() => {
+        setSearchInput(searchKeyword);
+        if (searchKeyword) {
+            setIsSearchOpen(true);
+        }
+    }, [searchKeyword]);
 
     const onCreateSave = async (payload) => {
         try {
@@ -92,6 +155,21 @@ const StudyRecord = () => {
         setSearchParams(next);
     };
 
+    const onSearchSubmit = (event) => {
+        event.preventDefault();
+        const normalized = searchInput.trim();
+        const next = new URLSearchParams(searchParams);
+        if (normalized) {
+            next.set("search", normalized);
+            next.delete("keyword");
+        } else {
+            next.delete("search");
+            next.delete("keyword");
+        }
+        next.delete("page");
+        setSearchParams(next);
+    };
+
     return (
         <div className="study-record-page">
             <Header
@@ -104,7 +182,31 @@ const StudyRecord = () => {
             <main className="study-record-main">
                 <div className="record-layout">
                     <section className="record-content">
-                        <CategoryTabs showAll />
+                        <div className="record-toolbar">
+                            <CategoryTabs showAll />
+                            <div className="record-search-box">
+                                {isSearchOpen && (
+                                    <form className="record-search-form" onSubmit={onSearchSubmit}>
+                                        <input
+                                            type="text"
+                                            value={searchInput}
+                                            onChange={(event) => setSearchInput(event.target.value)}
+                                            placeholder="제목 검색"
+                                            aria-label="제목 검색"
+                                        />
+                                        <button type="submit">검색</button>
+                                    </form>
+                                )}
+                                <button
+                                    type="button"
+                                    className="record-search-toggle"
+                                    aria-label="검색창 열기"
+                                    onClick={() => setIsSearchOpen((prev) => !prev)}
+                                >
+                                    <Search size={18} />
+                                </button>
+                            </div>
+                        </div>
                         {recordListError && (
                             <p>{recordListError.message || "기록 목록을 불러오지 못했습니다."}</p>
                         )}

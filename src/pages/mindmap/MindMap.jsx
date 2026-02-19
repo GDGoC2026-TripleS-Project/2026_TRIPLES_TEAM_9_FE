@@ -17,10 +17,11 @@ import search from "../../assets/mindmap/search.svg";
 const MindMap = () => {
     const navigate = useNavigate();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [keyword, setKeyword] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchKeywordFromUrl = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const [keyword, setKeyword] = useState(searchKeywordFromUrl);
     const [debouncedKeyword, setDebouncedKeyword] = useState("");
 
-    const [searchParams, setSearchParams] = useSearchParams();
     const category = searchParams.get("category") ?? "";
     const resolvedCategory = category || "lecture";
     const apiCategory = CATEGORY_MAP[resolvedCategory] ?? undefined;
@@ -58,13 +59,23 @@ const MindMap = () => {
 
     const onSearch = (event) => {
         event.preventDefault();
+        const normalizedKeyword = keyword.trim();
+        const next = new URLSearchParams(searchParams);
+        if (normalizedKeyword) {
+            next.set("search", normalizedKeyword);
+            next.delete("keyword");
+        } else {
+            next.delete("search");
+            next.delete("keyword");
+        }
+        setSearchParams(next);
     };
 
     const onKeywordSelect = (value) => {
         const keywordText = String(value ?? "").trim();
         if (!keywordText) return;
         const params = new URLSearchParams();
-        params.set("keyword", keywordText);
+        params.set("search", keywordText);
         if (resolvedCategory) {
             params.set("category", resolvedCategory);
         }
@@ -78,6 +89,10 @@ const MindMap = () => {
 
         return () => window.clearTimeout(timer);
     }, [keyword]);
+
+    useEffect(() => {
+        setKeyword(searchKeywordFromUrl);
+    }, [searchKeywordFromUrl]);
 
     const filteredNodes = useMemo(() => {
         if (!debouncedKeyword) return nodes;

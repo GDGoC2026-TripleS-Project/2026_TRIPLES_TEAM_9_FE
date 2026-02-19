@@ -56,7 +56,7 @@ const StudyRecordList = ({
                     ))}
             </div>
 
-            {!isLoading && hasRecords && (
+            {!isLoading && visibleTotalPages > 1 && (
                 <div className="record-pagination">
                     <button type="button" className="page-btn" onClick={onPrev} disabled={!canPrev}>
                         <ChevronLeft size={16} />

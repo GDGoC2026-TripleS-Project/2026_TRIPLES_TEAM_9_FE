@@ -3,13 +3,20 @@ import LoadingState from "../../components/common/LoadingState";
 import GoalCard from "../../components/goals/GoalCard";
 import GoalCreateModal from "../../components/goals/GoalCreateModal";
 import useGoals from "../../hooks/useGoals";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../../styles/goals/GoalManage.css";
 
 const GoalManage = () => {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [createOpen, setCreateOpen] = useState(false);
+    const skipInitialUrlSyncRef = useRef(searchParams.has("page"));
+    const keywordFromUrl = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const [keywordInput, setKeywordInput] = useState(keywordFromUrl);
+    const [isSearchOpen, setIsSearchOpen] = useState(Boolean(keywordFromUrl));
+    const requestedUiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
     const {
         goals,
         page,
@@ -20,7 +27,6 @@ const GoalManage = () => {
         tasksLoadingByGoalId,
         pendingTaskIds,
         errorMessage,
-        loadGoals,
         openTasks,
         closeTasks,
         createNewGoal,
@@ -28,10 +34,49 @@ const GoalManage = () => {
         addTask,
         removeTask,
         toggleTaskCompleted,
-    } = useGoals();
+    } = useGoals(requestedUiPage - 1, keywordFromUrl);
 
     const canPrev = page > 0;
     const canNext = page + 1 < totalPages;
+
+    const setPageParam = (nextUiPage, replace = false) => {
+        const clampedUiPage = Math.min(Math.max(1, nextUiPage), Math.max(1, totalPages));
+        const next = new URLSearchParams(searchParams);
+        next.set("page", String(clampedUiPage));
+        setSearchParams(next, { replace });
+    };
+
+    const onSearchSubmit = (event) => {
+        event.preventDefault();
+        const normalizedKeyword = keywordInput.trim().toLowerCase();
+        const next = new URLSearchParams(searchParams);
+        if (normalizedKeyword) {
+            next.set("search", normalizedKeyword);
+            next.delete("keyword");
+        } else {
+            next.delete("search");
+            next.delete("keyword");
+        }
+        next.set("page", "1");
+        setSearchParams(next);
+    };
+
+    useEffect(() => {
+        if (skipInitialUrlSyncRef.current) {
+            skipInitialUrlSyncRef.current = false;
+            return;
+        }
+        const resolvedUiPage = page + 1;
+        if (Number(searchParams.get("page")) === resolvedUiPage) return;
+        setPageParam(resolvedUiPage, true);
+    }, [page, searchParams, setSearchParams, totalPages]);
+
+    useEffect(() => {
+        setKeywordInput(keywordFromUrl);
+        if (keywordFromUrl) {
+            setIsSearchOpen(true);
+        }
+    }, [keywordFromUrl]);
 
     return (
         <div className="goal-manage-page">
@@ -45,6 +90,29 @@ const GoalManage = () => {
                 onAdd={() => setCreateOpen(true)}
             />
             <main className="goals-list">
+                <div className="goals-toolbar">
+                    {isSearchOpen && (
+                        <form className="goals-search-form" onSubmit={onSearchSubmit}>
+                            <input
+                                type="text"
+                                value={keywordInput}
+                                onChange={(event) => setKeywordInput(event.target.value)}
+                                placeholder="목표 검색"
+                                aria-label="목표 검색어"
+                            />
+                            <button type="submit">검색</button>
+                        </form>
+                    )}
+                    <button
+                        type="button"
+                        className="goals-search-toggle"
+                        aria-label="검색창 열기"
+                        onClick={() => setIsSearchOpen((prev) => !prev)}
+                    >
+                        <Search size={18} />
+                    </button>
+                </div>
+
                 {loadingGoals ? (
                     <LoadingState
                         title="목표를 불러오는 중입니다"
@@ -53,15 +121,24 @@ const GoalManage = () => {
                     />
                 ) : goals.length === 0 ? (
                     <section className="goal-empty-card">
-                        <h3 className="goal-title">아직 목표가 없습니다</h3>
-                        <p className="goal-progress-text">등록된 목표가 없습니다.</p>
-                        <button
-                            type="button"
-                            className="goal-toggle-btn"
-                            onClick={() => setCreateOpen(true)}
-                        >
-                            + 새 목표 추가
-                        </button>
+                        {keywordFromUrl ? (
+                            <>
+                                <h3 className="goal-title">검색 결과가 없습니다</h3>
+                                <p className="goal-progress-text">다른 검색어로 다시 시도해보세요.</p>
+                            </>
+                        ) : (
+                            <>
+                                <h3 className="goal-title">아직 목표가 없습니다</h3>
+                                <p className="goal-progress-text">등록된 목표가 없습니다.</p>
+                                <button
+                                    type="button"
+                                    className="goal-toggle-btn"
+                                    onClick={() => setCreateOpen(true)}
+                                >
+                                    + 새 목표 추가
+                                </button>
+                            </>
+                        )}
                     </section>
                 ) : (
                     goals.map((goal) => (
@@ -83,13 +160,13 @@ const GoalManage = () => {
                 )}
 
                 <div className="goals-pagination">
-                    <button type="button" onClick={() => loadGoals(page - 1)} disabled={!canPrev}>
+                    <button type="button" onClick={() => setPageParam(page)} disabled={!canPrev}>
                         이전
                     </button>
                     <span>
                         {page + 1} / {Math.max(1, totalPages)}
                     </span>
-                    <button type="button" onClick={() => loadGoals(page + 1)} disabled={!canNext}>
+                    <button type="button" onClick={() => setPageParam(page + 2)} disabled={!canNext}>
                         다음
                     </button>
                 </div>
