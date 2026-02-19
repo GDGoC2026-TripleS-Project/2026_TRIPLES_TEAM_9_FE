@@ -80,6 +80,101 @@
     cursor: pointer;
 }
 
+.review-inline {
+    position: relative;
+    border: 1px solid #fdba74;
+    background: #fff7ed;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.review-inline-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 0;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: #9a3412;
+}
+
+.review-inline-head {
+    margin-bottom: 10px;
+}
+
+.review-inline-title {
+    margin: 0;
+    color: #9a3412;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.review-inline-head p {
+    margin: 4px 0 0;
+    color: #b45309;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.review-inline-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.review-inline-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    padding: 12px;
+    display: grid;
+    gap: 8px;
+}
+
+.review-inline-card h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #111827;
+}
+
+.review-inline-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.review-inline-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.review-inline-pill {
+    background: #e0ecff;
+    color: #1d4ed8;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-weight: 800;
+}
+
+.review-inline-btn {
+    margin-top: 2px;
+    border: 0;
+    border-radius: 10px;
+    background: #f97316;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    height: 36px;
+    cursor: pointer;
+}
+
 @media (max-width: 900px) {
     .dashboard-cards {
         grid-template-columns: repeat(2, 1fr);
@@ -93,6 +188,10 @@
 
     .dashboard-right {
         grid-column: auto;
+    }
+
+    .review-inline-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -108,6 +207,10 @@
     .dashboard-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
+    }
+
+    .review-inline-grid {
+        grid-template-columns: 1fr;
     }
 }
 

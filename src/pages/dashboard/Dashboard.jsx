@@ -8,9 +8,11 @@ import "../../styles/Dashboard/Dashboard.css";
 import "../../styles/global.css";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getDashboard } from "../../services/dashboard";
 import { getAchievements } from "../../api/achievement.api";
+import { getTodayReview, postViewedBatch } from "../../api/review.api";
 
 const DEFAULT_DASHBOARD = {
     summary: {
@@ -24,11 +26,15 @@ const DEFAULT_DASHBOARD = {
 };
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [dashboard, setDashboard] = useState(DEFAULT_DASHBOARD);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isReviewOpen, setIsReviewOpen] = useState(false);
+    const [reviewItems, setReviewItems] = useState([]);
     const hasFetchedRef = useRef(false);
+    const hasFetchedReviewRef = useRef(false);
     const abortRef = useRef(null);
 
     const fetchDashboard = useCallback(async () => {
@@ -73,6 +79,64 @@ const Dashboard = () => {
         };
     }, [fetchDashboard]);
 
+    useEffect(() => {
+        if (hasFetchedReviewRef.current) return;
+        hasFetchedReviewRef.current = true;
+        let alive = true;
+
+        const loadTodayReview = async () => {
+            try {
+                const response = await getTodayReview();
+                if (!alive) return;
+
+                const data = response?.data ?? response;
+                const items = Array.isArray(data?.items) ? data.items : [];
+                const shouldShow = Boolean(data?.shouldShow);
+
+                if (shouldShow && items.length > 0) {
+                    setReviewItems(items.slice(0, 3));
+                    setIsReviewOpen(true);
+                }
+            } catch {
+                if (!alive) return;
+                setReviewItems([]);
+                setIsReviewOpen(false);
+            }
+        };
+
+        loadTodayReview();
+        return () => {
+            alive = false;
+        };
+    }, []);
+
+    const handleReviewClose = async (list = []) => {
+        const recordIds = (list || [])
+            .map((item) => item?.recordId)
+            .filter((recordId) => recordId !== undefined && recordId !== null);
+
+        try {
+            if (recordIds.length > 0) {
+                await postViewedBatch(recordIds);
+            }
+        } finally {
+            setIsReviewOpen(false);
+        }
+    };
+
+    const handleReviewOpenRecord = async (recordId) => {
+        try {
+            if (recordId !== undefined && recordId !== null) {
+                await postViewedBatch([recordId]);
+            }
+        } finally {
+            setIsReviewOpen(false);
+            if (recordId !== undefined && recordId !== null) {
+                navigate(`/records/${recordId}`);
+            }
+        }
+    };
+
     const isEmptyRecords = (dashboard.summary?.totalRecords ?? 0) === 0;
 
     return (
@@ -80,6 +144,41 @@ const Dashboard = () => {
             <Header variant="dashboard" />
             <main className="dashboard">
                 <div className="dashboard-container">
+                    {isReviewOpen && (
+                        <section className="review-inline" aria-label="오늘의 복습">
+                            <button
+                                type="button"
+                                className="review-inline-close"
+                                aria-label="복습 알림 닫기"
+                                onClick={() => handleReviewClose(reviewItems)}
+                            >
+                                ✕
+                            </button>
+                            <div className="review-inline-head">
+                                <div className="review-inline-title">복습시간입니다!</div>
+                                <p>이전에 학습한 내용을 다시 확인해보세요.</p>
+                            </div>
+                            <div className="review-inline-grid">
+                                {reviewItems.slice(0, 3).map((item) => (
+                                    <article key={item.recordId} className="review-inline-card">
+                                        <h3>{item.title}</h3>
+                                        <div className="review-inline-meta">
+                                            <span className="review-inline-pill">{item.categoryLabel ?? "-"}</span>
+                                            <span>{item.learningDate ?? "-"}</span>
+                                        </div>
+                                        <p>{item.preview ?? "미리보기가 없습니다."}</p>
+                                        <button
+                                            type="button"
+                                            className="review-inline-btn"
+                                            onClick={() => handleReviewOpenRecord(item.recordId)}
+                                        >
+                                            상세보기
+                                        </button>
+                                    </article>
+                                ))}
+                            </div>
+                        </section>
+                    )}
                     <h2>{user?.nickname ?? "회원"}님의 지식정원에 오신 것을 환영합니다!</h2>
                     <p>새로운 학습을 기록하고 당신의 성장을 시각화해보세요.</p>
 

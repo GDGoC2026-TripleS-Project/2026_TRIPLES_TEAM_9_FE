@@ -1,15 +1,34 @@
+import { useMemo } from "react";
 import tree from "../../assets/mindmap/tree.svg";
 import AppleNode from "./AppleNode";
 
-const MOCK_ITEMS = [
-    { id: 1, category: "lecture", text: "React", x: 51, y: 50 },
-    { id: 2, category: "reading", text: "알고리즘", x: 31, y: 45 },
-    { id: 3, category: "project", text: "javascript", x: 51, y: 50 },
-    { id: 4, category: "reading", text: "javascriptstudy", x: 60, y: 40 },
-];
+const toPositionedNodes = (nodes = []) => {
+    const limited = nodes.slice(0, 18);
+    const total = Math.max(1, limited.length);
 
-export default function MindMapView({ isLoading, error, category }) {
-    const items = MOCK_ITEMS.filter((item) => item.category === (category || "lecture"));
+    return limited.map((node, index) => {
+        if (index === 0) {
+            return {
+                ...node,
+                x: 50,
+                y: 58,
+            };
+        }
+
+        const ringIndex = index - 1;
+        const angle = (Math.PI * 2 * ringIndex) / Math.max(1, total - 1);
+        const radius = 20 + (ringIndex % 4) * 7;
+
+        return {
+            ...node,
+            x: 50 + Math.cos(angle) * radius,
+            y: 58 + Math.sin(angle) * (radius * 0.72),
+        };
+    });
+};
+
+export default function MindMapView({ nodes = [], isLoading, error, onNodeClick }) {
+    const positionedNodes = useMemo(() => toPositionedNodes(nodes), [nodes]);
 
     if (isLoading) return <div>로딩중...</div>;
     if (error) return <div>불러오기 실패</div>;
@@ -17,13 +36,22 @@ export default function MindMapView({ isLoading, error, category }) {
     return (
         <div className="mindmap-view">
             <img src={tree} alt="tree" className="mindmap-tree" />
-            {items.map((item) => (
+            {positionedNodes.map((node) => (
                 <div
-                    key={item.id}
+                    key={String(node.id)}
                     className="mindmap-node"
-                    style={{ left: `${item.x}%`, top: `${item.y}%` }}
+                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => onNodeClick?.(node)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            onNodeClick?.(node);
+                        }
+                    }}
                 >
-                    <AppleNode text={item.text} />
+                    <AppleNode text={node.label} />
                 </div>
             ))}
         </div>

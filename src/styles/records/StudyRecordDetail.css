@@ -146,6 +146,20 @@
     font-weight: 500;
 }
 
+.detail-tag-btn {
+    border: none;
+    cursor: pointer;
+}
+
+.detail-tag-btn:hover {
+    background: #bfdbfe;
+}
+
+.detail-tag-btn:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+}
+
 @media (max-width: 600px) {
     .detail-main {
         width: min(100%, 92vw);
