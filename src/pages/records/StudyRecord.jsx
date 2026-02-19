@@ -3,6 +3,7 @@ import CategoryTabs from "../../components/common/CategoryTabs";
 import StudyRecordList from "../../components/records/StudyRecordList";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import "../../styles/records/StudyRecord.css";
+import "../../styles/common/Pagination.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
