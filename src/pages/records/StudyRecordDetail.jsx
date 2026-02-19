@@ -1,7 +1,13 @@
-import { BookOpen, Calendar, Tag } from "lucide-react";
+import { Calendar, Tag } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/records/StudyRecordDetail.css";
-import presentation1 from "../../assets/records/detail/presentation1.svg";
+import Lecture2 from "../../assets/records/detail/Lecture2.svg";
+import Reading2 from "../../assets/records/detail/Reading2.svg";
+import Project2 from "../../assets/records/detail/Project2.svg";
+import Seminar2 from "../../assets/records/detail/Seminar2.svg";
+import Personal2 from "../../assets/records/detail/Personal2.svg";
+import Other2 from "../../assets/records/detail/Other2.svg";
+
 import pencil from "../../assets/records/detail/pencil.svg";
 import trash from "../../assets/records/detail/trash.svg";
 import Header from "../../components/common/Header";
@@ -15,6 +21,15 @@ import {
 import { toRecordDetailItem } from "../../utils/recordView";
 import { useState } from "react";
 import { getApiErrorMessage } from "../../api/api-response";
+
+const CATEGORY_ICON_MAP = {
+    lecture: { src: Lecture2, alt: "강의" },
+    reading: { src: Reading2, alt: "독서" },
+    project: { src: Project2, alt: "프로젝트" },
+    seminar: { src: Seminar2, alt: "세미나" },
+    personal: { src: Personal2, alt: "개인학습" },
+    other: { src: Other2, alt: "기타" },
+};
 
 const toDateInputValue = (value) => {
     if (!value) return "";
@@ -31,6 +46,8 @@ const StudyRecordDetail = () => {
     const { data, loading, error, refetch } = useRecordDetailsQuery(id);
     const record = data ? toRecordDetailItem(data) : null;
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const categoryKey = String(record?.categoryValue ?? "other").toLowerCase();
+    const categoryIcon = CATEGORY_ICON_MAP[categoryKey] ?? CATEGORY_ICON_MAP.other;
 
     const updateMutation = useUpdateRecordMutation({
         onSuccess: async () => {
@@ -124,12 +141,7 @@ const StudyRecordDetail = () => {
                     <div className="detail-card-top">
                         <div className="detail-meta">
                             <span className="detail-category">
-                                {record.categoryLabel === "강의" ? (
-                                    <img src={presentation1} alt="강의" />
-                                ) : (
-                                    <BookOpen size={24} color="#000" />
-                                )}
-                                {record.categoryLabel}
+                                <img src={categoryIcon.src} alt={categoryIcon.alt} />
                             </span>
                             <span className="detail-date">
                                 <Calendar size={24} />
@@ -166,7 +178,10 @@ const StudyRecordDetail = () => {
                         <h2 className="detail-section-title">내용</h2>
                         <div className="detail-content-box">
                             {record.contentMd?.trim() ? (
-                                <MarkdownPreview markdown={record.contentMd} className="detail-markdown" />
+                                <MarkdownPreview
+                                    markdown={record.contentMd}
+                                    className="detail-markdown"
+                                />
                             ) : (
                                 "내용이 없습니다."
                             )}
