@@ -8,8 +8,10 @@ const unwrap = (res) => {
   return body.data;
 };
 
-export async function fetchGoals(page = 0) {
-  const res = await api.get("/goals/lists", { params: { page } });
+export async function fetchGoals(page = 0, search = "") {
+  const normalizedSearch = String(search ?? "").trim();
+  const params = normalizedSearch ? { page, search: normalizedSearch } : { page };
+  const res = await api.get("/goals/lists", { params });
   return unwrap(res);
 }
 
@@ -42,4 +44,3 @@ export async function deleteTask(goalId, taskId) {
   const res = await api.delete(`/goals/delete/${goalId}/task/${taskId}`);
   return unwrap(res);
 }
-

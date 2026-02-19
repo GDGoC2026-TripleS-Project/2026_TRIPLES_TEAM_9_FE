@@ -45,7 +45,7 @@ const normalizeTask = (task) => {
   };
 };
 
-export default function useGoals() {
+export default function useGoals(initialPage = 0, initialSearch = "") {
   const [goals, setGoals] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -70,10 +70,12 @@ export default function useGoals() {
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
+  const normalizedSearch = String(initialSearch ?? "").trim();
+
   const loadGoals = useCallback(async (nextPage = 0) => {
     setLoadingGoals(true);
     try {
-      const pageData = await fetchGoals(nextPage);
+      const pageData = await fetchGoals(nextPage, normalizedSearch);
       const content = Array.isArray(pageData?.content) ? pageData.content : [];
       setGoals(content.map(normalizeGoal).filter(Boolean));
       setPage(Math.max(0, toNumber(pageData?.number ?? nextPage, nextPage)));
@@ -83,7 +85,7 @@ export default function useGoals() {
     } finally {
       setLoadingGoals(false);
     }
-  }, [setUiError]);
+  }, [normalizedSearch, setUiError]);
 
   const refreshTasks = useCallback(async (goalId) => {
     setTasksLoadingByGoalId((prev) => ({ ...prev, [goalId]: true }));
@@ -181,8 +183,8 @@ export default function useGoals() {
   }, [loadGoals, page, pendingTaskIds, refreshTasks, setUiError, tasksByGoalId]);
 
   useEffect(() => {
-    loadGoals(0);
-  }, [loadGoals]);
+    loadGoals(Math.max(0, toNumber(initialPage, 0)));
+  }, [initialPage, loadGoals, normalizedSearch]);
 
   return {
     goals,

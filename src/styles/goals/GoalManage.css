@@ -15,6 +15,65 @@
     border-top: 1px solid #e5e7eb;
 }
 
+.goals-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.goals-search-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.goals-search-form input {
+    width: min(460px, 62vw);
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #d6dae2;
+    padding: 0 12px;
+    background: #fff;
+    font-size: 14px;
+}
+
+.goals-search-form input::placeholder {
+  color: #94a3b8;
+}
+
+.goals-search-form button {
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #d6dae2;
+    background: #fff;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.goals-search-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #d6dae2;
+    background: #fff;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.goals-search-form button:hover,
+.goals-search-toggle:hover {
+    border-color: #94a3b8;
+}
+
 .goal-empty {
     border: 1px solid #e5e7eb;
     border-radius: 14px;
@@ -156,5 +215,9 @@
     .goals-list {
         width: min(92vw, 800px);
         padding-top: 14px;
+    }
+
+    .goals-search-form input {
+        width: min(300px, 72vw);
     }
 }
