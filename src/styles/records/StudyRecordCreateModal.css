@@ -158,13 +158,6 @@
     border-color: #155dfc;
 }
 
-.record-category-other {
-    gap: 10px;
-    color: #71717b;
-    font-size: 12px;
-    font-weight: 500;
-}
-
 .record-keyword-row {
     display: flex;
     align-items: center;

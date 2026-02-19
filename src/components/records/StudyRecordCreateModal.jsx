@@ -28,7 +28,8 @@ const validateForm = (form) => {
     if (!form?.category) return "카테고리를 선택해주세요.";
     if (!form?.title?.trim()) return "제목을 입력해주세요.";
     if (!form?.content?.trim()) return "내용을 입력해주세요.";
-    if (!Array.isArray(form?.keywords) || form.keywords.length === 0) return "키워드를 입력해주세요.";
+    if (!Array.isArray(form?.keywords) || form.keywords.length === 0)
+        return "키워드를 입력해주세요.";
     return "";
 };
 
@@ -115,9 +116,6 @@ const StudyRecordCreateModal = ({ onClose, onSave, initialForm = null, mode = "c
                                     onClick={() => onCategorySelect(key)}
                                 >
                                     <img src={Icon} alt={label} />
-                                    {label === "기타" && (
-                                        <span className="record-category-other">{label}</span>
-                                    )}
                                 </button>
                             ))}
                         </div>
