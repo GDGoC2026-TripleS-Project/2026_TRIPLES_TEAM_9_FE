@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import MyPageLayout from "../../components/mypage/MyPageLayout";
+import LoadingState from "../../components/common/LoadingState";
 import { getAchievements } from "../../api/achievement.api";
 import styles from "./AchievementsPage.module.css";
 
@@ -77,7 +78,13 @@ export default function AchievementsPage() {
           ))}
         </div>
 
-        {loading && <div className={styles.stateText}>로딩중...</div>}
+        {loading && (
+          <LoadingState
+            title="업적 데이터를 불러오는 중입니다"
+            description="뱃지 달성 현황을 확인하고 있어요."
+            className={styles.loadingState}
+          />
+        )}
         {!loading && error && <div className={styles.errorText}>{error}</div>}
 
         {!loading && !error && (

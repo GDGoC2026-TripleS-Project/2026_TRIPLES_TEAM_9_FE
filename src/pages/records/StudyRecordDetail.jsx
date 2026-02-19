@@ -11,6 +11,7 @@ import Other2 from "../../assets/records/detail/Other2.svg";
 import pencil from "../../assets/records/detail/pencil.svg";
 import trash from "../../assets/records/detail/trash.svg";
 import Header from "../../components/common/Header";
+import LoadingState from "../../components/common/LoadingState";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import MarkdownPreview from "../../components/common/MarkdownPreview";
 import {
@@ -109,7 +110,10 @@ const StudyRecordDetail = () => {
 
                 <main className="detail-main">
                     <section className="detail-card">
-                        <h1 className="detail-title">기록을 불러오는 중입니다.</h1>
+                        <LoadingState
+                            title="기록을 불러오는 중입니다"
+                            description="선택한 학습 내용을 준비하고 있어요."
+                        />
                     </section>
                 </main>
             </div>

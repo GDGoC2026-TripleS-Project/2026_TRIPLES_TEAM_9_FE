@@ -59,7 +59,7 @@
   top: 0;
   width: 4px;
   height: 100%;
-  background: #22c55e;
+  background: #2563eb;
 }
 
 .my-nav-item.is-withdraw {
@@ -458,7 +458,6 @@
   font-weight: 600;
 }
 
-.recent-loading,
 .recent-error,
 .recent-empty {
   padding: 20px;
@@ -466,6 +465,12 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   font-size: 14px;
+}
+
+.recent-loading {
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .my-btn.danger {
@@ -505,12 +510,10 @@
 }
 
 .goal-state {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-  color: #6b7280;
-  padding: 14px 16px;
-  font-size: 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
 }
 
 .goal-empty-card {

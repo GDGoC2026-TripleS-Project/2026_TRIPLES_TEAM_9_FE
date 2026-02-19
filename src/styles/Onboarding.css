@@ -53,8 +53,8 @@
 }
 
 .onboard-input:focus {
-  border-color: rgba(47, 111, 78, 0.55);
-  box-shadow: 0 0 0 3px rgba(47, 111, 78, 0.14);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 .onboard-textarea {
@@ -69,8 +69,8 @@
 }
 
 .onboard-textarea:focus {
-  border-color: rgba(47, 111, 78, 0.55);
-  box-shadow: 0 0 0 3px rgba(47, 111, 78, 0.14);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
 .onboard-chip-grid {
@@ -91,8 +91,8 @@
 }
 
 .onboard-chip.is-selected {
-  border-color: rgba(47, 111, 78, 0.6);
-  background: rgba(47, 111, 78, 0.1);
+  border-color: #2563eb;
+  background: rgba(37, 136, 235, 0.1);
   color: #1f2937;
 }
 
@@ -121,7 +121,7 @@
   height: 46px;
   border: none;
   border-radius: 12px;
-  background: #2f6f4e;
+  background: #2563eb;
   color: #fff;
   font-weight: 800;
   cursor: pointer;

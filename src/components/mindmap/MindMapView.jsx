@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import tree from "../../assets/mindmap/tree.svg";
+import LoadingState from "../common/LoadingState";
 import AppleNode from "./AppleNode";
 
 const toPositionedNodes = (nodes = []) => {
@@ -30,7 +31,17 @@ const toPositionedNodes = (nodes = []) => {
 export default function MindMapView({ nodes = [], isLoading, error, onNodeClick }) {
     const positionedNodes = useMemo(() => toPositionedNodes(nodes), [nodes]);
 
-    if (isLoading) return <div>로딩중...</div>;
+    if (isLoading) {
+        return (
+            <div className="mindmap-view">
+                <LoadingState
+                    title="지식나무를 불러오는 중입니다"
+                    description="학습 흐름을 정리하고 있어요."
+                    className="mindmap-view-loading"
+                />
+            </div>
+        );
+    }
     if (error) return <div>불러오기 실패</div>;
 
     return (

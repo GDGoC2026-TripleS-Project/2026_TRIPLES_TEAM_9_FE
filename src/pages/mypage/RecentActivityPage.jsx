@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingState from "../../components/common/LoadingState";
 import MyPageLayout from "../../components/mypage/MyPageLayout";
 import RecentActivityCard from "../../components/mypage/RecentActivityCard";
 import { getMyPageRecent } from "../../api/mypage.api";
@@ -34,7 +35,13 @@ export default function RecentActivityPage() {
       title="최근 학습 기록"
       description="최근 학습한 내용들을 확인하고 이어서 학습해보세요."
     >
-      {loading && <div className="recent-loading">불러오는 중...</div>}
+      {loading && (
+        <LoadingState
+          title="최근 학습 활동을 불러오는 중입니다"
+          description="잠시만 기다려주세요."
+          className="recent-loading"
+        />
+      )}
 
       {!loading && error && (
         <div className="recent-error">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteMyGoal, getMyGoals } from "../../api/mypage.api";
+import LoadingState from "../common/LoadingState";
 import GoalCard from "./GoalCard";
 import { MOCK_GOALS } from "./types";
 
@@ -111,7 +112,15 @@ export default function GoalList() {
     }
   };
 
-  if (loading) return <div className="goal-state">목표를 불러오는 중...</div>;
+  if (loading) {
+    return (
+      <LoadingState
+        title="목표 목록을 불러오는 중입니다"
+        description="현재 진행 중인 목표를 모으고 있어요."
+        className="goal-state"
+      />
+    );
+  }
 
   return (
     <section className="goal-list-wrap">

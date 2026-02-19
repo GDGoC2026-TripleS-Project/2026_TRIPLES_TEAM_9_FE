@@ -70,6 +70,10 @@
     font-size: 16px;
 }
 
+.dashboard-loading {
+    margin-bottom: 12px;
+}
+
 .dashboard-retry-btn {
     border: 1px solid #d1d5db;
     background: #fff;
