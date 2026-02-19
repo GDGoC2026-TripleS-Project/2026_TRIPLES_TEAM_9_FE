@@ -27,6 +27,11 @@
     font-weight: 600;
 }
 
+.goal-loading {
+    justify-content: flex-start;
+    padding: 20px;
+}
+
 .goal-empty-card {
     border: 1px solid #d7dbe2;
     border-radius: 10px;

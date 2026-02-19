@@ -12,32 +12,12 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 28px;
-  text-align: center;
+  text-align: left;
 }
 
-.oauth-title {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-}
-
-.oauth-sub {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.oauth-spinner {
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 3px solid #d1d5db;
-  border-top-color: var(--brand);
-  margin: 0 auto 16px;
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.oauth-loading-state {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
 }

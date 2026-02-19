@@ -1,5 +1,6 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import LoadingState from "../common/LoadingState";
 import TaskRow from "./TaskRow";
 import "../../styles/goals/GoalCard.css";
 
@@ -69,7 +70,11 @@ const GoalCard = ({
             ) : (
                 <>
                     {loadingTasks ? (
-                        <p className="goal-subtle">과제를 불러오는 중...</p>
+                        <LoadingState
+                            title="과제를 불러오는 중입니다"
+                            compact
+                            className="goal-subtle"
+                        />
                     ) : tasks.length > 0 ? (
                         <ul className="goal-tasklist">
                             {tasks.map((task) => (

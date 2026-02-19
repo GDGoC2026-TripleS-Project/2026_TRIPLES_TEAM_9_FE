@@ -3,6 +3,7 @@ import DashboardSummaryCards from "../../components/dashboard/DashboardSummaryCa
 import RecentActivities from "../../components/dashboard/RecentActivities";
 import CategoryStatsBar from "../../components/dashboard/CategoryStatsBar";
 import DashboardActions from "../../components/dashboard/DashboardActions";
+import LoadingState from "../../components/common/LoadingState";
 
 import "../../styles/Dashboard/Dashboard.css";
 import "../../styles/global.css";
@@ -185,7 +186,11 @@ const Dashboard = () => {
                     <button className="add-study-record-btn" onClick={() => window.location.href = "/records"}>+ 새 학습 기록 작성</button>
 
                     {loading ? (
-                        <p>로딩중...</p>
+                        <LoadingState
+                            title="대시보드 데이터를 불러오는 중입니다"
+                            description="최근 학습 현황을 준비하고 있어요."
+                            className="dashboard-loading"
+                        />
                     ) : error ? (
                         <div className="dashboard-status">
                             <p>대시보드 데이터를 불러오지 못했습니다</p>

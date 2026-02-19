@@ -81,6 +81,10 @@
     padding: 28px 20px;
 }
 
+.record-loading-state {
+    min-height: 240px;
+}
+
 .record-empty-icon {
     width: 54px;
     height: 54px;

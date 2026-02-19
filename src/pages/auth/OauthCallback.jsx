@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
 import "../../styles/OauthCallback.css";
 import { useAuth } from "../../context/AuthContext";
+import LoadingState from "../../components/common/LoadingState";
 
 export default function OauthCallback() {
   const nav = useNavigate();
@@ -74,9 +75,11 @@ export default function OauthCallback() {
   return (
     <div className="oauth-callback">
       <div className="oauth-card">
-        <div className="oauth-spinner" />
-        <h2 className="oauth-title">로그인 처리 중</h2>
-        <p className="oauth-sub">{msg}</p>
+        <LoadingState
+          title="로그인 처리 중입니다"
+          description={msg}
+          className="oauth-loading-state"
+        />
       </div>
     </div>
   );

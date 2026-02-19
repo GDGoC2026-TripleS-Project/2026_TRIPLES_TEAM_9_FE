@@ -60,6 +60,10 @@
   color: #6b7280;
 }
 
+.loadingState {
+  border-radius: 12px;
+}
+
 .errorText {
   border: 1px solid #fecaca;
   background: #fef2f2;
@@ -184,4 +188,3 @@
   font-weight: 800;
   color: #6b7280;
 }
-

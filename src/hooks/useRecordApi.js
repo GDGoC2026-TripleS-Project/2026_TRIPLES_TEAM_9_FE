@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     createRecord,
     deleteRecord,
@@ -38,21 +38,27 @@ export const useRecordListQuery = (initialParams = { page: 1, size: 4 }) => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const requestSeqRef = useRef(0);
 
     const refetch = useCallback(
         async (nextParams) => {
             const resolvedParams = normalizeListParams(nextParams ?? params);
+            const requestSeq = requestSeqRef.current + 1;
+            requestSeqRef.current = requestSeq;
             setLoading(true);
             setError(null);
             try {
                 const response = await getRecordList(resolvedParams);
+                if (requestSeqRef.current !== requestSeq) return null;
                 setData(response);
                 return response;
             } catch (err) {
                 const normalized = normalizeApiError(err, "기록 목록 조회에 실패했습니다.");
+                if (requestSeqRef.current !== requestSeq) return null;
                 setError(normalized);
                 throw normalized;
             } finally {
+                if (requestSeqRef.current !== requestSeq) return;
                 setLoading(false);
             }
         },

@@ -1,0 +1,89 @@
+.loading-state {
+  --loading-accent: #1d4ed8;
+  --loading-border: #d9e4ff;
+  --loading-bg: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  --loading-text: #0f172a;
+  --loading-muted: #475569;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--loading-border);
+  border-radius: 14px;
+  background: var(--loading-bg);
+}
+
+.loading-state-spinner {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 3px solid #c9d9ff;
+  border-top-color: var(--loading-accent);
+  animation: loading-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.loading-state-spinner-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--loading-accent);
+  transform: translate(-50%, -50%);
+}
+
+.loading-state-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.loading-state-title {
+  margin: 0;
+  color: var(--loading-text);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.loading-state-description {
+  margin: 0;
+  color: var(--loading-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.loading-state--compact {
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.loading-state--compact .loading-state-spinner {
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
+}
+
+.loading-state--compact .loading-state-spinner-dot {
+  width: 5px;
+  height: 5px;
+}
+
+.loading-state--compact .loading-state-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.loading-state--compact .loading-state-description {
+  font-size: 12px;
+}
+
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

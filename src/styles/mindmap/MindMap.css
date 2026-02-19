@@ -30,6 +30,11 @@
     background: #fffefc;
 }
 
+.mindmap-view-loading {
+    width: min(92%, 420px);
+    margin: auto;
+}
+
 .mindmap-tree {
     width: 100%;
     display: block;

@@ -183,3 +183,10 @@
     color: #64748b;
     font-size: 13px;
 }
+
+.goal-subtle.loading-state {
+    border: 0;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+}

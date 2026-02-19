@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <mask id="logo-mark-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="30" height="33">
+    <rect x="0.833" y="0.833" width="28.334" height="31.667" rx="4.167" fill="white" />
+    <rect x="10.417" y="10.417" width="13.333" height="3.333" rx="1.667" fill="black" />
+    <rect x="3.333" y="24.167" width="25.833" height="3.333" rx="1.667" fill="black" />
+  </mask>
+  <rect
+    x="0.833"
+    y="0.833"
+    width="28.334"
+    height="31.667"
+    rx="4.167"
+    fill="#111111"
+    mask="url(#logo-mark-mask)"
+  />
+</svg>

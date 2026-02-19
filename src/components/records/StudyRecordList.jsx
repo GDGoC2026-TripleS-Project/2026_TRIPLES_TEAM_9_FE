@@ -1,6 +1,6 @@
 import StudyRecordCard from "./StudyRecordCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
- 
+import LoadingState from "../common/LoadingState";
 
 const StudyRecordList = ({
     records = [],
@@ -35,10 +35,11 @@ const StudyRecordList = ({
         <div className="record-list-wrapper">
             <div className="record-list">
                 {isLoading && (
-                    <div className="record-empty-state">
-                        <div className="record-empty-icon">⏳</div>
-                        <h3 className="record-empty-title">학습 기록을 불러오는 중입니다</h3>
-                    </div>
+                    <LoadingState
+                        title="학습 기록을 불러오는 중입니다"
+                        description="최근에 작성한 기록을 정리하고 있어요."
+                        className="record-loading-state"
+                    />
                 )}
                 {!isLoading && !hasRecords && (
                     <div className="record-empty-state">
@@ -49,12 +50,13 @@ const StudyRecordList = ({
                         </p>
                     </div>
                 )}
-                {records.map((record) => (
-                    <StudyRecordCard key={record.id} record={record} />
-                ))}
+                {!isLoading &&
+                    records.map((record) => (
+                        <StudyRecordCard key={record.id} record={record} />
+                    ))}
             </div>
 
-            {hasRecords && (
+            {!isLoading && hasRecords && (
                 <div className="record-pagination">
                     <button type="button" className="page-btn" onClick={onPrev} disabled={!canPrev}>
                         <ChevronLeft size={16} />

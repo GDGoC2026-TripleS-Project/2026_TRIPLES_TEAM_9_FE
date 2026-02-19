@@ -1,4 +1,5 @@
 import Header from "../../components/common/Header";
+import LoadingState from "../../components/common/LoadingState";
 import GoalCard from "../../components/goals/GoalCard";
 import GoalCreateModal from "../../components/goals/GoalCreateModal";
 import useGoals from "../../hooks/useGoals";
@@ -45,7 +46,11 @@ const GoalManage = () => {
             />
             <main className="goals-list">
                 {loadingGoals ? (
-                    <div className="goal-empty">목표를 불러오는 중...</div>
+                    <LoadingState
+                        title="목표를 불러오는 중입니다"
+                        description="세부 과제 정보도 함께 준비하고 있어요."
+                        className="goal-empty goal-loading"
+                    />
                 ) : goals.length === 0 ? (
                     <section className="goal-empty-card">
                         <h3 className="goal-title">아직 목표가 없습니다</h3>

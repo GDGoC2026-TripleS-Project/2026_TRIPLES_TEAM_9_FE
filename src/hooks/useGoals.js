@@ -70,7 +70,7 @@ export default function useGoals() {
     return () => clearTimeout(timer);
   }, [errorMessage]);
 
-  const loadGoals = useCallback(async (nextPage = page) => {
+  const loadGoals = useCallback(async (nextPage = 0) => {
     setLoadingGoals(true);
     try {
       const pageData = await fetchGoals(nextPage);
@@ -83,7 +83,7 @@ export default function useGoals() {
     } finally {
       setLoadingGoals(false);
     }
-  }, [page, setUiError]);
+  }, [setUiError]);
 
   const refreshTasks = useCallback(async (goalId) => {
     setTasksLoadingByGoalId((prev) => ({ ...prev, [goalId]: true }));
@@ -204,4 +204,3 @@ export default function useGoals() {
     toggleTaskCompleted,
   };
 }
-

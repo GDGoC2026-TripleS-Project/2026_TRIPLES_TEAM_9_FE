@@ -78,7 +78,7 @@
 .btn-primary{
   flex: 1;
   border: none;
-  background: #2f6f4e;
+  background: #2563eb;
   color: #fff;
 }
 .btn-primary:disabled{
