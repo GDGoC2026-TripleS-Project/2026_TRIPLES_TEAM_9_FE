@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export default function AuthBootstrapper({ children }) {
-    const { authReady, setAuthReady, refreshAuth } = useAuth();
+    const { setAuthReady, refreshAuth } = useAuth();
     const lastRefreshAtRef = useRef(0);
 
     useEffect(() => {
@@ -46,6 +46,5 @@ export default function AuthBootstrapper({ children }) {
         };
     }, [refreshAuth]);
 
-    if (!authReady) return null;
     return children;
 }

@@ -1,0 +1,105 @@
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, #f4f9ff 0%, #ffffff 62%);
+    opacity: 1;
+    transition: opacity 200ms ease;
+}
+
+.loading-screen.is-fading {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-screen-status {
+    min-width: 220px;
+    padding: 24px 22px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    text-align: center;
+}
+
+.loading-screen-brand {
+    margin: 0 0 14px;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+}
+
+.loading-screen-spinner {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto;
+    border-radius: 999px;
+    border: 3px solid #dbeafe;
+    border-top-color: #2563eb;
+    animation: loading-spin 900ms linear infinite;
+}
+
+.loading-screen-message {
+    margin: 14px 0 0;
+    color: #111827;
+    font-weight: 700;
+}
+
+.loading-screen-subtext {
+    margin: 6px 0 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.app-bootstrap-error {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    padding: 16px;
+}
+
+.app-bootstrap-error-card {
+    width: min(92vw, 420px);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+    padding: 22px;
+}
+
+.app-bootstrap-error-title {
+    margin: 0;
+    font-size: 20px;
+    color: #0f172a;
+}
+
+.app-bootstrap-error-text {
+    margin: 10px 0 0;
+    color: #475569;
+    line-height: 1.6;
+}
+
+.app-bootstrap-error-button {
+    margin-top: 16px;
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 14px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+@keyframes loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
