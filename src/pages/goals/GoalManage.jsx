@@ -11,10 +11,10 @@ import "../../styles/goals/GoalManage.css";
 const GoalManage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const sourceRef = useRef(location.state?.from);
 
     const handleBack = () => {
-        const from = location.state?.from;
-        if (from === "mypage-goals") {
+        if (sourceRef.current === "mypage-goals") {
             navigate("/mypage/goals");
             return;
         }
