@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import Header from "../../components/common/Header";
-import FeatureCard from "../../components/FeatureCard";
+import FeatureCard from "../../components/home/FeatureCard";
 import InfoDrawer from "../../components/home/InfoDrawer";
 import "../../styles/global.css";
-import "../../styles/home.css";
+import "../../styles/home/home.css";
 
 import { BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -84,7 +84,9 @@ export default function Home() {
                     </p>
 
                     <div className="hero-actions">
-                        <button className="primary-btn large" onClick={onStartGarden}>내 지식 정원 가꾸기</button>
+                        <button className="primary-btn large" onClick={onStartGarden}>
+                            내 지식 정원 가꾸기
+                        </button>
                         <button
                             ref={moreInfoButtonRef}
                             className="ghost-btn large"

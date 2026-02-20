@@ -1,5 +1,5 @@
 import StudyItem from "./StudyItem";
-import "../../styles/Dashboard/RecentStudyList.css";
+import "../../styles/dashboard/RecentStudyList.css";
 
 const studies = [
     {

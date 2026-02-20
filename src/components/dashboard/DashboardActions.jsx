@@ -1,4 +1,4 @@
-import "../../styles/Dashboard/DashboardActions.css";
+import "../../styles/dashboard/DashboardActions.css";
 import { useNavigate } from "react-router-dom";
 
 const DashboardActions = () => {
@@ -6,11 +6,13 @@ const DashboardActions = () => {
 
     return (
         <section className="dashboard-actions">
-            <button 
-            className="action-btn action-btn--gradient"
-            type="button"
-            onClick={() => navigate("/mindmap")}
-            >마인드맵 보기</button>
+            <button
+                className="action-btn action-btn--gradient"
+                type="button"
+                onClick={() => navigate("/mindmap")}
+            >
+                마인드맵 보기
+            </button>
 
             <button
                 className="action-btn action-btn--outline"

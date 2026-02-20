@@ -1,4 +1,4 @@
-import "../../styles/Dashboard/StudyItem.css";
+import "../../styles/dashboard/StudyItem.css";
 
 const StudyItem = ({ title, category, keyword, date }) => {
     return (
