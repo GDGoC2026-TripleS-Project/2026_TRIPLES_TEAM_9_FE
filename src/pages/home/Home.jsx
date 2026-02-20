@@ -1,5 +1,7 @@
+import { useRef, useState } from "react";
 import Header from "../../components/common/Header";
 import FeatureCard from "../../components/FeatureCard";
+import InfoDrawer from "../../components/home/InfoDrawer";
 import "../../styles/global.css";
 import "../../styles/home.css";
 
@@ -48,6 +50,8 @@ const FEATURES = [
 
 export default function Home() {
     const navigate = useNavigate();
+    const [infoOpen, setInfoOpen] = useState(false);
+    const moreInfoButtonRef = useRef(null);
 
     const onStartGarden = () => {
         const token = getAccessToken();
@@ -57,6 +61,14 @@ export default function Home() {
             return;
         }
         navigate("/dashboard");
+    };
+
+    const openInfoDrawer = () => setInfoOpen(true);
+    const closeInfoDrawer = () => {
+        setInfoOpen(false);
+        requestAnimationFrame(() => {
+            moreInfoButtonRef.current?.focus();
+        });
     };
 
     return (
@@ -73,7 +85,16 @@ export default function Home() {
 
                     <div className="hero-actions">
                         <button className="primary-btn large" onClick={onStartGarden}>내 지식 정원 가꾸기</button>
-                        <button className="ghost-btn large">더 알아보기</button>
+                        <button
+                            ref={moreInfoButtonRef}
+                            className="ghost-btn large"
+                            type="button"
+                            aria-haspopup="dialog"
+                            aria-expanded={infoOpen}
+                            onClick={openInfoDrawer}
+                        >
+                            더 알아보기
+                        </button>
                     </div>
                 </div>
             </section>
@@ -105,6 +126,7 @@ export default function Home() {
                     무료로 시작하기
                 </button>
             </section> */}
+            <InfoDrawer open={infoOpen} onClose={closeInfoDrawer} />
         </div>
     );
 }
