@@ -5,7 +5,7 @@ import GoalCreateModal from "../../components/goals/GoalCreateModal";
 import Pagination from "../../components/common/Pagination";
 import useGoals from "../../hooks/useGoals";
 import { Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import "../../styles/goals/GoalManage.css";
 
@@ -24,14 +24,13 @@ const GoalManage = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [createOpen, setCreateOpen] = useState(false);
-    const skipInitialUrlSyncRef = useRef(searchParams.has("page"));
     const keywordFromUrl = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
     const [keywordInput, setKeywordInput] = useState(keywordFromUrl);
     const [isSearchOpen, setIsSearchOpen] = useState(Boolean(keywordFromUrl));
+
     const requestedUiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
     const {
         goals,
-        page,
         totalPages,
         loadingGoals,
         tasksByGoalId,
@@ -50,12 +49,22 @@ const GoalManage = () => {
 
     const visibleTotalPages = Math.max(1, totalPages);
 
-    const setPageParam = (nextUiPage, replace = false) => {
-        const clampedUiPage = Math.min(Math.max(1, nextUiPage), Math.max(1, totalPages));
-        const next = new URLSearchParams(searchParams);
-        next.set("page", String(clampedUiPage));
-        setSearchParams(next, { replace });
-    };
+    const setPageParam = useCallback(
+        (nextUiPage, replace = false) => {
+            let uiPage = Math.max(1, nextUiPage);
+
+            if (!loadingGoals) {
+                uiPage = Math.min(uiPage, Math.max(1, totalPages));
+            }
+
+            if (uiPage === requestedUiPage) return;
+
+            const next = new URLSearchParams(searchParams);
+            next.set("page", String(uiPage));
+            setSearchParams(next, { replace });
+        },
+        [loadingGoals, totalPages, requestedUiPage, searchParams, setSearchParams],
+    );
 
     const onSearchSubmit = (event) => {
         event.preventDefault();
@@ -73,14 +82,12 @@ const GoalManage = () => {
     };
 
     useEffect(() => {
-        if (skipInitialUrlSyncRef.current) {
-            skipInitialUrlSyncRef.current = false;
-            return;
+        if (loadingGoals) return;
+
+        if (requestedUiPage > totalPages) {
+            setPageParam(totalPages, true);
         }
-        const resolvedUiPage = page + 1;
-        if (Number(searchParams.get("page")) === resolvedUiPage) return;
-        setPageParam(resolvedUiPage, true);
-    }, [page, searchParams, setSearchParams, totalPages]);
+    }, [loadingGoals, requestedUiPage, totalPages]);
 
     useEffect(() => {
         setKeywordInput(keywordFromUrl);
@@ -175,7 +182,7 @@ const GoalManage = () => {
                 {errorMessage && <div className="goals-error-bar">{errorMessage}</div>}
             </main>
             <Pagination
-                page={page + 1}
+                page={requestedUiPage}
                 totalPages={visibleTotalPages}
                 onPageChange={(nextPage) => setPageParam(nextPage)}
                 className="goals-pagination"

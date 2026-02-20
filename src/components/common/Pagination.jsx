@@ -7,21 +7,24 @@ export default function Pagination({
     onPageChange,
     className = "",
 }) {
+    const GROUP_SIZE = 5;
     const visibleTotalPages = Math.max(1, Number(totalPages) || 1);
     const currentPage = Math.min(Math.max(1, Number(page) || 1), visibleTotalPages);
-    const canPrev = currentPage > 1;
-    const canNext = currentPage < visibleTotalPages;
+    const groupStart = Math.floor((currentPage - 1) / GROUP_SIZE) * GROUP_SIZE + 1;
+    const groupEnd = Math.min(groupStart + GROUP_SIZE - 1, visibleTotalPages);
+    const canPrev = groupStart > 1;
+    const canNext = groupEnd < visibleTotalPages;
 
     const clampPage = (nextPage) => Math.min(Math.max(1, nextPage), visibleTotalPages);
 
     const goPrev = () => {
         if (!canPrev || !onPageChange) return;
-        onPageChange(clampPage(currentPage - 1));
+        onPageChange(clampPage(groupStart - GROUP_SIZE));
     };
 
     const goNext = () => {
         if (!canNext || !onPageChange) return;
-        onPageChange(clampPage(currentPage + 1));
+        onPageChange(clampPage(groupEnd + 1));
     };
 
     const goToPage = (nextPage) => {
@@ -37,7 +40,7 @@ export default function Pagination({
                 <ChevronLeft size={16} />
             </button>
 
-            {Array.from({ length: visibleTotalPages }, (_, i) => i + 1).map((p) => (
+            {Array.from({ length: groupEnd - groupStart + 1 }, (_, i) => groupStart + i).map((p) => (
                 <button
                     key={p}
                     type="button"
