@@ -1,4 +1,4 @@
-import "../styles/home/home.css";
+import "../../styles/home/home.css";
 
 export default function FeatureCard({ tone, title, desc, icon: Icon }) {
     return (
