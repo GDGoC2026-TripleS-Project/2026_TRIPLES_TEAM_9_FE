@@ -176,7 +176,7 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onBack={() => navigate(-1)}
+                onBack={() => navigate("/dashboard")}
                 onAdd={() => setIsCreateOpen(true)}
             />
             <main className="study-record-main">

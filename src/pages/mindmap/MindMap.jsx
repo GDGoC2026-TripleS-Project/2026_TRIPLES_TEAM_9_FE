@@ -18,7 +18,11 @@ const MindMap = () => {
     const navigate = useNavigate();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
-    const searchKeywordFromUrl = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const searchKeywordFromUrl = (
+        searchParams.get("search") ??
+        searchParams.get("keyword") ??
+        ""
+    ).trim();
     const [keyword, setKeyword] = useState(searchKeywordFromUrl);
     const [debouncedKeyword, setDebouncedKeyword] = useState("");
 
@@ -113,7 +117,8 @@ const MindMap = () => {
         () =>
             edges.filter(
                 (edge) =>
-                    filteredNodeIds.has(String(edge.source)) && filteredNodeIds.has(String(edge.target)),
+                    filteredNodeIds.has(String(edge.source)) &&
+                    filteredNodeIds.has(String(edge.target)),
             ),
         [edges, filteredNodeIds],
     );
@@ -157,7 +162,12 @@ const MindMap = () => {
     }, [apiCategory, setMindMapParams]);
     return (
         <div className="mindmap-page">
-            <Header variant="mindmap" title="마인드맵" showBack onBack={() => navigate(-1)} />
+            <Header
+                variant="mindmap"
+                title="마인드맵"
+                showBack
+                onBack={() => navigate("/dashboard")}
+            />
             <main className="mindmap-main">
                 <div className="mindmap-content">
                     <section className="mindmap-categorybar">
@@ -178,9 +188,12 @@ const MindMap = () => {
                                     <div
                                         className={`mindmap-category-circle mindmap-category-circle--${resolvedCategory}`}
                                     ></div>
-                                    <h1 className="mindmap-detail-title">카테고리 - {categoryLabel}</h1>
+                                    <h1 className="mindmap-detail-title">
+                                        카테고리 - {categoryLabel}
+                                    </h1>
                                     <h2 className={"mindmap-category-count"}>
-                                        키워드 {filteredNodes.length}개 · 연결선 {filteredEdges.length}개
+                                        키워드 {filteredNodes.length}개 · 연결선{" "}
+                                        {filteredEdges.length}개
                                     </h2>
                                 </div>
 
@@ -212,7 +225,9 @@ const MindMap = () => {
                             {hasNoData && (
                                 <div className="mindmap-empty-state">
                                     <div className="mindmap-empty-icon">🌱</div>
-                                    <h3 className="mindmap-empty-title">등록된 학습 기록이 없습니다</h3>
+                                    <h3 className="mindmap-empty-title">
+                                        등록된 학습 기록이 없습니다
+                                    </h3>
                                     <p className="mindmap-empty-desc">
                                         첫 기록을 남기면 카테고리별 키워드 마인드맵이 생성됩니다.
                                     </p>
@@ -223,7 +238,9 @@ const MindMap = () => {
                                 <div className="mindmap-empty-state">
                                     <div className="mindmap-empty-icon">🌱</div>
                                     <h3 className="mindmap-empty-title">검색 결과가 없습니다</h3>
-                                    <p className="mindmap-empty-desc">다른 키워드로 검색해 보세요.</p>
+                                    <p className="mindmap-empty-desc">
+                                        다른 키워드로 검색해 보세요.
+                                    </p>
                                 </div>
                             )}
 

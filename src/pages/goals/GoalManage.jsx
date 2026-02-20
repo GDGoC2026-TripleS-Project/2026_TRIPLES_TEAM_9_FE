@@ -5,11 +5,22 @@ import GoalCreateModal from "../../components/goals/GoalCreateModal";
 import useGoals from "../../hooks/useGoals";
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import "../../styles/goals/GoalManage.css";
 
 const GoalManage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleBack = () => {
+        const from = location.state?.from;
+        if (from === "mypage-goals") {
+            navigate("/mypage/goals");
+            return;
+        }
+        navigate("/dashboard");
+    };
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [createOpen, setCreateOpen] = useState(false);
     const skipInitialUrlSyncRef = useRef(searchParams.has("page"));
@@ -83,7 +94,7 @@ const GoalManage = () => {
             <Header
                 variant="goals"
                 showBack
-                onBack={() => navigate(-1)}
+                onBack={handleBack}
                 addLabel="새 목표 추가"
                 title="목표 관리"
                 subtitle="목표를 설정하고 세부 과제를 추가하여 진행 상황을 추적하세요."
@@ -124,7 +135,9 @@ const GoalManage = () => {
                         {keywordFromUrl ? (
                             <>
                                 <h3 className="goal-title">검색 결과가 없습니다</h3>
-                                <p className="goal-progress-text">다른 검색어로 다시 시도해보세요.</p>
+                                <p className="goal-progress-text">
+                                    다른 검색어로 다시 시도해보세요.
+                                </p>
                             </>
                         ) : (
                             <>
@@ -166,7 +179,11 @@ const GoalManage = () => {
                     <span>
                         {page + 1} / {Math.max(1, totalPages)}
                     </span>
-                    <button type="button" onClick={() => setPageParam(page + 2)} disabled={!canNext}>
+                    <button
+                        type="button"
+                        onClick={() => setPageParam(page + 2)}
+                        disabled={!canNext}
+                    >
                         다음
                     </button>
                 </div>

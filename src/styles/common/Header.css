@@ -22,12 +22,8 @@
     justify-content: space-between;
 
     width: min(1100px, 92vw);
-    height: 92px;
-    border-bottom: 1px solid #e4e4e7;
-}
-
-.header--home .header-container {
     height: 76px;
+    border-bottom: 1px solid #e4e4e7;
 }
 
 .header--detail .header-container {
@@ -43,8 +39,8 @@
 }
 
 .logo-box {
-    width: 32px;
-    height: 32px;
+    width: 120px;
+    height: 120px;
     border-radius: 6px;
     background: #111;
 }
@@ -57,10 +53,9 @@
     justify-content: center;
 }
 
-.brand-name {
-    font-weight: 800;
-    font-size: 22px;
-    letter-spacing: -0.02em;
+.logo {
+    width: 120px;
+    height: 120px;
 }
 
 .header-actions {

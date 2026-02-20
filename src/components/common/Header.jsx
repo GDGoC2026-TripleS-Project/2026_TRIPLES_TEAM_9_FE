@@ -3,7 +3,7 @@ import { ArrowLeft, LogOut, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/axios";
-import LogoMark from "./LogoMark";
+import logo from "../../assets/header/logo.svg";
 
 const VARIANT_HOME = "home";
 const VARIANT_DASHBOARD = "dashboard";
@@ -90,9 +90,8 @@ export default function Header({
         return (
             <div className="brand" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                 <div className="logo-box" aria-hidden>
-                    <LogoMark size={32} />
+                    <img src={logo} alt="로고" className="logo" />
                 </div>
-                <span className="brand-name">지식정원</span>
             </div>
         );
     };
@@ -104,7 +103,7 @@ export default function Header({
             return null;
         }
 
-        if (variant === VARIANT_DASHBOARD) {
+        if (variant === VARIANT_DASHBOARD || variant === VARIANT_MYPAGE) {
             return (
                 <nav className="header-actions--dashboard">
                     <span className="header-user">{user?.nickname ?? "회원"}님</span>
