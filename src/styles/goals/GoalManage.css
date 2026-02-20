@@ -13,6 +13,7 @@
     flex-direction: column;
     gap: 16px;
     border-top: 1px solid #e5e7eb;
+    min-height: 731px;
 }
 
 .goals-toolbar {
@@ -20,6 +21,11 @@
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
+}
+
+.goals-results {
+    display: grid;
+    gap: 16px;
 }
 
 .goals-search-form {
@@ -39,7 +45,7 @@
 }
 
 .goals-search-form input::placeholder {
-  color: #94a3b8;
+    color: #94a3b8;
 }
 
 .goals-search-form button {
@@ -119,34 +125,11 @@
 }
 
 .goals-pagination {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 81px;
+    padding: 0 0 6px;
     gap: 10px;
     align-self: center;
-}
-
-.goals-pagination button {
-    border: 1px solid #d6dae2;
-    border-radius: 10px;
-    background: #fff;
-    min-width: 46px;
-    height: 40px;
-    padding: 0 10px;
-    cursor: pointer;
-    font-weight: 700;
-}
-
-.goals-pagination button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.goals-pagination span {
-    color: #111827;
-    font-size: 18px;
-    font-weight: 700;
+    width: auto;
 }
 
 .goals-error-bar {

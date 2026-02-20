@@ -1,6 +1,6 @@
 import StudyRecordCard from "./StudyRecordCard";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import LoadingState from "../common/LoadingState";
+import Pagination from "../common/Pagination";
 
 const StudyRecordList = ({
     records = [],
@@ -9,25 +9,6 @@ const StudyRecordList = ({
     onPageChange,
     isLoading = false,
 }) => {
-    const canPrev = page > 1;
-    const canNext = page < totalPages;
-    const clampPage = (nextPage) => Math.min(Math.max(1, nextPage), visibleTotalPages);
-
-    const onPrev = () => {
-        if (!canPrev || !onPageChange) return;
-        onPageChange(clampPage(page - 1));
-    };
-
-    const onNext = () => {
-        if (!canNext || !onPageChange) return;
-        onPageChange(clampPage(page + 1));
-    };
-
-    const goToPage = (nextPage) => {
-        if (!onPageChange) return;
-        onPageChange(clampPage(nextPage));
-    };
-
     const visibleTotalPages = Math.max(1, Number(totalPages) || 1);
     const hasRecords = records.length > 0;
 
@@ -56,27 +37,13 @@ const StudyRecordList = ({
                     ))}
             </div>
 
-            {!isLoading && visibleTotalPages > 1 && (
-                <div className="record-pagination">
-                    <button type="button" className="page-btn" onClick={onPrev} disabled={!canPrev}>
-                        <ChevronLeft size={16} />
-                    </button>
-
-                    {Array.from({ length: visibleTotalPages }, (_, i) => i + 1).map((p) => (
-                        <button
-                            key={p}
-                            type="button"
-                            className={`page-number ${p === page ? "active" : ""}`}
-                            onClick={() => goToPage(p)}
-                        >
-                            {p}
-                        </button>
-                    ))}
-
-                    <button type="button" className="page-btn" onClick={onNext} disabled={!canNext}>
-                        <ChevronRight size={16} />
-                    </button>
-                </div>
+            {!isLoading && (
+                <Pagination
+                    page={page}
+                    totalPages={visibleTotalPages}
+                    onPageChange={onPageChange}
+                    className="record-pagination"
+                />
             )}
         </div>
     );

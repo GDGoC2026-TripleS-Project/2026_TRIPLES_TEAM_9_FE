@@ -1,7 +1,8 @@
-import Header from "../../components/common/Header";
+﻿import Header from "../../components/common/Header";
 import LoadingState from "../../components/common/LoadingState";
 import GoalCard from "../../components/goals/GoalCard";
 import GoalCreateModal from "../../components/goals/GoalCreateModal";
+import Pagination from "../../components/common/Pagination";
 import useGoals from "../../hooks/useGoals";
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -47,8 +48,7 @@ const GoalManage = () => {
         toggleTaskCompleted,
     } = useGoals(requestedUiPage - 1, keywordFromUrl);
 
-    const canPrev = page > 0;
-    const canNext = page + 1 < totalPages;
+    const visibleTotalPages = Math.max(1, totalPages);
 
     const setPageParam = (nextUiPage, replace = false) => {
         const clampedUiPage = Math.min(Math.max(1, nextUiPage), Math.max(1, totalPages));
@@ -126,7 +126,7 @@ const GoalManage = () => {
 
                 {loadingGoals ? (
                     <LoadingState
-                        title="목표를 불러오는 중입니다"
+                        title="목표를 불러오는 중입니다."
                         description="세부 과제 정보도 함께 준비하고 있어요."
                         className="goal-empty goal-loading"
                     />
@@ -134,14 +134,14 @@ const GoalManage = () => {
                     <section className="goal-empty-card">
                         {keywordFromUrl ? (
                             <>
-                                <h3 className="goal-title">검색 결과가 없습니다</h3>
+                                <h3 className="goal-title">검색 결과가 없습니다.</h3>
                                 <p className="goal-progress-text">
                                     다른 검색어로 다시 시도해보세요.
                                 </p>
                             </>
                         ) : (
                             <>
-                                <h3 className="goal-title">아직 목표가 없습니다</h3>
+                                <h3 className="goal-title">아직 목표가 없습니다.</h3>
                                 <p className="goal-progress-text">등록된 목표가 없습니다.</p>
                                 <button
                                     type="button"
@@ -172,25 +172,14 @@ const GoalManage = () => {
                     ))
                 )}
 
-                <div className="goals-pagination">
-                    <button type="button" onClick={() => setPageParam(page)} disabled={!canPrev}>
-                        이전
-                    </button>
-                    <span>
-                        {page + 1} / {Math.max(1, totalPages)}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={() => setPageParam(page + 2)}
-                        disabled={!canNext}
-                    >
-                        다음
-                    </button>
-                </div>
-
                 {errorMessage && <div className="goals-error-bar">{errorMessage}</div>}
             </main>
-
+            <Pagination
+                page={page + 1}
+                totalPages={visibleTotalPages}
+                onPageChange={(nextPage) => setPageParam(nextPage)}
+                className="goals-pagination"
+            />
             <GoalCreateModal
                 open={createOpen}
                 onClose={() => setCreateOpen(false)}
