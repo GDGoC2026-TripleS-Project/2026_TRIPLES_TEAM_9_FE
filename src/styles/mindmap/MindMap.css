@@ -44,6 +44,7 @@
     position: absolute;
     z-index: 2;
     cursor: pointer;
+    transform: translate(-50%, -50%);
 }
 
 .mindmap-detail {

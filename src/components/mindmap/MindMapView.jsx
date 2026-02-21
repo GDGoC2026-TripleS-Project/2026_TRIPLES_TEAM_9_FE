@@ -11,8 +11,8 @@ const toPositionedNodes = (nodes = []) => {
         if (index === 0) {
             return {
                 ...node,
-                x: 50,
-                y: 58,
+                x: 58,
+                y: 56,
             };
         }
 
@@ -23,7 +23,7 @@ const toPositionedNodes = (nodes = []) => {
         return {
             ...node,
             x: 50 + Math.cos(angle) * radius,
-            y: 58 + Math.sin(angle) * (radius * 0.72),
+            y: 48 + Math.sin(angle) * (radius * 0.72),
         };
     });
 };
