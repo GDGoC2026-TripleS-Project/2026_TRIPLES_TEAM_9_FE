@@ -20,12 +20,12 @@ const StudyRecord = () => {
 
     const category = searchParams.get("category") ?? "";
     const searchKeyword = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const shouldOpenCreate = searchParams.get("create") === "1";
     const normalizedKeyword = searchKeyword.toLowerCase();
     const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchKeyword));
     const [searchInput, setSearchInput] = useState(searchKeyword);
     const apiCategory = category ? category.toUpperCase() : undefined;
     const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
-    // UI와 API 요청 page 모두 1-based를 사용합니다.
     const apiPage = uiPage;
     const size = Math.max(1, Number(searchParams.get("size") ?? 4) || 4);
 
@@ -60,6 +60,15 @@ const StudyRecord = () => {
             setIsCreateOpen(false);
         },
     });
+
+    useEffect(() => {
+        if (!shouldOpenCreate) return;
+
+        setIsCreateOpen(true);
+        const next = new URLSearchParams(searchParams);
+        next.delete("create");
+        setSearchParams(next, { replace: true });
+    }, [searchParams, setSearchParams, shouldOpenCreate]);
 
     const matchesKeyword = (item) => {
         if (!normalizedKeyword) return true;

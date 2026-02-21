@@ -187,7 +187,8 @@ const Dashboard = () => {
 
                     <button
                         className="add-study-record-btn"
-                        onClick={() => (window.location.href = "/records")}
+                        type="button"
+                        onClick={() => navigate("/records?create=1")}
                     >
                         + 새 학습 기록 작성
                     </button>
