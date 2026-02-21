@@ -152,10 +152,27 @@
 
     gap: 10px;
     cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.record-category-card:hover {
+    border-color: #93c5fd;
+}
+
+.record-category-card img {
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
 }
 
 .record-category-card.is-selected {
     border-color: #155dfc;
+    box-shadow: 0 8px 18px rgba(21, 93, 252, 0.14);
+    transform: translateY(-1px);
 }
 
 .record-keyword-row {

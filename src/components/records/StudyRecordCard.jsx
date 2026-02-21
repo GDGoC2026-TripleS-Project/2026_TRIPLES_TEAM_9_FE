@@ -7,7 +7,7 @@ const StudyRecordCard = ({ record }) => {
             <article className="record-card">
                 <h3 className="record-title">{record.title}</h3>
                 <div className="record-meta">
-                    <span className={`badge ${record.categoryBadge}`}>{record.categoryLabel}</span>
+                    <span className="badge badge--blue">{record.categoryLabel}</span>
                     <span className="record-date">
                         <Calendar size={12} />
                         {record.date}
@@ -15,7 +15,7 @@ const StudyRecordCard = ({ record }) => {
                 </div>
                 <p className="record-desc">{record.description}</p>
                 <div className="record-footer">
-                    <span className={`badge badge--tag ${record.tagBadge}`}>{record.tag}</span>
+                    <span className="badge badge--tag badge--blue">{record.tag}</span>
                 </div>
             </article>
         </Link>
