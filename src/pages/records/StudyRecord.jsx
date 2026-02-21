@@ -20,6 +20,7 @@ const StudyRecord = () => {
 
     const category = searchParams.get("category") ?? "";
     const searchKeyword = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const shouldOpenCreate = searchParams.get("create") === "1";
     const normalizedKeyword = searchKeyword.toLowerCase();
     const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchKeyword));
     const [searchInput, setSearchInput] = useState(searchKeyword);
@@ -60,6 +61,15 @@ const StudyRecord = () => {
             setIsCreateOpen(false);
         },
     });
+
+    useEffect(() => {
+        if (!shouldOpenCreate) return;
+
+        setIsCreateOpen(true);
+        const next = new URLSearchParams(searchParams);
+        next.delete("create");
+        setSearchParams(next, { replace: true });
+    }, [searchParams, setSearchParams, shouldOpenCreate]);
 
     const matchesKeyword = (item) => {
         if (!normalizedKeyword) return true;
