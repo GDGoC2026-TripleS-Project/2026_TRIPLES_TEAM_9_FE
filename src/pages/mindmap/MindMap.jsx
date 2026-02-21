@@ -193,8 +193,7 @@ const MindMap = () => {
                                         카테고리 - {categoryLabel}
                                     </h1>
                                     <h2 className={"mindmap-category-count"}>
-                                        키워드 {filteredNodes.length}개 · 연결선{" "}
-                                        {filteredEdges.length}개
+                                        키워드 {filteredNodes.length}개
                                     </h2>
                                 </div>
 
