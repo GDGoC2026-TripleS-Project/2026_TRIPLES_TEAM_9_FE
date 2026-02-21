@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   createGoal,
   createTask,
@@ -57,6 +57,7 @@ export default function useGoals(initialPage = 0, initialSearch = "") {
   const [pendingTaskIdsRaw, setPendingTaskIdsRaw] = useState([]);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const requestSeqRef = useRef(0);
 
   const pendingTaskIds = useMemo(() => new Set(pendingTaskIdsRaw), [pendingTaskIdsRaw]);
 
@@ -73,16 +74,25 @@ export default function useGoals(initialPage = 0, initialSearch = "") {
   const normalizedSearch = String(initialSearch ?? "").trim();
 
   const loadGoals = useCallback(async (nextPage = 0) => {
+    const requestSeq = requestSeqRef.current + 1;
+    requestSeqRef.current = requestSeq;
+
     setLoadingGoals(true);
     try {
       const pageData = await fetchGoals(nextPage, normalizedSearch);
+      if (requestSeqRef.current !== requestSeq) return null;
+
       const content = Array.isArray(pageData?.content) ? pageData.content : [];
       setGoals(content.map(normalizeGoal).filter(Boolean));
       setPage(Math.max(0, toNumber(pageData?.number ?? nextPage, nextPage)));
       setTotalPages(Math.max(1, toNumber(pageData?.totalPages ?? 1, 1)));
+      return pageData;
     } catch (error) {
+      if (requestSeqRef.current !== requestSeq) return null;
       setUiError(error?.message || "목표 목록을 불러오지 못했습니다.");
+      return null;
     } finally {
+      if (requestSeqRef.current !== requestSeq) return;
       setLoadingGoals(false);
     }
   }, [normalizedSearch, setUiError]);

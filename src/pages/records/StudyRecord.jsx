@@ -4,7 +4,7 @@ import StudyRecordList from "../../components/records/StudyRecordList";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import "../../styles/records/StudyRecord.css";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCreateRecordMutation, useRecordListQuery } from "../../hooks/useRecordApi";
@@ -17,16 +17,21 @@ const StudyRecord = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const autoLocateKeyRef = useRef("");
+    const mindMapCollectSeqRef = useRef(0);
+    const [mindMapCollectedRecords, setMindMapCollectedRecords] = useState([]);
+    const [isMindMapCollecting, setIsMindMapCollecting] = useState(false);
 
     const category = searchParams.get("category") ?? "";
-    const searchKeyword = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
+    const source = searchParams.get("from") ?? "";
+    const isMindMapSearch = source === "mindmap";
+    const searchKeyword = (searchParams.get("search") ?? "").trim();
     const shouldOpenCreate = searchParams.get("create") === "1";
     const normalizedKeyword = searchKeyword.toLowerCase();
     const [isSearchOpen, setIsSearchOpen] = useState(Boolean(searchKeyword));
     const [searchInput, setSearchInput] = useState(searchKeyword);
     const apiCategory = category ? category.toUpperCase() : undefined;
     const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
-    const apiPage = uiPage;
+    const apiPage = isMindMapSearch && normalizedKeyword ? 1 : uiPage;
     const size = Math.max(1, Number(searchParams.get("size") ?? 4) || 4);
 
     const recordListQuery = useRecordListQuery({
@@ -35,6 +40,7 @@ const StudyRecord = () => {
         category: apiCategory,
         keyword: searchKeyword,
     });
+
     const {
         data: recordListData,
         items: recordItems,
@@ -70,19 +76,124 @@ const StudyRecord = () => {
         setSearchParams(next, { replace: true });
     }, [searchParams, setSearchParams, shouldOpenCreate]);
 
-    const matchesKeyword = (item) => {
+    const matchesKeyword = useCallback((item) => {
         if (!normalizedKeyword) return true;
         const titleText = String(item?.title ?? "").toLowerCase();
-        return titleText.includes(normalizedKeyword);
-    };
+        const tagText = String(item?.tag ?? "").toLowerCase();
+        const keywordList = Array.isArray(item?.keywords)
+            ? item.keywords.map((keyword) =>
+                  String(keyword ?? "")
+                      .trim()
+                      .toLowerCase(),
+              )
+            : [];
+
+        if (isMindMapSearch) {
+            return tagText === normalizedKeyword || keywordList.includes(normalizedKeyword);
+        }
+
+        const keywordText = keywordList.join(" ");
+
+        return (
+            titleText.includes(normalizedKeyword) ||
+            tagText.includes(normalizedKeyword) ||
+            keywordText.includes(normalizedKeyword)
+        );
+    }, [normalizedKeyword, isMindMapSearch]);
 
     const records = useMemo(() => {
         const mapped = recordItems.map((item) => toRecordListItem(item));
         if (!normalizedKeyword) return mapped;
         return mapped.filter(matchesKeyword);
-    }, [recordItems, normalizedKeyword]);
+    }, [recordItems, normalizedKeyword, isMindMapSearch]);
 
     useEffect(() => {
+        if (!isMindMapSearch || !normalizedKeyword) {
+            setMindMapCollectedRecords([]);
+            setIsMindMapCollecting(false);
+            return;
+        }
+
+        let cancelled = false;
+        const requestSeq = ++mindMapCollectSeqRef.current;
+
+        const getItems = (pageData) => {
+            if (Array.isArray(pageData?.items)) return pageData.items;
+            if (Array.isArray(pageData?.content)) return pageData.content;
+            return [];
+        };
+
+        const collect = async () => {
+            setIsMindMapCollecting(true);
+            try {
+                const firstPage = await getRecordList({
+                    page: 1,
+                    size,
+                    category: apiCategory,
+                    keyword: searchKeyword,
+                });
+                if (cancelled || mindMapCollectSeqRef.current !== requestSeq) return;
+
+                const totalPages = Math.max(1, Number(firstPage?.totalPages ?? 1) || 1);
+                const allItems = [...getItems(firstPage)];
+
+                for (let nextPage = 2; nextPage <= totalPages; nextPage += 1) {
+                    const nextPageData = await getRecordList({
+                        page: nextPage,
+                        size,
+                        category: apiCategory,
+                        keyword: searchKeyword,
+                    });
+                    if (cancelled || mindMapCollectSeqRef.current !== requestSeq) return;
+                    allItems.push(...getItems(nextPageData));
+                }
+
+                const filtered = allItems
+                    .map((item) => toRecordListItem(item))
+                    .filter(matchesKeyword);
+
+                if (cancelled || mindMapCollectSeqRef.current !== requestSeq) return;
+                setMindMapCollectedRecords(filtered);
+            } catch {
+                if (cancelled || mindMapCollectSeqRef.current !== requestSeq) return;
+                setMindMapCollectedRecords([]);
+            } finally {
+                if (cancelled || mindMapCollectSeqRef.current !== requestSeq) return;
+                setIsMindMapCollecting(false);
+            }
+        };
+
+        collect();
+        return () => {
+            cancelled = true;
+        };
+    }, [isMindMapSearch, normalizedKeyword, apiCategory, size, searchKeyword, matchesKeyword]);
+
+    const effectiveTotalPages = useMemo(() => {
+        if (isMindMapSearch && normalizedKeyword) {
+            return Math.max(1, Math.ceil(mindMapCollectedRecords.length / size));
+        }
+        return Math.max(1, Number(recordListData.totalPages) || 1);
+    }, [isMindMapSearch, normalizedKeyword, mindMapCollectedRecords.length, size, recordListData.totalPages]);
+
+    const effectivePage = Math.min(Math.max(1, uiPage), effectiveTotalPages);
+
+    const displayedRecords = useMemo(() => {
+        if (!(isMindMapSearch && normalizedKeyword)) return records;
+        const start = (effectivePage - 1) * size;
+        return mindMapCollectedRecords.slice(start, start + size);
+    }, [isMindMapSearch, normalizedKeyword, records, effectivePage, size, mindMapCollectedRecords]);
+
+    useEffect(() => {
+        if (!(isMindMapSearch && normalizedKeyword)) return;
+        if (uiPage === effectivePage) return;
+        const next = new URLSearchParams(searchParams);
+        next.set("page", String(effectivePage));
+        setSearchParams(next, { replace: true });
+    }, [isMindMapSearch, normalizedKeyword, uiPage, effectivePage, searchParams, setSearchParams]);
+
+    useEffect(() => {
+        if (isMindMapSearch) return;
         const autoLocateKey = `${apiCategory ?? "all"}|${normalizedKeyword}`;
         if (!normalizedKeyword || searchParams.has("page")) {
             autoLocateKeyRef.current = "";
@@ -128,6 +239,7 @@ const StudyRecord = () => {
             cancelled = true;
         };
     }, [
+        isMindMapSearch,
         apiCategory,
         isRecordListLoading,
         searchKeyword,
@@ -156,8 +268,7 @@ const StudyRecord = () => {
     };
 
     const onPageChange = (nextPage) => {
-        const totalPages = Math.max(1, Number(recordListData.totalPages) || 1);
-        const clampedUiPage = Math.min(Math.max(1, nextPage), totalPages);
+        const clampedUiPage = Math.min(Math.max(1, nextPage), effectiveTotalPages);
         const next = new URLSearchParams(searchParams);
         next.set("page", String(clampedUiPage));
         setSearchParams(next);
@@ -169,10 +280,8 @@ const StudyRecord = () => {
         const next = new URLSearchParams(searchParams);
         if (normalized) {
             next.set("search", normalized);
-            next.delete("keyword");
         } else {
             next.delete("search");
-            next.delete("keyword");
         }
         next.delete("page");
         setSearchParams(next);
@@ -184,7 +293,7 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onBack={() => navigate("/dashboard")}
+                onBack={() => navigate(source === "mindmap" ? "/mindmap" : "/dashboard")}
                 onAdd={() => setIsCreateOpen(true)}
             />
             <main className="study-record-main">
@@ -219,11 +328,15 @@ const StudyRecord = () => {
                             <p>{recordListError.message || "기록 목록을 불러오지 못했습니다."}</p>
                         )}
                         <StudyRecordList
-                            records={records}
-                            page={Math.max(1, Number(recordListData.page) || 1)}
-                            totalPages={recordListData.totalPages}
+                            records={displayedRecords}
+                            page={effectivePage}
+                            totalPages={effectiveTotalPages}
                             onPageChange={onPageChange}
-                            isLoading={isRecordListLoading}
+                            isLoading={
+                                isMindMapSearch && normalizedKeyword
+                                    ? isMindMapCollecting
+                                    : isRecordListLoading
+                            }
                         />
                     </section>
                 </div>

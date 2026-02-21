@@ -5,7 +5,7 @@ const CATEGORY_META = {
     reading: { label: "독서", badge: "badge--blue" },
     project: { label: "프로젝트", badge: "badge--blue" },
     seminar: { label: "세미나", badge: "badge--blue" },
-    personal: { label: "개인학습", badge: "badge--green" },
+    personal: { label: "개인학습", badge: "badge--blue" },
     other: { label: "기타", badge: "badge--blue" },
 };
 
@@ -86,7 +86,11 @@ export const toRecordListItem = (record) => {
     const meta = getCategoryMeta(categoryValue);
     const keywords = extractKeywords(record);
     const markdownContent =
-        record?.contentMd ?? record?.content_markdown ?? record?.content ?? record?.description ?? "";
+        record?.contentMd ??
+        record?.content_markdown ??
+        record?.content ??
+        record?.description ??
+        "";
 
     return {
         id: record?.recordId ?? record?.id ?? Date.now(),
@@ -96,8 +100,6 @@ export const toRecordListItem = (record) => {
         date: formatRecordDate(record?.learningDate ?? record?.date ?? record?.createdAt),
         description: record?.preview ?? markdownSummary(markdownContent),
         tag: keywords[0] ?? record?.tag ?? "-",
-        categoryBadge: meta.badge,
-        tagBadge: "badge--blue",
         keywords,
         contentMd: markdownContent,
         raw: record,

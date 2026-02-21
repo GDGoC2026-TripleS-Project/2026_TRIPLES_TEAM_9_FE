@@ -44,6 +44,7 @@
     position: absolute;
     z-index: 2;
     cursor: pointer;
+    transform: translate(-50%, -50%);
 }
 
 .mindmap-detail {
@@ -85,23 +86,23 @@
 }
 
 .mindmap-category-circle--reading {
-    background-color: #2eb872;
+    background-color: #f59e0b;
 }
 
 .mindmap-category-circle--project {
-    background-color: #f5a623;
+    background-color: #7c3aed;
 }
 
 .mindmap-category-circle--seminar {
-    background-color: #ff5252;
+    background-color: #14b8a6;
 }
 
 .mindmap-category-circle--personal {
-    background-color: #4c9aff;
+    background-color: #22c55e;
 }
 
 .mindmap-category-circle--other {
-    background-color: #9b6bff;
+    background-color: #9ca3af;
 }
 
 .mindmap-detail-title {
@@ -213,6 +214,9 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    max-height: 324px;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .mindmap-detail-item {
@@ -234,7 +238,9 @@
 
 .mindmap-card--clickable {
     cursor: pointer;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .mindmap-card--clickable:hover {
@@ -253,7 +259,7 @@
     font-weight: 700;
 }
 
-.mindmap-card-date {
+.mindmap-card-meta {
     color: #4a5565;
     font-size: 14px;
     font-weight: 500;
@@ -357,7 +363,7 @@
         font-size: 15px;
     }
 
-    .mindmap-card-date {
+    .mindmap-card-meta {
         font-size: 13px;
     }
 }
