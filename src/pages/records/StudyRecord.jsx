@@ -293,7 +293,7 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onBack={() => navigate("/dashboard")}
+                onBack={() => navigate(source === "mindmap" ? "/mindmap" : "/dashboard")}
                 onAdd={() => setIsCreateOpen(true)}
             />
             <main className="study-record-main">
