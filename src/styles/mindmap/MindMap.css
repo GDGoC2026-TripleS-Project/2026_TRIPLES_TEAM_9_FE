@@ -258,7 +258,7 @@
     font-weight: 700;
 }
 
-.mindmap-card-date {
+.mindmap-card-meta {
     color: #4a5565;
     font-size: 14px;
     font-weight: 500;
@@ -362,7 +362,7 @@
         font-size: 15px;
     }
 
-    .mindmap-card-date {
+    .mindmap-card-meta {
         font-size: 13px;
     }
 }

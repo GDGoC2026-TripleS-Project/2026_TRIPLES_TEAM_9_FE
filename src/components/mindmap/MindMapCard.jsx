@@ -1,4 +1,4 @@
-const MindMapCard = ({ title, date, onClick }) => {
+const MindMapCard = ({ title, metaText, onClick }) => {
     return (
         <article
             className={`mindmap-card ${onClick ? "mindmap-card--clickable" : ""}`}
@@ -17,7 +17,7 @@ const MindMapCard = ({ title, date, onClick }) => {
             }
         >
             <h3 className="mindmap-card-title">{title}</h3>
-            <span className="mindmap-card-date">{date}</span>
+            <span className="mindmap-card-meta">{metaText}</span>
         </article>
     );
 };

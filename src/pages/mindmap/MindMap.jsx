@@ -80,6 +80,7 @@ const MindMap = () => {
         if (!keywordText) return;
         const params = new URLSearchParams();
         params.set("search", keywordText);
+        params.set("from", "mindmap");
         if (resolvedCategory) {
             params.set("category", resolvedCategory);
         }
@@ -128,7 +129,7 @@ const MindMap = () => {
             filteredNodes.map((node) => ({
                 id: node.id,
                 title: node.label,
-                date: `연결 ${node.weight}회`,
+                metaText: `연결 ${node.weight}회`,
             })),
         [filteredNodes],
     );
@@ -250,7 +251,7 @@ const MindMap = () => {
                                         <li key={item.id} className="mindmap-detail-item">
                                             <MindMapCard
                                                 title={item.title}
-                                                date={item.date}
+                                                metaText={item.metaText}
                                                 onClick={() => onKeywordSelect(item.title)}
                                             />
                                         </li>
