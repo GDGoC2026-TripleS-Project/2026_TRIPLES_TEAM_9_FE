@@ -213,6 +213,9 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    max-height: 324px;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .mindmap-detail-item {
