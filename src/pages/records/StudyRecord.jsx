@@ -26,7 +26,6 @@ const StudyRecord = () => {
     const [searchInput, setSearchInput] = useState(searchKeyword);
     const apiCategory = category ? category.toUpperCase() : undefined;
     const uiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
-    // UI와 API 요청 page 모두 1-based를 사용합니다.
     const apiPage = uiPage;
     const size = Math.max(1, Number(searchParams.get("size") ?? 4) || 4);
 

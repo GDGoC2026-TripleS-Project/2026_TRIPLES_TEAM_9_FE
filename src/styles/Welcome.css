@@ -1,9 +1,9 @@
 .welcome-card{
   width: min(520px, 92vw);
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--line);
   border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
   padding: 34px 28px;
   text-align: center;
 }
@@ -15,8 +15,8 @@
   display: grid;
   place-items: center;
   margin: 0 auto 14px;
-  background: rgba(47,111,78,0.10);
-  border: 1px solid rgba(47,111,78,0.18);
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.22);
   font-size: 26px;
 }
 
@@ -29,7 +29,7 @@
 
 .welcome-desc{
   margin: 0 0 18px;
-  color: #6b7280;
+  color: var(--muted);
   line-height: 1.6;
 }
 
@@ -43,7 +43,7 @@
   padding: 0 16px;
   border-radius: 12px;
   border: none;
-  background: #2f6f4e;
+  background: var(--primary);
   color: #fff;
   font-weight: 800;
   cursor: pointer;
