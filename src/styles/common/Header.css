@@ -22,6 +22,11 @@
     justify-content: space-between;
 
     width: min(1100px, 92vw);
+    height: 92px;
+    border-bottom: 1px solid #e4e4e7;
+}
+
+.header--home .header-container {
     height: 76px;
     border-bottom: 1px solid #e4e4e7;
 }
@@ -211,7 +216,7 @@
 
 @media (max-width: 640px) {
     .header-container {
-        height: 64px;
+        height: 76px;
     }
 
     .header-actions--dashboard {
