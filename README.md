@@ -54,12 +54,6 @@ src
 git commit -m "#1 feat: 로그인 기능 구현"
 ```
 
-## 🔐 Environment Variables
-
-```bash
-VITE_BACKEND_BASE_URL=YOUR_API_URL
-```
-
 ## 🚀 실행 방법
 
 ```bash
