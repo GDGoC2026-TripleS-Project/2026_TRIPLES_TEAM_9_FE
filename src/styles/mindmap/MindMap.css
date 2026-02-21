@@ -85,23 +85,23 @@
 }
 
 .mindmap-category-circle--reading {
-    background-color: #2eb872;
+    background-color: #f59e0b;
 }
 
 .mindmap-category-circle--project {
-    background-color: #f5a623;
+    background-color: #7c3aed;
 }
 
 .mindmap-category-circle--seminar {
-    background-color: #ff5252;
+    background-color: #14b8a6;
 }
 
 .mindmap-category-circle--personal {
-    background-color: #4c9aff;
+    background-color: #22c55e;
 }
 
 .mindmap-category-circle--other {
-    background-color: #9b6bff;
+    background-color: #9ca3af;
 }
 
 .mindmap-detail-title {
@@ -237,7 +237,9 @@
 
 .mindmap-card--clickable {
     cursor: pointer;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .mindmap-card--clickable:hover {
