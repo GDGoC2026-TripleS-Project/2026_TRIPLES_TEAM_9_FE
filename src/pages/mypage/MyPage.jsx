@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
 import MySidebar from "../../components/mypage/MySidebar";
-import "../../styles/MyPage.css";
+import "../../styles/mypage/MyPage.css";
 import "../../styles/global.css";
 import { getMyProfile, getUserInfo, updateMyProfile } from "../../api/mypage.api";
 import { getDashboardMonthly, getDashboardSummary } from "../../api/dashboard.api";
@@ -47,7 +47,7 @@ const ROUTE_MAP = {
     "회원 정보": "/mypage",
     "최근 학습 활동": "/mypage/recent",
     "업적 관리": "/mypage/achievements",
-    "목표관리": "/mypage/goals",
+    "목표 관리": "/mypage/goals",
     "회원 탈퇴": "/mypage/withdraw",
 };
 const MyPage = () => {
@@ -81,13 +81,14 @@ const MyPage = () => {
             setLoadingError("");
             setMonthlyError("");
             try {
-                const [meRes, infoRes, summaryRes, monthlyRes, achievementsRes] = await Promise.allSettled([
-                    getMyProfile(),
-                    getUserInfo(),
-                    getDashboardSummary(),
-                    getDashboardMonthly(),
-                    getAchievements(),
-                ]);
+                const [meRes, infoRes, summaryRes, monthlyRes, achievementsRes] =
+                    await Promise.allSettled([
+                        getMyProfile(),
+                        getUserInfo(),
+                        getDashboardSummary(),
+                        getDashboardMonthly(),
+                        getAchievements(),
+                    ]);
 
                 let meData = null;
                 let infoData = null;
@@ -253,7 +254,7 @@ const MyPage = () => {
 
     return (
         <>
-            <Header variant="dashboard" />
+            <Header variant="mypage" />
             <main className="my-page">
                 <div className="my-container">
                     <MySidebar

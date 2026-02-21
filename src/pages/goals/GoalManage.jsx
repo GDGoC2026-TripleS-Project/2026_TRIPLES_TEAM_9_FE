@@ -1,25 +1,36 @@
-import Header from "../../components/common/Header";
+﻿import Header from "../../components/common/Header";
 import LoadingState from "../../components/common/LoadingState";
 import GoalCard from "../../components/goals/GoalCard";
 import GoalCreateModal from "../../components/goals/GoalCreateModal";
+import Pagination from "../../components/common/Pagination";
 import useGoals from "../../hooks/useGoals";
 import { Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import "../../styles/goals/GoalManage.css";
 
 const GoalManage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const sourceRef = useRef(location.state?.from);
+
+    const handleBack = () => {
+        if (sourceRef.current === "mypage-goals") {
+            navigate("/mypage/goals");
+            return;
+        }
+        navigate("/dashboard");
+    };
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [createOpen, setCreateOpen] = useState(false);
-    const skipInitialUrlSyncRef = useRef(searchParams.has("page"));
     const keywordFromUrl = (searchParams.get("search") ?? searchParams.get("keyword") ?? "").trim();
     const [keywordInput, setKeywordInput] = useState(keywordFromUrl);
     const [isSearchOpen, setIsSearchOpen] = useState(Boolean(keywordFromUrl));
+
     const requestedUiPage = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
     const {
         goals,
-        page,
         totalPages,
         loadingGoals,
         tasksByGoalId,
@@ -36,15 +47,24 @@ const GoalManage = () => {
         toggleTaskCompleted,
     } = useGoals(requestedUiPage - 1, keywordFromUrl);
 
-    const canPrev = page > 0;
-    const canNext = page + 1 < totalPages;
+    const visibleTotalPages = Math.max(1, totalPages);
 
-    const setPageParam = (nextUiPage, replace = false) => {
-        const clampedUiPage = Math.min(Math.max(1, nextUiPage), Math.max(1, totalPages));
-        const next = new URLSearchParams(searchParams);
-        next.set("page", String(clampedUiPage));
-        setSearchParams(next, { replace });
-    };
+    const setPageParam = useCallback(
+        (nextUiPage, replace = false) => {
+            let uiPage = Math.max(1, nextUiPage);
+
+            if (!loadingGoals) {
+                uiPage = Math.min(uiPage, Math.max(1, totalPages));
+            }
+
+            if (uiPage === requestedUiPage) return;
+
+            const next = new URLSearchParams(searchParams);
+            next.set("page", String(uiPage));
+            setSearchParams(next, { replace });
+        },
+        [loadingGoals, totalPages, requestedUiPage, searchParams, setSearchParams],
+    );
 
     const onSearchSubmit = (event) => {
         event.preventDefault();
@@ -62,14 +82,12 @@ const GoalManage = () => {
     };
 
     useEffect(() => {
-        if (skipInitialUrlSyncRef.current) {
-            skipInitialUrlSyncRef.current = false;
-            return;
+        if (loadingGoals) return;
+
+        if (requestedUiPage > totalPages) {
+            setPageParam(totalPages, true);
         }
-        const resolvedUiPage = page + 1;
-        if (Number(searchParams.get("page")) === resolvedUiPage) return;
-        setPageParam(resolvedUiPage, true);
-    }, [page, searchParams, setSearchParams, totalPages]);
+    }, [loadingGoals, requestedUiPage, totalPages]);
 
     useEffect(() => {
         setKeywordInput(keywordFromUrl);
@@ -83,7 +101,7 @@ const GoalManage = () => {
             <Header
                 variant="goals"
                 showBack
-                onBack={() => navigate(-1)}
+                onBack={handleBack}
                 addLabel="새 목표 추가"
                 title="목표 관리"
                 subtitle="목표를 설정하고 세부 과제를 추가하여 진행 상황을 추적하세요."
@@ -115,7 +133,7 @@ const GoalManage = () => {
 
                 {loadingGoals ? (
                     <LoadingState
-                        title="목표를 불러오는 중입니다"
+                        title="목표를 불러오는 중입니다."
                         description="세부 과제 정보도 함께 준비하고 있어요."
                         className="goal-empty goal-loading"
                     />
@@ -123,12 +141,14 @@ const GoalManage = () => {
                     <section className="goal-empty-card">
                         {keywordFromUrl ? (
                             <>
-                                <h3 className="goal-title">검색 결과가 없습니다</h3>
-                                <p className="goal-progress-text">다른 검색어로 다시 시도해보세요.</p>
+                                <h3 className="goal-title">검색 결과가 없습니다.</h3>
+                                <p className="goal-progress-text">
+                                    다른 검색어로 다시 시도해보세요.
+                                </p>
                             </>
                         ) : (
                             <>
-                                <h3 className="goal-title">아직 목표가 없습니다</h3>
+                                <h3 className="goal-title">아직 목표가 없습니다.</h3>
                                 <p className="goal-progress-text">등록된 목표가 없습니다.</p>
                                 <button
                                     type="button"
@@ -159,21 +179,14 @@ const GoalManage = () => {
                     ))
                 )}
 
-                <div className="goals-pagination">
-                    <button type="button" onClick={() => setPageParam(page)} disabled={!canPrev}>
-                        이전
-                    </button>
-                    <span>
-                        {page + 1} / {Math.max(1, totalPages)}
-                    </span>
-                    <button type="button" onClick={() => setPageParam(page + 2)} disabled={!canNext}>
-                        다음
-                    </button>
-                </div>
-
                 {errorMessage && <div className="goals-error-bar">{errorMessage}</div>}
             </main>
-
+            <Pagination
+                page={requestedUiPage}
+                totalPages={visibleTotalPages}
+                onPageChange={(nextPage) => setPageParam(nextPage)}
+                className="goals-pagination"
+            />
             <GoalCreateModal
                 open={createOpen}
                 onClose={() => setCreateOpen(false)}

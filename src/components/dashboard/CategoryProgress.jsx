@@ -1,4 +1,4 @@
-import "../../styles/Dashboard/CategoryProgress.css";
+import "../../styles/dashboard/CategoryProgress.css";
 
 const categories = [
     { id: 1, name: "Lecture", value: 1, max: 1 },

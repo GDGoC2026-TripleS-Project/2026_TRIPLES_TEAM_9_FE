@@ -6,7 +6,7 @@ const ROUTE_MAP = {
     "회원 정보": "/mypage",
     "최근 학습 활동": "/mypage/recent",
     "업적 관리": "/mypage/achievements",
-    "목표관리": "/mypage/goals",
+    "목표 관리": "/mypage/goals",
     "회원 탈퇴": "/mypage/withdraw",
 };
 
@@ -22,7 +22,7 @@ export default function MyPageLayout({
 
     return (
         <>
-            <Header variant="dashboard" />
+            <Header variant="mypage" />
             <main className="my-page">
                 <div className="my-container">
                     <MySidebar
@@ -42,7 +42,11 @@ export default function MyPageLayout({
                             <button
                                 className="my-link-btn"
                                 type="button"
-                                onClick={() => navigate(actionPath)}
+                                onClick={() =>
+                                    actionPath === "/goals"
+                                        ? navigate("/goals", { state: { from: "mypage-goals" } })
+                                        : navigate(actionPath)
+                                }
                             >
                                 {actionLabel}
                             </button>

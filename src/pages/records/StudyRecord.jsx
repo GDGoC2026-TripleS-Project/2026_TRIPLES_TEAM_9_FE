@@ -3,7 +3,6 @@ import CategoryTabs from "../../components/common/CategoryTabs";
 import StudyRecordList from "../../components/records/StudyRecordList";
 import StudyRecordCreateModal from "../../components/records/StudyRecordCreateModal";
 import "../../styles/records/StudyRecord.css";
-import "../../styles/common/Pagination.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
@@ -176,7 +175,7 @@ const StudyRecord = () => {
                 variant="records"
                 title="학습 기록"
                 showBack
-                onBack={() => navigate(-1)}
+                onBack={() => navigate("/dashboard")}
                 onAdd={() => setIsCreateOpen(true)}
             />
             <main className="study-record-main">
